@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 # Abyss Tattoo Studio — San Bernardo, Santiago de Chile
+Sitemap: https://cristianoleamiranda-dotcom.github.io/abysstattoo/sitemap.xml
