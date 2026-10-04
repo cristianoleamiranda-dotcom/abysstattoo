@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+# Abyss Tattoo Studio — San Bernardo, Santiago de Chile
