@@ -215,7 +215,21 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
 }
 
 /* =====================  PROMESA (quote)  ===================== */
-.quote{background:#14100D;padding:70px 26px 64px}
+.quote{background:#14100D;padding:70px 26px 64px;position:relative;overflow:hidden}
+.quote-mark{position:absolute;top:50%;right:-6%;width:min(62vw,620px);aspect-ratio:1/1;transform:translateY(-50%) rotate(-6deg);background:url("assets/skull_mark_crema.png") center/contain no-repeat;opacity:.07;pointer-events:none;filter:blur(.2px)}
+@media (max-width:760px){ .quote-mark{width:84vw;right:-20%;opacity:.06} }
+
+/* ---------- cursor personalizado (solo desktop con mouse fino) ---------- */
+.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:9600;opacity:0;border-radius:50%}
+.cursor-dot{width:6px;height:6px;background:var(--tealL);transform:translate(-50%,-50%);transition:opacity .3s ease,background-color .25s ease,width .25s ease,height .25s ease}
+.cursor-ring{width:34px;height:34px;border:1px solid rgba(158,196,186,.5);transform:translate(-50%,-50%);transition:opacity .3s ease,width .3s cubic-bezier(.16,.84,.44,1),height .3s cubic-bezier(.16,.84,.44,1),border-color .3s ease,background-color .3s ease}
+@media (hover:hover) and (pointer:fine){
+  body.has-cursor{cursor:none}
+  body.has-cursor a,body.has-cursor button,body.has-cursor .tilt{cursor:none}
+  body.has-cursor .cursor-dot,body.has-cursor .cursor-ring{opacity:1}
+  body.has-cursor .cursor-ring.is-hover{width:56px;height:56px;border-color:rgba(158,196,186,.85);background:rgba(108,146,138,.12)}
+  body.has-cursor .cursor-dot.is-hover{opacity:0}
+}
 .quote-grid{background:rgba(234,227,221,.035);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(234,227,221,.08);border-radius:18px;padding:40px clamp(20px,4vw,48px);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 -20px 40px -26px rgba(0,0,0,.55),0 24px 50px -30px rgba(0,0,0,.6)}
 .quote-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:40px;align-items:start}
@@ -722,6 +736,7 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
   </section>
 
   <section class="quote">
+    <div class="quote-mark" aria-hidden="true"></div>
     <div class="quote-grid reveal-group">
       <blockquote class="quote-q">“Cada perforación sale de aquí como la haríamos en nosotros: <em>limpia, bien hecha</em> y con la joyería correcta.”</blockquote>
       <div>
@@ -752,6 +767,9 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
   </section>
 
 </div>
+
+<div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
+<div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
 
 <script>
 (function(){
@@ -951,6 +969,45 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
   if (waFloat){
     if (reduce){ waFloat.classList.add('is-in'); }
     else { setTimeout(function(){ waFloat.classList.add('is-in'); }, 900); }
+  }
+
+  /* ---------- 10e · cursor personalizado: solo desktop con mouse fino, sin reduced-motion ---------- */
+  var fineMouse = window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  if (fineMouse && !reduce){
+    var cDot = document.getElementById('cursor-dot'),
+        cRing = document.getElementById('cursor-ring');
+    if (cDot && cRing){
+      document.body.classList.add('has-cursor');
+      var mx = -100, my = -100, rx = -100, ry = -100, started = false;
+      window.addEventListener('mousemove', function(e){
+        mx = e.clientX; my = e.clientY;
+        if (!started){ rx = mx; ry = my; started = true; }
+        cDot.style.transform = 'translate(' + mx + 'px,' + my + 'px) translate(-50%,-50%)';
+      }, {passive:true});
+      (function tick(){
+        rx += (mx - rx) * 0.18;
+        ry += (my - ry) * 0.18;
+        cRing.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)';
+        requestAnimationFrame(tick);
+      })();
+      var hoverSel = 'a, button, .tilt, .carousel-arrow, input, textarea, .lazy-video';
+      document.addEventListener('mouseover', function(e){
+        if (e.target.closest && e.target.closest(hoverSel)){
+          cRing.classList.add('is-hover'); cDot.classList.add('is-hover');
+        }
+      });
+      document.addEventListener('mouseout', function(e){
+        if (e.target.closest && e.target.closest(hoverSel)){
+          cRing.classList.remove('is-hover'); cDot.classList.remove('is-hover');
+        }
+      });
+      document.addEventListener('mouseleave', function(){
+        cDot.style.opacity = '0'; cRing.style.opacity = '0';
+      });
+      document.addEventListener('mouseenter', function(){
+        cDot.style.opacity = ''; cRing.style.opacity = '';
+      });
+    }
   }
 })();
 </script>
