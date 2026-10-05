@@ -122,16 +122,17 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
   z-index:3;
   pointer-events:none;
   will-change:transform;
+  text-shadow:0 2px 14px rgba(0,0,0,.55),0 1px 2px rgba(0,0,0,.5);
 }
-.hero-word .knock{color:var(--crema);opacity:.3}
+.hero-word .knock{color:var(--crema);opacity:.3;text-shadow:0 2px 14px rgba(0,0,0,.4),0 1px 2px rgba(0,0,0,.35)}
 
 .hero-video-wrap{position:relative;margin:-14% -26px 0;z-index:2;will-change:transform}
-.hero-video-frame{position:relative;width:100%;height:100vh}
-#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.06);transform-origin:50% 45%}
+.hero-video-frame{position:relative;width:100%;height:100vh;background:#14100D;overflow:hidden}
+#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.06);transform-origin:50% 45%;background:#14100D}
 .hero-fade{
   position:absolute;left:0;right:0;top:0;height:26%;
   will-change:opacity;pointer-events:none;z-index:3;
-  background:linear-gradient(to bottom,#14100D 0%,rgba(20,16,13,.82) 28%,rgba(20,16,13,.42) 60%,rgba(20,16,13,0) 100%);
+  background:linear-gradient(to bottom,#14100D 0%,rgba(20,16,13,.86) 24%,rgba(20,16,13,.62) 48%,rgba(20,16,13,.3) 72%,rgba(20,16,13,.08) 90%,rgba(20,16,13,0) 100%);
 }
 .hero-foot{position:absolute;left:26px;right:26px;bottom:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;pointer-events:none}
 .chips{display:flex;gap:8px;align-items:center;will-change:transform}
@@ -181,8 +182,10 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
 .sec-note{margin:0;font-size:11px;font-weight:600;letter-spacing:.12em;color:var(--crema2)}
 
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;margin-top:40px;background:rgba(234,227,221,.14)}
-.step{background:rgba(234,227,221,.045);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:26px 22px 30px;border:1px solid rgba(234,227,221,.08);transition:background .3s ease,border-color .3s ease}
-@media (hover:hover) and (pointer:fine){ .step:hover{background:rgba(234,227,221,.08);border-color:rgba(234,227,221,.18)} }
+.step{background:rgba(234,227,221,.045);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:26px 22px 30px;border:1px solid rgba(234,227,221,.08);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),inset 0 -14px 26px -18px rgba(0,0,0,.5);
+  transition:background .3s ease,border-color .3s ease,box-shadow .3s ease}
+@media (hover:hover) and (pointer:fine){ .step:hover{background:rgba(234,227,221,.08);border-color:rgba(234,227,221,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -14px 26px -18px rgba(0,0,0,.55),0 18px 36px -22px rgba(21,135,128,.3)} }
 .step-n{margin:0 0 22px;font-size:11px;font-weight:600;letter-spacing:.14em;color:var(--tealL)}
 .step-h{margin:0 0 10px;font-size:18px;font-weight:500;letter-spacing:-.01em}
 .step-b{margin:0;font-size:12.5px;line-height:1.7;color:var(--crema3)}
@@ -212,7 +215,8 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
 
 /* =====================  PROMESA (quote)  ===================== */
 .quote{background:#14100D;padding:70px 26px 64px}
-.quote-grid{background:rgba(234,227,221,.035);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(234,227,221,.08);border-radius:18px;padding:40px clamp(20px,4vw,48px)}
+.quote-grid{background:rgba(234,227,221,.035);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(234,227,221,.08);border-radius:18px;padding:40px clamp(20px,4vw,48px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 -20px 40px -26px rgba(0,0,0,.55),0 24px 50px -30px rgba(0,0,0,.6)}
 .quote-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:40px;align-items:start}
 .quote-q{margin:0;font-size:clamp(22px,2.6vw,32px);line-height:1.3;letter-spacing:-.015em;font-weight:500;text-wrap:pretty}
 .quote-q em{font-family:var(--font-serif);font-style:normal;font-weight:600;color:var(--tealL)}
@@ -250,6 +254,7 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
   .cta{font-size:12px;padding:9px 16px}
   .hero-word{margin:12px -18px 0 0;font-size:19cqw;top:4px}
   .hero-video-wrap{margin:-12% -18px 0}
+  .hero-fade{height:34%}
   .hero-foot{left:18px;right:18px;bottom:14px;align-items:flex-end}
   .chips{flex-wrap:wrap;gap:6px}
   .about,.process,.homes,.quote,.contact{padding-left:18px;padding-right:18px}
@@ -261,6 +266,7 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
 /* =====================  TIER 3 — ≤480px  ===================== */
 @media (max-width:480px){
   .hero-word{font-size:21cqw;letter-spacing:.005em}
+  .hero-fade{height:38%}
   .chip{font-size:11px;padding:6px 11px}
   .loc{font-size:11px}
   .home-grid{grid-template-columns:1fr}
@@ -326,13 +332,17 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
 .reveal-group.in>*:nth-child(9){transition-delay:.67s}
 
 /* =====================  TARJETAS CON PROFUNDIDAD 3D (sigue al cursor)  ===================== */
-.tilt{perspective:1000px}
-.tilt-el{position:relative;transition:transform .5s cubic-bezier(.16,.84,.44,1),box-shadow .5s ease;transform-style:preserve-3d;will-change:transform}
-.tilt-el::after{content:"";position:absolute;inset:0;z-index:2;opacity:0;pointer-events:none;mix-blend-mode:overlay;transition:opacity .4s ease;
-  background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.35),transparent 55%)}
+.tilt{perspective:700px}
+.tilt-el{position:relative;transition:transform .5s cubic-bezier(.16,.84,.44,1),box-shadow .5s ease;transform-style:preserve-3d;will-change:transform;box-shadow:0 8px 18px -12px rgba(0,0,0,.45)}
+.tilt-el::after{content:"";position:absolute;inset:0;z-index:2;opacity:0;pointer-events:none;mix-blend-mode:overlay;transition:opacity .35s ease;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.65),rgba(255,255,255,.12) 38%,transparent 60%)}
+.tilt-el::before{content:"";position:absolute;inset:0;z-index:1;opacity:0;pointer-events:none;mix-blend-mode:screen;transition:opacity .35s ease;
+  background:linear-gradient(115deg,transparent 30%,rgba(154,211,207,.35) 45%,rgba(255,255,255,.5) 50%,rgba(154,211,207,.35) 55%,transparent 70%);
+  background-size:220% 220%;background-position:var(--mx,50%) var(--my,50%)}
 @media (hover:hover) and (pointer:fine){
-  .tilt:hover .tilt-el{transition-duration:.08s;box-shadow:0 30px 60px -22px rgba(0,0,0,.6)}
+  .tilt:hover .tilt-el{transition-duration:.06s;box-shadow:0 46px 90px -24px rgba(0,0,0,.75),0 10px 28px -10px rgba(21,135,128,.35)}
   .tilt:hover .tilt-el::after{opacity:1}
+  .tilt:hover .tilt-el::before{opacity:1}
 }
 
 /* =====================  MOVIMIENTO REDUCIDO: todo visible, sin animar  ===================== */
@@ -342,6 +352,40 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
   .reveal,.reveal-group>*{opacity:1;transform:none;transition:none}
   .tilt-el{transition:none!important;transform:none!important}
 }
+
+/* =====================  CARRUSEL (scroll-snap, flechas de vidrio, puntos)  ===================== */
+.carousel{position:relative}
+.carousel-track{
+  display:flex;gap:20px;margin-top:38px;padding:4px 4px 10px;
+  overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.carousel-track::-webkit-scrollbar{display:none}
+.carousel-track>*{scroll-snap-align:start;flex:0 0 auto}
+.carousel .home-grid-item{width:min(78vw,320px)}
+.carousel .strip-item{width:min(70vw,300px)}
+@media (min-width:700px){
+  .carousel .home-grid-item{width:calc((100% - 20px*2)/3.25)}
+  .carousel .strip-item{width:calc((100% - 20px)/2.2)}
+}
+.carousel-arrow{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:5;
+  width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:rgba(20,16,13,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(234,227,221,.22);color:#EAE3DD;cursor:pointer;
+  transition:background .25s ease,transform .25s ease,opacity .25s ease,border-color .25s ease;
+  box-shadow:0 14px 30px -16px rgba(0,0,0,.6);opacity:0;pointer-events:none;
+}
+.carousel:hover .carousel-arrow,.carousel:focus-within .carousel-arrow{opacity:1;pointer-events:auto}
+@media (hover:none),(pointer:coarse){ .carousel-arrow{display:none} }
+.carousel-arrow:hover{background:rgba(21,135,128,.4);border-color:rgba(154,211,207,.5);transform:translateY(-50%) scale(1.08)}
+.carousel-arrow.is-prev{left:-10px}
+.carousel-arrow.is-next{right:-10px}
+.carousel-arrow[disabled]{opacity:0!important;pointer-events:none}
+.carousel-dots{display:flex;justify-content:center;gap:7px;margin-top:4px}
+.carousel-dots button{width:7px;height:7px;padding:0;border-radius:50%;border:none;background:rgba(234,227,221,.25);cursor:pointer;transition:background .25s ease,transform .25s ease}
+.carousel-dots button.is-active{background:var(--tealL);transform:scale(1.3)}
+@media (max-width:700px){ .carousel-dots{display:none} }
 </style>
 <noscript><style>img[loading="lazy"]{opacity:1}</style></noscript>
 <script type="application/ld+json">
@@ -367,6 +411,7 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
 }
 </script>
 <link rel="canonical" href="https://cristianoleamiranda-dotcom.github.io/abysstattoo/">
+<link rel="preload" as="image" href="assets/hero_poster.jpg" fetchpriority="high">
 <meta property="og:url" content="https://cristianoleamiranda-dotcom.github.io/abysstattoo/">
 <meta property="og:image" content="https://cristianoleamiranda-dotcom.github.io/abysstattoo/assets/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -451,7 +496,8 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
           <div><div class="stat-n">5,0</div><p class="stat-l">Estrellas en Google</p></div>
           <div><div class="stat-n">F136</div><p class="stat-l">Titanio grado implante</p></div>
         </div>
-        <div class="about-strip">
+        <div class="carousel" id="estudio-carousel">
+          <div class="carousel-track about-strip">
           <figure class="strip-item tilt">
             <div class="shot tilt-el"><img src="assets/estudio/fachada.jpg" alt="Fachada de Abyss Tattoo Studio, José Joaquín Pérez 528, San Bernardo" loading="lazy" decoding="async"></div>
             <figcaption class="cap">Fachada · San Bernardo</figcaption>
@@ -469,7 +515,11 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
               </div>
             </div>
           </figure>
+          </div>
+          <button class="carousel-arrow is-prev" type="button" aria-label="Anterior"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+          <button class="carousel-arrow is-next" type="button" aria-label="Siguiente"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
         </div>
+        <div class="carousel-dots" data-for="estudio-carousel"></div>
       </div>
       <div class="about-media reveal">
         <video id="loop-video" class="loop-video" muted loop playsinline preload="auto" aria-hidden="true"
@@ -512,8 +562,9 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
       <h2 class="sec-h">Trabajos <em>recientes</em></h2>
       <p class="sec-note">TATUAJES Y PIERCINGS REALES, HECHOS EN EL ESTUDIO</p>
     </div>
-    <div class="home-grid reveal-group">
-      <div class="tilt">
+    <div class="carousel" id="trabajos-carousel">
+      <div class="carousel-track home-grid reveal-group">
+      <div class="tilt home-grid-item">
         <div class="home-shot tilt-el">
           <img src="assets/trabajos/septum.jpg" alt="Piercing de septum con cristales incrustados, titanio grado implante" loading="lazy" decoding="async">
           <div class="home-cap">
@@ -522,7 +573,7 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
         </div>
         </div>
       </div>
-      <div class="tilt">
+      <div class="tilt home-grid-item">
         <div class="home-shot tilt-el">
           <img src="assets/trabajos/helice.jpg" alt="Piercing de hélice con cadena y studs de titanio, Abyss Tattoo Studio" loading="lazy" decoding="async">
           <div class="home-cap">
@@ -531,7 +582,7 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
         </div>
         </div>
       </div>
-      <div class="tilt">
+      <div class="tilt home-grid-item">
         <div class="home-shot tilt-el">
           <img src="assets/trabajos/lobo_samurai.jpg" alt="Tatuaje de lobo y máscara samurái en antebrazo, realismo blackwork" loading="lazy" decoding="async">
           <div class="home-cap">
@@ -540,7 +591,7 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
         </div>
         </div>
       </div>
-      <div class="tilt">
+      <div class="tilt home-grid-item">
         <div class="home-shot tilt-el">
           <img src="assets/trabajos/goku.jpg" alt="Tatuaje a color de Goku, anime, antebrazo" loading="lazy" decoding="async">
           <div class="home-cap">
@@ -549,7 +600,7 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
         </div>
         </div>
       </div>
-      <div class="tilt">
+      <div class="tilt home-grid-item">
         <div class="home-shot tilt-el">
           <img src="assets/trabajos/payaso.jpg" alt="Tatuaje de payaso y cartas, black and grey, antebrazo" loading="lazy" decoding="async">
           <div class="home-cap">
@@ -558,7 +609,7 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
         </div>
         </div>
       </div>
-      <div class="tilt">
+      <div class="tilt home-grid-item">
         <div class="home-shot tilt-el">
           <img src="assets/trabajos/cristo.jpg" alt="Tatuaje de Cristo con corona de espinas y rosas, antebrazo" loading="lazy" decoding="async">
           <div class="home-cap">
@@ -567,7 +618,7 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
         </div>
         </div>
       </div>
-      <div class="tilt">
+      <div class="tilt home-grid-item">
         <div class="home-shot tilt-el">
           <img src="assets/trabajos/craneo.jpg" alt="Tatuaje de cráneo motorizado en hombro y brazo, black and grey" loading="lazy" decoding="async">
           <div class="home-cap">
@@ -576,7 +627,7 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
         </div>
         </div>
       </div>
-      <div class="tilt">
+      <div class="tilt home-grid-item">
         <div class="home-shot tilt-el">
           <img src="assets/trabajos/proceso_hombro.jpg" alt="Sesión de tatuaje en curso, artista trabajando en un hombro, Abyss Tattoo Studio" loading="lazy" decoding="async">
           <div class="home-cap">
@@ -585,7 +636,11 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
         </div>
         </div>
       </div>
+      </div>
+      <button class="carousel-arrow is-prev" type="button" aria-label="Anterior"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+      <button class="carousel-arrow is-next" type="button" aria-label="Siguiente"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
     </div>
+    <div class="carousel-dots" data-for="trabajos-carousel"></div>
   </section>
 
   <section class="quote">
@@ -850,7 +905,7 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
           var r = card.getBoundingClientRect();
           var px = (e.clientX - r.left) / r.width - 0.5;
           var py = (e.clientY - r.top) / r.height - 0.5;
-          el.style.transform = 'rotateX(' + (-py * 9) + 'deg) rotateY(' + (px * 9) + 'deg) scale(1.025)';
+          el.style.transform = 'rotateX(' + (-py * 18) + 'deg) rotateY(' + (px * 18) + 'deg) scale(1.055)';
           el.style.setProperty('--mx', ((px + 0.5) * 100) + '%');
           el.style.setProperty('--my', ((py + 0.5) * 100) + '%');
         });
@@ -858,6 +913,65 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
       })(cards[k]);
     }
   }
+
+  /* ---------- carrusel: flechas, puntos, snap activo ---------- */
+  (function(){
+    var carousels = document.querySelectorAll('.carousel');
+    for (var ci = 0; ci < carousels.length; ci++){
+      (function(root){
+        var track = root.querySelector('.carousel-track');
+        var prev  = root.querySelector('.carousel-arrow.is-prev');
+        var next  = root.querySelector('.carousel-arrow.is-next');
+        var dotsWrap = document.querySelector('.carousel-dots[data-for="' + root.id + '"]');
+        if (!track) return;
+        var items = track.children;
+
+        if (dotsWrap){
+          for (var d = 0; d < items.length; d++){
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.setAttribute('aria-label', 'Ir al elemento ' + (d + 1));
+            (function(idx){
+              b.addEventListener('click', function(){
+                items[idx].scrollIntoView({behavior:'smooth', inline:'start', block:'nearest'});
+              });
+            })(d);
+            dotsWrap.appendChild(b);
+          }
+        }
+        var dots = dotsWrap ? dotsWrap.children : [];
+
+        function step(dir){
+          var w = items[0] ? items[0].getBoundingClientRect().width + 20 : 300;
+          track.scrollBy({left: dir * w, behavior:'smooth'});
+        }
+        if (prev) prev.addEventListener('click', function(){ step(-1); });
+        if (next) next.addEventListener('click', function(){ step(1); });
+
+        function sync(){
+          var left = track.scrollLeft;
+          var max  = track.scrollWidth - track.clientWidth - 4;
+          if (prev) prev.disabled = left <= 4;
+          if (next) next.disabled = left >= max;
+          if (dots.length){
+            var closest = 0, best = Infinity;
+            for (var i = 0; i < items.length; i++){
+              var diff = Math.abs(items[i].offsetLeft - track.scrollLeft);
+              if (diff < best){ best = diff; closest = i; }
+            }
+            for (var j = 0; j < dots.length; j++) dots[j].classList.toggle('is-active', j === closest);
+          }
+        }
+        var tId = null;
+        track.addEventListener('scroll', function(){
+          clearTimeout(tId);
+          tId = setTimeout(sync, 60);
+        }, {passive:true});
+        window.addEventListener('resize', sync);
+        sync();
+      })(carousels[ci]);
+    }
+  })();
 
   /* ---------- menú flotante: aparece al bajar del hero + resalta sección visible (scrollspy) ---------- */
   var stickyNav = document.getElementById('sticky-nav');
