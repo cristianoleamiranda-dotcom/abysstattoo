@@ -195,7 +195,7 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
 .home-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:38px}
 .home-shot{position:relative;width:100%;aspect-ratio:3/4;overflow:hidden;background:linear-gradient(135deg,#221b16 0%,#2b2219 45%,#1c1612 100%)}img[loading="lazy"]{opacity:0;transition:opacity .5s ease}img[loading="lazy"].ph-listo{opacity:1}
 .home-shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.home-shot video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:#000}
+.home-shot video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:linear-gradient(135deg,#221b16 0%,#2b2219 45%,#1c1612 100%)}
 .home-cap{
   position:absolute;left:0;right:0;bottom:0;z-index:3;
   display:flex;justify-content:space-between;align-items:flex-end;gap:12px;
@@ -703,7 +703,7 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
       <div class="carousel-track home-grid reveal-group">
       <div class="tilt home-grid-item">
         <div class="home-shot tilt-el">
-          <video class="lazy-video" data-src="film/proceso_pierna.mp4" poster="assets/trabajos/proceso_pierna_poster.jpg" muted loop playsinline preload="none" aria-label="Tatuador trabajando en una pierna, estudio Abyss"></video>
+          <video class="lazy-video" data-src="film/proceso_pierna.mp4" poster="assets/trabajos/proceso_pierna_poster.jpg" muted loop playsinline preload="metadata" aria-label="Tatuador trabajando en una pierna, estudio Abyss"></video>
           <div class="home-cap">
           <p class="cap-name">Sesión en curso · pierna</p>
           <p class="cap-meta">Proceso real · estudio</p>
@@ -712,7 +712,7 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
       </div>
       <div class="tilt home-grid-item">
         <div class="home-shot tilt-el">
-          <video class="lazy-video" data-src="film/proceso_detalle.mp4" poster="assets/trabajos/proceso_detalle_poster.jpg" muted loop playsinline preload="none" aria-label="Detalle de línea y sombreado en un tatuaje de brazo, estudio Abyss"></video>
+          <video class="lazy-video" data-src="film/proceso_detalle.mp4" poster="assets/trabajos/proceso_detalle_poster.jpg" muted loop playsinline preload="metadata" aria-label="Detalle de línea y sombreado en un tatuaje de brazo, estudio Abyss"></video>
           <div class="home-cap">
           <p class="cap-name">Detalle de sombreado</p>
           <p class="cap-meta">Proceso real · brazo</p>
@@ -721,7 +721,7 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
       </div>
       <div class="tilt home-grid-item">
         <div class="home-shot tilt-el">
-          <video class="lazy-video" data-src="film/proceso_filmacion.mp4" poster="assets/trabajos/proceso_filmacion_poster.jpg" muted loop playsinline preload="none" aria-label="Registro audiovisual de una sesión en el estudio Abyss"></video>
+          <video class="lazy-video" data-src="film/proceso_filmacion.mp4" poster="assets/trabajos/proceso_filmacion_poster.jpg" muted loop playsinline preload="metadata" aria-label="Registro audiovisual de una sesión en el estudio Abyss"></video>
           <div class="home-cap">
           <p class="cap-name">Registro en vivo</p>
           <p class="cap-meta">Contenido real · estudio</p>
@@ -800,7 +800,7 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
   var atStart = function(){ return v.currentTime <= 0.04; };
 
   function bumpRate(delta){
-    rate = Math.min(3, rate + Math.min(0.5, Math.abs(delta) * 0.006));
+    rate = Math.min(2, rate + Math.min(0.5, Math.abs(delta) * 0.006));
     if (dir === 1) v.playbackRate = rate;
     if (!decay){
       decay = setInterval(function(){
@@ -829,7 +829,7 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
     revI = setInterval(function(){
       if (dir !== -1){ clearInterval(revI); revI = null; return; }
       if (v.seeking) return;                 // ← GUARDA CRÍTICA: nunca encolar un segundo seek
-      revT = (revT == null ? v.currentTime : revT) - 0.08 * rate;
+      revT = (revT == null ? v.currentTime : revT) - 0.144 * rate;
       if (revT <= 0.02){
         try { v.currentTime = 0; } catch(e){}
         clearInterval(revI); revI = null;
@@ -837,14 +837,15 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
         return;
       }
       try { v.currentTime = revT; } catch(e){}
-    }, 50);
+    }, 90);  // intervalo más largo = menos seeks/seg en móvil = menos riesgo de frame negro al decodificar
   }
 
   function stopReverse(){ dir = 0; revT = null; if (revI){ clearInterval(revI); revI = null; } }
   function pause(){ stopReverse(); v.pause(); dir = 0; }
 
   function drive(down, magnitude, e){
-    if (!ready()) return;
+    if (!ready()){ if (dir) pause(); return; }          // video sin buffer: suelta el pin, no pelees con el dedo
+    if (v.seeking) return;                              // ya hay un seek en curso: no encolar otro
     if (down && atEnd()){ pause(); return; }            // clip terminado → suelta la página
     if (!down && atStart()){ pause(); return; }         // clip en cero → nada que rebobinar
     if (!down && window.scrollY > 24){ if (dir) pause(); return; }  // bajo el hero: scroll normal
@@ -960,7 +961,7 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
           n.pause();
         }
       });
-    }, {threshold:0.2, rootMargin:'-10% 0px -10% 0px'});
+    }, {threshold:0.01, rootMargin:'600px 0px 600px 0px'});
     for (var lv = 0; lv < lazyVideos.length; lv++){ lvIO.observe(lazyVideos[lv]); }
   }
 
