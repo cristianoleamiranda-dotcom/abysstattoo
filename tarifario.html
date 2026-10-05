@@ -36,6 +36,20 @@ b.prov{color:var(--crema3);font-weight:500}
 .foot{text-align:center;margin-top:38px;color:var(--crema3);font-size:12px;line-height:1.9}
 .cta{display:inline-block;margin-top:22px;background:var(--crema);color:var(--negro);text-decoration:none;
 padding:14px 26px;font-weight:700;letter-spacing:.12em;font-size:12px}
+.wa-float{position:fixed;right:22px;bottom:22px;z-index:60;display:flex;align-items:center;overflow:hidden;
+  background:rgba(20,16,13,.38);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(234,227,221,.16);border-radius:999px;color:var(--crema);text-decoration:none;
+  padding:14px;box-shadow:0 14px 34px -14px rgba(0,0,0,.55)}
+.wa-float__icon{display:flex;flex:none;color:var(--tealL)}
+.wa-float__icon svg{display:block}
+.wa-float__label{max-width:0;white-space:nowrap;overflow:hidden;font-size:12px;font-weight:600;letter-spacing:.04em;opacity:0;
+  transition:max-width .35s cubic-bezier(.16,.84,.44,1),opacity .25s ease,margin-left .35s cubic-bezier(.16,.84,.44,1)}
+@media (hover:hover) and (pointer:fine){
+  .wa-float:hover .wa-float__label{max-width:140px;opacity:1;margin-left:10px}
+}
+@media (hover:none),(pointer:coarse){
+  .wa-float__label{max-width:none;opacity:1;margin-left:10px}
+}
 </style></head><body><div class="wrap">
 <a class="home" href=".">← VOLVER A LA PORTADA</a>
 <h1>TARIFARIO DE PIERCINGS</h1>
@@ -43,4 +57,11 @@ padding:14px 26px;font-weight:700;letter-spacing:.12em;font-size:12px}
 <div class="grid"><section><h3>OREJA</h3><ul><li><span>Lóbulo</span><b class="prov">consultar</b></li><li><span>Hélix</span><b class="prov">consultar</b></li><li><span>Tragus</span><b class="prov">consultar</b></li><li><span>Anti-Tragus</span><b class="prov">consultar</b></li><li><span>Conch</span><b class="prov">consultar</b></li><li><span>Daith</span><b class="">desde $25.000</b></li><li><span>Rook</span><b class="prov">consultar</b></li><li><span>Industrial (doble)</span><b class="">desde $30.000</b></li></ul></section><section><h3>NARIZ</h3><ul><li><span>Nostril</span><b class="prov">consultar</b></li><li><span>Septum</span><b class="prov">consultar</b></li><li><span>Bridge (puente)</span><b class="">desde $25.000</b></li><li><span>High nostril</span><b class="">desde $25.000</b></li></ul></section><section><h3>BOCA Y LABIOS</h3><ul><li><span>Labret (central o lateral)</span><b class="prov">consultar</b></li><li><span>Medusa</span><b class="prov">consultar</b></li><li><span>Monroe</span><b class="prov">consultar</b></li><li><span>Smiley</span><b class="">No se realiza</b></li><li><span>Labio inferior — uno (snake / spider bite)</span><b class="">$20.000</b></li><li><span>Labio inferior — los dos</span><b class="">$40.000</b></li><li><span>Lengua (barra industrial, no banano)</span><b class="">$25.000</b></li></ul></section><section><h3>CEJAS</h3><ul><li><span>Ceja (vertical u horizontal)</span><b class="prov">consultar</b></li></ul></section><section><h3>OMBLIGO</h3><ul><li><span>Navel tradicional</span><b class="">desde $25.000</b></li><li><span>Ombligo invertido</span><b class="">desde $25.000</b></li></ul></section><section><h3>PEZÓN</h3><ul><li><span>Individual</span><b class="">$25.000</b></li><li><span>Doble (el par)</span><b class="">$40.000</b></li></ul></section><section><h3>CORPORALES</h3><ul><li><span>Microdermal (superficial)</span><b class="">desde $35.000</b></li><li><span>Microdermal + disco plano</span><b class="">desde $40.000</b></li><li><span>Surface piercing</span><b class="">desde $45.000</b></li></ul></section></div>
 <p class="foot">Valores en CLP · joyería de titanio grado implante ASTM F136 · disco plano hasta $45.000 según la piedra<br>Estudio autorizado por Seremi de Salud · Desde 2009 · San Bernardo<br>
 <a class="cta" href="https://wa.me/56947786839?text=Hola%20ABYSS%20quiero%20cotizar">AGENDA POR WHATSAPP</a></p>
-</div></body></html>
+</div>
+<a href="https://wa.me/56947786839?text=Hola%20ABYSS%20quiero%20cotizar" class="wa-float" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+  <span class="wa-float__icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-1.9-.9-.3-.1-.4-.1-.6.1-.2.2-.7.9-.9 1-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.2-.4.1-.2 0-.3 0-.5 0-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.1 0 1.2.9 2.4 1.1 2.6.1.2 1.8 2.8 4.5 3.9.6.3 1.1.4 1.5.5.6.2 1.2.2 1.6.1.5-.1 1.7-.7 1.9-1.4.2-.6.2-1.2.2-1.3-.1-.2-.3-.3-.6-.4z"/><path d="M12 2.5c-5.3 0-9.5 4.2-9.5 9.4 0 1.7.4 3.3 1.3 4.7L2.5 21.5l5-1.3c1.3.7 2.9 1.1 4.5 1.1 5.3 0 9.5-4.2 9.5-9.4S17.3 2.5 12 2.5zm0 17c-1.5 0-2.9-.4-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3c-.8-1.3-1.2-2.8-1.2-4.4 0-4.4 3.6-8 8.1-8s8.1 3.6 8.1 8-3.6 8.1-8.1 8.1z"/></svg>
+  </span>
+  <span class="wa-float__label">Escríbenos</span>
+</a>
+</body></html>

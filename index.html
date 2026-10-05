@@ -54,20 +54,59 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
 .hero-top{display:flex;justify-content:space-between;align-items:center;gap:16px;position:relative;z-index:4}
 #nav{display:flex;gap:6px;align-items:center;will-change:transform}
 
-.pill{font-size:13px;font-weight:500;padding:9px 17px;border-radius:999px;border:1px solid rgba(234,227,221,.22);transition:background .18s ease,color .18s ease,border-color .18s ease}
+.pill{font-size:13px;font-weight:500;padding:9px 17px;border-radius:999px;border:1px solid rgba(234,227,221,.22);transition:background .18s ease,color .18s ease,border-color .18s ease,transform .25s cubic-bezier(.16,.84,.44,1)}
 .pill--solid{background:#EAE3DD;color:#14100D;border-color:transparent}
 .pill--solid:hover{color:#14100D}.nav-logo{width:30px;height:30px;border-radius:50%;margin-right:2px;flex-shrink:0;display:block}
+@media (hover:hover) and (pointer:fine){ .pill:hover{transform:translateY(-2px)} }
 
-.cta{font-size:13px;font-weight:500;padding:10px 20px;border-radius:999px;border:1px solid rgba(234,227,221,.35);will-change:transform;transition:background .18s ease,color .18s ease,border-color .18s ease}
+.cta{font-size:13px;font-weight:500;padding:10px 20px;border-radius:999px;border:1px solid rgba(234,227,221,.35);will-change:transform;transition:background .18s ease,color .18s ease,border-color .18s ease,box-shadow .25s ease}
 .cta:hover{background:#EAE3DD;color:#14100D}
+@media (hover:hover) and (pointer:fine){ .cta:hover{box-shadow:0 10px 26px -10px rgba(234,227,221,.5)} }
 
-.btn-outline{display:inline-block;font-size:12px;font-weight:500;padding:10px 18px;border-radius:999px;border:1px solid rgba(234,227,221,.35);transition:background .18s ease,color .18s ease,border-color .18s ease}
+.btn-outline{display:inline-block;font-size:12px;font-weight:500;padding:10px 18px;border-radius:999px;border:1px solid rgba(234,227,221,.35);transition:background .18s ease,color .18s ease,border-color .18s ease,transform .25s cubic-bezier(.16,.84,.44,1)}
 .btn-outline:hover{background:#EAE3DD;color:#14100D}
 
-.btn-light{font-size:12px;font-weight:500;padding:12px 22px;border-radius:999px;background:#14100D;color:#EAE3DD;transition:background .18s ease,color .18s ease,border-color .18s ease}
+.btn-light{font-size:12px;font-weight:500;padding:12px 22px;border-radius:999px;background:#14100D;color:#EAE3DD;transition:background .18s ease,color .18s ease,border-color .18s ease,transform .25s cubic-bezier(.16,.84,.44,1),box-shadow .25s ease}
 .btn-light:hover{background:#2A221C;color:#EAE3DD}
-.btn-ghost{font-size:12px;font-weight:500;padding:12px 22px;border-radius:999px;border:1px solid rgba(20,16,13,.45);color:#14100D;transition:background .18s ease,color .18s ease,border-color .18s ease}
+.btn-ghost{font-size:12px;font-weight:500;padding:12px 22px;border-radius:999px;border:1px solid rgba(20,16,13,.45);color:#14100D;transition:background .18s ease,color .18s ease,border-color .18s ease,transform .25s cubic-bezier(.16,.84,.44,1)}
 .btn-ghost:hover{border-color:#14100D;color:#14100D;background:rgba(20,16,13,.06)}
+@media (hover:hover) and (pointer:fine){
+  .btn-outline:hover,.btn-ghost:hover{transform:translateY(-2px)}
+  .btn-light:hover{transform:translateY(-2px);box-shadow:0 14px 28px -14px rgba(0,0,0,.45)}
+}
+
+/* ===== nav: indicador de sección activa (scrollspy) ===== */
+#nav .pill{position:relative}
+#nav .pill.is-active{background:#EAE3DD;color:#14100D;border-color:transparent}
+
+/* ===== barra flotante: aparece al bajar del hero (el nav del hero se queda arriba y se va con el scroll) ===== */
+.sticky-nav{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:12px 26px;background:rgba(20,16,13,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(234,227,221,.1);
+  transform:translateY(-100%);opacity:0;transition:transform .4s cubic-bezier(.16,.84,.44,1),opacity .4s ease;
+  will-change:transform;
+}
+.sticky-nav.is-visible{transform:translateY(0);opacity:1}
+.sticky-brand{display:flex;align-items:center;gap:8px;font-family:var(--font-serif);font-weight:600;font-size:16px;letter-spacing:.03em;color:#EAE3DD;flex-shrink:0}
+.sticky-brand img{border-radius:50%;display:block}
+.sticky-links{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.sticky-nav .pill{font-size:12px;padding:7px 14px}
+.sticky-cta{flex-shrink:0}
+#sticky-nav .pill.is-active{background:#EAE3DD;color:#14100D;border-color:transparent}
+@media (max-width:900px){ .sticky-links{display:none} }
+@media (max-width:480px){ .sticky-cta{font-size:11px;padding:8px 14px} }
+@media (prefers-reduced-motion: reduce){ .sticky-nav{transition:opacity .3s ease} }
+
+/* ===== indicio de scroll en el hero (aparece solo al inicio) ===== */
+.scroll-cue{position:absolute;left:50%;bottom:86px;transform:translateX(-50%);z-index:4;display:flex;flex-direction:column;align-items:center;gap:6px;color:#EAE3DD;opacity:.85;pointer-events:none;transition:opacity .4s ease}
+.scroll-cue span{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;opacity:.8}
+.scroll-cue svg{animation:cueBounce 1.8s ease-in-out infinite}
+.scroll-cue.is-hidden{opacity:0}
+@keyframes cueBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+@media (prefers-reduced-motion: reduce){ .scroll-cue svg{animation:none} }
+@media (max-width:760px){ .scroll-cue{bottom:78px} }
 
 .hero-word{
   margin:14px -26px 0 0;
@@ -96,7 +135,7 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
 }
 .hero-foot{position:absolute;left:26px;right:26px;bottom:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;pointer-events:none}
 .chips{display:flex;gap:8px;align-items:center;will-change:transform}
-.chip{pointer-events:auto;font-size:12px;font-weight:500;color:#EAE3DD;padding:7px 14px;border-radius:999px;border:1px solid rgba(234,227,221,.45);background:rgba(20,16,13,.28);backdrop-filter:blur(3px)}
+.chip{pointer-events:auto;font-size:12px;font-weight:500;color:#EAE3DD;padding:7px 14px;border-radius:999px;border:1px solid rgba(234,227,221,.4);background:rgba(20,16,13,.32);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .chip--solid{color:#14100D;padding:7px 16px;background:#EAE3DD;border-color:transparent}
 .loc{font-size:12px;font-weight:500;color:#EAE3DD;will-change:transform;text-shadow:0 1px 12px rgba(20,16,13,.6)}
 
@@ -114,6 +153,8 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
 .stat-l{margin:9px 0 0;font-size:12px;color:var(--crema3)}
 .about-strip{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px}
 .strip-item{margin:0}
+.strip-item--wide{grid-column:1/-1}
+.strip-item--wide .home-shot{aspect-ratio:16/10}
 .strip-item .shot{position:relative;aspect-ratio:3/4;overflow:hidden;background:linear-gradient(135deg,#221b16 0%,#2b2219 45%,#1c1612 100%)}
 .strip-item img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .strip-item .cap{margin:10px 0 0;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--crema3)}
@@ -140,7 +181,8 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
 .sec-note{margin:0;font-size:11px;font-weight:600;letter-spacing:.12em;color:var(--crema2)}
 
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;margin-top:40px;background:rgba(234,227,221,.14)}
-.step{background:#14100D;padding:26px 22px 30px}
+.step{background:rgba(234,227,221,.045);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:26px 22px 30px;border:1px solid rgba(234,227,221,.08);transition:background .3s ease,border-color .3s ease}
+@media (hover:hover) and (pointer:fine){ .step:hover{background:rgba(234,227,221,.08);border-color:rgba(234,227,221,.18)} }
 .step-n{margin:0 0 22px;font-size:11px;font-weight:600;letter-spacing:.14em;color:var(--tealL)}
 .step-h{margin:0 0 10px;font-size:18px;font-weight:500;letter-spacing:-.01em}
 .step-b{margin:0;font-size:12.5px;line-height:1.7;color:var(--crema3)}
@@ -150,12 +192,27 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
 .home-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:38px}
 .home-shot{position:relative;width:100%;aspect-ratio:3/4;overflow:hidden;background:linear-gradient(135deg,#221b16 0%,#2b2219 45%,#1c1612 100%)}img[loading="lazy"]{opacity:0;transition:opacity .5s ease}img[loading="lazy"].ph-listo{opacity:1}
 .home-shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.home-cap{display:flex;justify-content:space-between;gap:12px;margin-top:12px}
-.cap-name{margin:0;font-size:12px;font-weight:600}
-.cap-meta{margin:0;font-size:12px;color:var(--crema3)}
+.home-cap{
+  position:absolute;left:0;right:0;bottom:0;z-index:3;
+  display:flex;justify-content:space-between;align-items:flex-end;gap:12px;
+  padding:16px 14px 14px;
+  background:rgba(20,16,13,.32);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-top:1px solid rgba(234,227,221,.14);
+  transform:translateY(100%);transition:transform .45s cubic-bezier(.16,.84,.44,1);
+}
+.cap-name{margin:0;font-size:12px;font-weight:600;color:#EAE3DD}
+.cap-meta{margin:0;font-size:12px;color:var(--crema2);text-align:right}
+@media (hover:hover) and (pointer:fine){
+  .home-cap{transform:translateY(100%)}
+  .tilt:hover .home-cap{transform:translateY(0)}
+}
+@media (hover:none),(pointer:coarse){
+  .home-cap{transform:translateY(0);background:rgba(20,16,13,.42)}
+}
 
 /* =====================  PROMESA (quote)  ===================== */
 .quote{background:#14100D;padding:70px 26px 64px}
+.quote-grid{background:rgba(234,227,221,.035);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(234,227,221,.08);border-radius:18px;padding:40px clamp(20px,4vw,48px)}
 .quote-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:40px;align-items:start}
 .quote-q{margin:0;font-size:clamp(22px,2.6vw,32px);line-height:1.3;letter-spacing:-.015em;font-weight:500;text-wrap:pretty}
 .quote-q em{font-family:var(--font-serif);font-style:normal;font-weight:600;color:var(--tealL)}
@@ -215,6 +272,76 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
 @media (prefers-reduced-motion: reduce){
   .pill,.cta,.btn-outline,.btn-light,.btn-ghost{transition:none}
 }
+
+
+/* =====================  GRANO DE PELICULA (textura premium, muy sutil)  ===================== */
+.wa-float{position:fixed;right:22px;bottom:22px;z-index:60;display:flex;align-items:center;overflow:hidden;
+  background:rgba(20,16,13,.38);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(234,227,221,.16);border-radius:999px;color:var(--crema);text-decoration:none;
+  padding:14px;box-shadow:0 14px 34px -14px rgba(0,0,0,.55);
+  transform:translateX(130%);opacity:0;
+  transition:transform .6s cubic-bezier(.16,.84,.44,1),opacity .6s ease,background .25s ease,padding .35s cubic-bezier(.16,.84,.44,1),box-shadow .3s ease}
+.wa-float.is-in{transform:translateX(0);opacity:1}
+.wa-float__icon{display:flex;flex:none;color:var(--tealL)}
+.wa-float__icon svg{display:block}
+.wa-float__label{max-width:0;white-space:nowrap;overflow:hidden;font-size:12px;font-weight:600;letter-spacing:.04em;opacity:0;
+  transition:max-width .35s cubic-bezier(.16,.84,.44,1),opacity .25s ease,margin-left .35s cubic-bezier(.16,.84,.44,1)}
+@media (hover:hover) and (pointer:fine){
+  .wa-float:hover{background:rgba(20,16,13,.55);box-shadow:0 18px 40px -16px rgba(0,0,0,.65)}
+  .wa-float:hover .wa-float__label{max-width:140px;opacity:1;margin-left:10px}
+}
+@media (hover:none),(pointer:coarse){
+  .wa-float__label{max-width:none;opacity:1;margin-left:10px}
+}
+@media (max-width:480px){.wa-float{right:14px;bottom:14px;padding:13px}}
+@media (prefers-reduced-motion: reduce){
+  .wa-float{transition:background .2s ease}
+  .wa-float.is-in{transform:none}
+}
+.grain{position:fixed;inset:0;z-index:999;pointer-events:none;opacity:.035;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size:120px 120px}
+
+/* =====================  HALO AMBIENTE DEL HERO (rompe el bloque negro plano)  ===================== */
+.hero-glow{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden;mix-blend-mode:screen}
+.hero-glow::before,.hero-glow::after{content:"";position:absolute;border-radius:50%;filter:blur(80px);opacity:.22}
+.hero-glow::before{width:55vw;height:55vw;left:-12vw;top:-18vw;background:radial-gradient(circle,var(--teal) 0%,transparent 70%);animation:driftA 24s ease-in-out infinite}
+.hero-glow::after{width:46vw;height:46vw;right:-12vw;bottom:-8vw;background:radial-gradient(circle,var(--tealL) 0%,transparent 70%);animation:driftB 28s ease-in-out infinite}
+@keyframes driftA{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(6vw,4vh) scale(1.12)}}
+@keyframes driftB{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-5vw,-5vh) scale(1.08)}}
+
+/* =====================  REVELADO AL HACER SCROLL  ===================== */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.16,.84,.44,1),transform .9s cubic-bezier(.16,.84,.44,1);will-change:opacity,transform}
+.reveal.in{opacity:1;transform:none}
+.reveal-group>*{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.16,.84,.44,1),transform .7s cubic-bezier(.16,.84,.44,1)}
+.reveal-group.in>*{opacity:1;transform:none}
+.reveal-group.in>*:nth-child(1){transition-delay:.03s}
+.reveal-group.in>*:nth-child(2){transition-delay:.11s}
+.reveal-group.in>*:nth-child(3){transition-delay:.19s}
+.reveal-group.in>*:nth-child(4){transition-delay:.27s}
+.reveal-group.in>*:nth-child(5){transition-delay:.35s}
+.reveal-group.in>*:nth-child(6){transition-delay:.43s}
+.reveal-group.in>*:nth-child(7){transition-delay:.51s}
+.reveal-group.in>*:nth-child(8){transition-delay:.59s}
+.reveal-group.in>*:nth-child(9){transition-delay:.67s}
+
+/* =====================  TARJETAS CON PROFUNDIDAD 3D (sigue al cursor)  ===================== */
+.tilt{perspective:1000px}
+.tilt-el{position:relative;transition:transform .5s cubic-bezier(.16,.84,.44,1),box-shadow .5s ease;transform-style:preserve-3d;will-change:transform}
+.tilt-el::after{content:"";position:absolute;inset:0;z-index:2;opacity:0;pointer-events:none;mix-blend-mode:overlay;transition:opacity .4s ease;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.35),transparent 55%)}
+@media (hover:hover) and (pointer:fine){
+  .tilt:hover .tilt-el{transition-duration:.08s;box-shadow:0 30px 60px -22px rgba(0,0,0,.6)}
+  .tilt:hover .tilt-el::after{opacity:1}
+}
+
+/* =====================  MOVIMIENTO REDUCIDO: todo visible, sin animar  ===================== */
+@media (prefers-reduced-motion: reduce){
+  .grain{display:none}
+  .hero-glow::before,.hero-glow::after{animation:none}
+  .reveal,.reveal-group>*{opacity:1;transform:none;transition:none}
+  .tilt-el{transition:none!important;transform:none!important}
+}
 </style>
 <noscript><style>img[loading="lazy"]{opacity:1}</style></noscript>
 <script type="application/ld+json">
@@ -247,12 +374,35 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
 </head>
 <body>
 <div class="page">
+  <div class="grain" aria-hidden="true"></div>
+
+  <a href="https://wa.me/56947786839?text=Hola%20ABYSS%20quiero%20cotizar" id="wa-float" class="wa-float" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+    <span class="wa-float__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-1.9-.9-.3-.1-.4-.1-.6.1-.2.2-.7.9-.9 1-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.2-.4.1-.2 0-.3 0-.5 0-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.1 0 1.2.9 2.4 1.1 2.6.1.2 1.8 2.8 4.5 3.9.6.3 1.1.4 1.5.5.6.2 1.2.2 1.6.1.5-.1 1.7-.7 1.9-1.4.2-.6.2-1.2.2-1.3-.1-.2-.3-.3-.6-.4z"/><path d="M12 2.5c-5.3 0-9.5 4.2-9.5 9.4 0 1.7.4 3.3 1.3 4.7L2.5 21.5l5-1.3c1.3.7 2.9 1.1 4.5 1.1 5.3 0 9.5-4.2 9.5-9.4S17.3 2.5 12 2.5zm0 17c-1.5 0-2.9-.4-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3c-.8-1.3-1.2-2.8-1.2-4.4 0-4.4 3.6-8 8.1-8s8.1 3.6 8.1 8-3.6 8.1-8.1 8.1z"/></svg>
+    </span>
+    <span class="wa-float__label">Escríbenos</span>
+  </a>
+
+  <nav id="sticky-nav" class="sticky-nav" aria-label="Navegación principal">
+    <a href="#hero" class="sticky-brand">
+      <img src="assets/favicon-192.png" alt="Abyss Tattoo Studio" width="26" height="26">
+      <span>ABYSS</span>
+    </a>
+    <div class="sticky-links">
+      <a href="#estudio" class="pill">Estudio</a>
+      <a href="#proceso" class="pill">Proceso</a>
+      <a href="#trabajos" class="pill">Trabajos</a>
+      <a href="tarifario.html" class="pill">Tarifario</a>
+      <a href="#contacto" class="pill">Contacto</a>
+    </div>
+    <a href="https://wa.me/56947786839?text=Hola%20ABYSS%20quiero%20cotizar" class="cta sticky-cta" target="_blank" rel="noopener">Agenda</a>
+  </nav>
 
   <section class="hero" id="hero">
     <div class="hero-top">
       <nav id="nav">
         <img src="assets/favicon-192.png" alt="Abyss Tattoo Studio" class="nav-logo" width="30" height="30" loading="eager">
-        <a href="#hero" class="pill pill--solid">Inicio</a>
+        <a href="#hero" class="pill is-active">Inicio</a>
         <a href="#estudio" class="pill">Estudio</a>
         <a href="#proceso" class="pill">Proceso</a>
         <a href="#trabajos" class="pill">Trabajos</a>
@@ -267,10 +417,15 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
     <div id="hero-video-wrap" class="hero-video-wrap">
       <div class="hero-video-frame">
         <video id="hero-video" muted playsinline preload="auto" aria-hidden="true"
-               src="film/hero_film.mp4"></video>
+               poster="assets/hero_poster.jpg" src="film/hero_film.mp4"></video>
       </div>
 
       <div id="hero-fade" class="hero-fade"></div>
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div id="scroll-cue" class="scroll-cue" aria-hidden="true">
+        <span>Desliza</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
 
       <div class="hero-foot">
         <div id="chips" class="chips">
@@ -286,7 +441,7 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
   <section id="estudio" class="about">
     <p class="corner-label">Estudio</p>
     <div class="about-grid">
-      <div class="about-copy">
+      <div class="about-copy reveal">
         <h2 class="about-h">Tatuajes y piercings <em>hechos para durar</em> en San Bernardo.</h2>
         <p class="eyebrow-dot"><span class="dot"></span>DISEÑO PERSONALIZADO</p>
         <p class="about-body">Un estudio, un equipo, una sesión a la vez. Diseño personalizado, protocolos de higiene certificados y joyería de titanio grado implante ASTM F136 — el material que tu piel agradece, incluso en la primera postura. La agenda es con abono previo para darte el tiempo completo que tu proyecto merece.</p>
@@ -297,17 +452,26 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
           <div><div class="stat-n">F136</div><p class="stat-l">Titanio grado implante</p></div>
         </div>
         <div class="about-strip">
-          <figure class="strip-item">
-            <div class="shot"><img src="assets/estudio/fachada.jpg" alt="Fachada de Abyss Tattoo Studio, José Joaquín Pérez 528, San Bernardo" loading="lazy" decoding="async"></div>
+          <figure class="strip-item tilt">
+            <div class="shot tilt-el"><img src="assets/estudio/fachada.jpg" alt="Fachada de Abyss Tattoo Studio, José Joaquín Pérez 528, San Bernardo" loading="lazy" decoding="async"></div>
             <figcaption class="cap">Fachada · San Bernardo</figcaption>
           </figure>
-          <figure class="strip-item">
-            <div class="shot"><img src="assets/estudio/vitrina.jpg" alt="Vitrina con joyería de titanio grado implante en Abyss Tattoo Studio" loading="lazy" decoding="async"></div>
+          <figure class="strip-item tilt">
+            <div class="shot tilt-el"><img src="assets/estudio/vitrina.jpg" alt="Vitrina con joyería de titanio grado implante en Abyss Tattoo Studio" loading="lazy" decoding="async"></div>
             <figcaption class="cap">Joyería de titanio</figcaption>
+          </figure>
+          <figure class="strip-item tilt strip-item--wide">
+            <div class="home-shot tilt-el">
+              <img src="assets/estudio/maestro.jpg" alt="El maestro tatuando en Abyss Tattoo Studio, San Bernardo" loading="lazy" decoding="async">
+              <div class="home-cap">
+                <p class="cap-name">El maestro</p>
+                <p class="cap-meta">En plena sesión · Abyss</p>
+              </div>
+            </div>
           </figure>
         </div>
       </div>
-      <div class="about-media">
+      <div class="about-media reveal">
         <video id="loop-video" class="loop-video" muted loop playsinline preload="auto" aria-hidden="true"
                src="film/loop_film.mp4"></video>
       </div>
@@ -315,11 +479,11 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
   </section>
 
   <section id="proceso" class="process">
-    <div class="sec-head">
+    <div class="sec-head reveal">
       <h2 class="sec-h">Cómo trabajamos <em>tu pieza</em></h2>
       <p class="sec-note">CUATRO PASOS, UNA SESIÓN CUIDADA</p>
     </div>
-    <div class="steps">
+    <div class="steps reveal-group">
       <div class="step">
         <p class="step-n">01 — IDEA</p>
         <h3 class="step-h">Cuéntanos tu idea</h3>
@@ -344,88 +508,88 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
   </section>
 
   <section id="trabajos" class="homes">
-    <div class="sec-head">
+    <div class="sec-head reveal">
       <h2 class="sec-h">Trabajos <em>recientes</em></h2>
       <p class="sec-note">TATUAJES Y PIERCINGS REALES, HECHOS EN EL ESTUDIO</p>
     </div>
-    <div class="home-grid">
-      <div>
-        <div class="home-shot">
+    <div class="home-grid reveal-group">
+      <div class="tilt">
+        <div class="home-shot tilt-el">
           <img src="assets/trabajos/septum.jpg" alt="Piercing de septum con cristales incrustados, titanio grado implante" loading="lazy" decoding="async">
-        </div>
-        <div class="home-cap">
+          <div class="home-cap">
           <p class="cap-name">Septum</p>
           <p class="cap-meta">Cristales incrustados · titanio</p>
         </div>
-      </div>
-      <div>
-        <div class="home-shot">
-          <img src="assets/trabajos/helice.jpg" alt="Piercing de hélice con cadena y studs de titanio, Abyss Tattoo Studio" loading="lazy" decoding="async">
         </div>
-        <div class="home-cap">
+      </div>
+      <div class="tilt">
+        <div class="home-shot tilt-el">
+          <img src="assets/trabajos/helice.jpg" alt="Piercing de hélice con cadena y studs de titanio, Abyss Tattoo Studio" loading="lazy" decoding="async">
+          <div class="home-cap">
           <p class="cap-name">Hélice</p>
           <p class="cap-meta">Cadena y studs · titanio</p>
         </div>
-      </div>
-      <div>
-        <div class="home-shot">
-          <img src="assets/trabajos/lobo_samurai.jpg" alt="Tatuaje de lobo y máscara samurái en antebrazo, realismo blackwork" loading="lazy" decoding="async">
         </div>
-        <div class="home-cap">
+      </div>
+      <div class="tilt">
+        <div class="home-shot tilt-el">
+          <img src="assets/trabajos/lobo_samurai.jpg" alt="Tatuaje de lobo y máscara samurái en antebrazo, realismo blackwork" loading="lazy" decoding="async">
+          <div class="home-cap">
           <p class="cap-name">Lobo & samurái</p>
           <p class="cap-meta">Realismo · blackwork</p>
         </div>
-      </div>
-      <div>
-        <div class="home-shot">
-          <img src="assets/trabajos/goku.jpg" alt="Tatuaje a color de Goku, anime, antebrazo" loading="lazy" decoding="async">
         </div>
-        <div class="home-cap">
+      </div>
+      <div class="tilt">
+        <div class="home-shot tilt-el">
+          <img src="assets/trabajos/goku.jpg" alt="Tatuaje a color de Goku, anime, antebrazo" loading="lazy" decoding="async">
+          <div class="home-cap">
           <p class="cap-name">Goku</p>
           <p class="cap-meta">Anime a color · antebrazo</p>
         </div>
-      </div>
-      <div>
-        <div class="home-shot">
-          <img src="assets/trabajos/payaso.jpg" alt="Tatuaje de payaso y cartas, black and grey, antebrazo" loading="lazy" decoding="async">
         </div>
-        <div class="home-cap">
+      </div>
+      <div class="tilt">
+        <div class="home-shot tilt-el">
+          <img src="assets/trabajos/payaso.jpg" alt="Tatuaje de payaso y cartas, black and grey, antebrazo" loading="lazy" decoding="async">
+          <div class="home-cap">
           <p class="cap-name">Payaso & cartas</p>
           <p class="cap-meta">Realismo · black & grey</p>
         </div>
-      </div>
-      <div>
-        <div class="home-shot">
-          <img src="assets/trabajos/cristo.jpg" alt="Tatuaje de Cristo con corona de espinas y rosas, antebrazo" loading="lazy" decoding="async">
         </div>
-        <div class="home-cap">
+      </div>
+      <div class="tilt">
+        <div class="home-shot tilt-el">
+          <img src="assets/trabajos/cristo.jpg" alt="Tatuaje de Cristo con corona de espinas y rosas, antebrazo" loading="lazy" decoding="async">
+          <div class="home-cap">
           <p class="cap-name">Cristo & rosas</p>
           <p class="cap-meta">Realismo · antebrazo</p>
         </div>
-      </div>
-      <div>
-        <div class="home-shot">
-          <img src="assets/trabajos/craneo.jpg" alt="Tatuaje de cráneo motorizado en hombro y brazo, black and grey" loading="lazy" decoding="async">
         </div>
-        <div class="home-cap">
+      </div>
+      <div class="tilt">
+        <div class="home-shot tilt-el">
+          <img src="assets/trabajos/craneo.jpg" alt="Tatuaje de cráneo motorizado en hombro y brazo, black and grey" loading="lazy" decoding="async">
+          <div class="home-cap">
           <p class="cap-name">Cráneo motorizado</p>
           <p class="cap-meta">Realismo · hombro y brazo</p>
         </div>
-      </div>
-      <div>
-        <div class="home-shot">
-          <img src="assets/trabajos/proceso_hombro.jpg" alt="Sesión de tatuaje en curso, artista trabajando en un hombro, Abyss Tattoo Studio" loading="lazy" decoding="async">
         </div>
-        <div class="home-cap">
+      </div>
+      <div class="tilt">
+        <div class="home-shot tilt-el">
+          <img src="assets/trabajos/proceso_hombro.jpg" alt="Sesión de tatuaje en curso, artista trabajando en un hombro, Abyss Tattoo Studio" loading="lazy" decoding="async">
+          <div class="home-cap">
           <p class="cap-name">En proceso · hombro</p>
           <p class="cap-meta">Sesión en curso · black & grey</p>
+        </div>
         </div>
       </div>
     </div>
   </section>
 
   <section class="quote">
-    <div class="quote-grid">
+    <div class="quote-grid reveal-group">
       <blockquote class="quote-q">“Cada perforación sale de aquí como la haríamos en nosotros: <em>limpia, bien hecha</em> y con la joyería correcta.”</blockquote>
       <div>
         <p class="eyebrow">ABYSS TATTOO STUDIO · SAN BERNARDO</p>
@@ -437,7 +601,7 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
   <section id="contacto" class="contact">
     <img src="assets/favicon-192.png" alt="Abyss Tattoo Studio" class="contact-seal" width="64" height="64" loading="lazy">
     <h2 class="contact-h">Trae tu idea, una foto o <em>solo las ganas</em>.</h2>
-    <div class="contact-grid">
+    <div class="contact-grid reveal-group">
       <p class="contact-b">La agenda es con abono previo: nombre y apellido, edad, horario, número de contacto y foto del comprobante. Escríbenos y coordinamos tu hora. José Joaquín Pérez 528, San Bernardo — a pasos de la estación.</p>
       <div class="contact-btns">
         <a href="https://wa.me/56947786839?text=Hola%20ABYSS%20quiero%20cotizar" class="btn-light" target="_blank" rel="noopener">Agendar por WhatsApp</a>
@@ -445,7 +609,7 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
         <a href="https://g.page/r/Ca2K69jWS_QFEBE/review" class="btn-ghost" target="_blank" rel="noopener">★ Reseñas en Google</a>
       </div>
     </div>
-    <div class="contact-map">
+    <div class="contact-map reveal">
       <iframe src="https://www.google.com/maps?q=Jos%C3%A9+Joaqu%C3%ADn+P%C3%A9rez+528,+San+Bernardo,+Chile&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Ubicación de Abyss Tattoo Studio en el mapa" width="100%" height="260" style="border:0;display:block"></iframe>
     </div>
     <div class="foot">
@@ -629,7 +793,14 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
       } else {
         n.pause();
       }
-    }, {threshold:0, rootMargin:'-15% 0px -15% 0px'}).observe(loopVideo);
+      }, {threshold:0, rootMargin:'-15% 0px -15% 0px'}).observe(loopVideo);
+  }
+
+  /* ---------- 10d · WhatsApp flotante: entra deslizando tras la carga ---------- */
+  var waFloat = document.getElementById('wa-float');
+  if (waFloat){
+    if (reduce){ waFloat.classList.add('is-in'); }
+    else { setTimeout(function(){ waFloat.classList.add('is-in'); }, 900); }
   }
 })();
 </script>
@@ -645,6 +816,90 @@ a:focus-visible{outline:2px solid #EAE3DD;outline-offset:3px;border-radius:999px
       img.addEventListener('load',  function(){ img.classList.add('ph-listo'); });
       img.addEventListener('error', function(){ img.classList.add('ph-listo'); });
     })(imgs[i]);
+  }
+})();
+</script>
+
+<script>
+/* ---------- revelado al scroll + profundidad 3D en tarjetas (awwwards-style, ligero) ---------- */
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var reveals = document.querySelectorAll('.reveal, .reveal-group');
+  if (reduce || !('IntersectionObserver' in window)){
+    for (var i = 0; i < reveals.length; i++) reveals[i].classList.add('in');
+  } else {
+    var io = new IntersectionObserver(function(entries, obs){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){
+          entry.target.classList.add('in');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, {threshold:.15, rootMargin:'0px 0px -8% 0px'});
+    for (var j = 0; j < reveals.length; j++) io.observe(reveals[j]);
+  }
+
+  if (!reduce && window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+    var cards = document.querySelectorAll('.tilt');
+    for (var k = 0; k < cards.length; k++){
+      (function(card){
+        var el = card.querySelector('.tilt-el');
+        if (!el) return;
+        card.addEventListener('mousemove', function(e){
+          var r = card.getBoundingClientRect();
+          var px = (e.clientX - r.left) / r.width - 0.5;
+          var py = (e.clientY - r.top) / r.height - 0.5;
+          el.style.transform = 'rotateX(' + (-py * 9) + 'deg) rotateY(' + (px * 9) + 'deg) scale(1.025)';
+          el.style.setProperty('--mx', ((px + 0.5) * 100) + '%');
+          el.style.setProperty('--my', ((py + 0.5) * 100) + '%');
+        });
+        card.addEventListener('mouseleave', function(){ el.style.transform = ''; });
+      })(cards[k]);
+    }
+  }
+
+  /* ---------- menú flotante: aparece al bajar del hero + resalta sección visible (scrollspy) ---------- */
+  var stickyNav = document.getElementById('sticky-nav');
+  var hero = document.getElementById('hero');
+  if (stickyNav && hero && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(entries){
+      stickyNav.classList.toggle('is-visible', !entries[0].isIntersecting);
+    }, { threshold: 0, rootMargin: '-92% 0px 0px 0px' }).observe(hero);
+  }
+
+  var navLinks = document.querySelectorAll('#nav .pill[href^="#"], #sticky-nav .pill[href^="#"]');
+  var sections = [];
+  navLinks.forEach(function(a){
+    var sec = document.querySelector(a.getAttribute('href'));
+    if (sec) sections.push({ link: a, el: sec });
+  });
+  if (sections.length && 'IntersectionObserver' in window){
+    var spy = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var href = '#' + entry.target.id;
+        if (entry.isIntersecting){
+          navLinks.forEach(function(a){
+            a.classList.toggle('is-active', a.getAttribute('href') === href);
+          });
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    sections.forEach(function(s){ spy.observe(s.el); });
+  }
+
+  /* ---------- hero: oculta el indicio "Desliza" en el primer gesto ---------- */
+  var cue = document.getElementById('scroll-cue');
+  if (cue){
+    var hideCue = function(){
+      cue.classList.add('is-hidden');
+      window.removeEventListener('wheel', hideCue);
+      window.removeEventListener('touchstart', hideCue);
+      window.removeEventListener('keydown', hideCue);
+    };
+    window.addEventListener('wheel', hideCue, {passive:true});
+    window.addEventListener('touchstart', hideCue, {passive:true});
+    window.addEventListener('keydown', hideCue);
   }
 })();
 </script>
