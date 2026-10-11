@@ -30,16 +30,25 @@ jobs:
           while IFS=$'\t' read -r url name; do
             [ -z "$url" ] && continue
             echo "::group::$name"
-            if curl -sSL --retry 4 --retry-all-errors --max-time 420 -o "material/raw/$name" "$url"; then
-              ls -la "material/raw/$name"
+            # la URL /dl/ sin firma devuelve el visor HTML; el link real viene
+            # firmado dentro del HTML: /dl/<ts>.<hash>/<code>/<nombre>
+            page="$(curl -sSL --retry 3 --max-time 60 "$url" || true)"
+            real="$(printf '%s' "$page" | grep -oE 'https://tmpfiles\.org/dl/[^"]+' | head -1 || true)"
+            if [ -z "$real" ]; then echo "SIN LINK FIRMADO para $name"; fail=1; continue; fi
+            if curl -sSL --retry 4 --retry-all-errors --max-time 420 -o "material/raw/$name" "$real"; then
+              ls -la "material/raw/$name"; file "material/raw/$name" || true
             else
               echo "FALLO descargando $name"; fail=1
             fi
             echo "::endgroup::"
-            sleep 1.5
+            sleep 1
           done < material/urls.tsv
           # elimina páginas de error / respuestas HTML vacías
           find material/raw -type f -size -2k -print -delete
+          for f in material/raw/*; do
+            [ -e "$f" ] || continue
+            if file -b "$f" | grep -qiE 'html|text'; then echo "HTML residual: $f"; rm -v "$f"; fi
+          done
           echo "== resumen =="; du -sh material/raw; ls -la material/raw | head -60
           exit 0
 
