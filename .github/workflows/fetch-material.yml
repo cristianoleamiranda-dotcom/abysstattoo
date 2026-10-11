@@ -1,0 +1,55 @@
+name: fetch-material
+
+# Puente TEMPORAL de descarga: el runner de GitHub Actions tiene internet abierto,
+# el sandbox no. Descarga los archivos de urls.tsv a material/raw/ y los commitea.
+# Se eliminará junto con material/raw/ cuando la edición termine.
+
+on:
+  push:
+    paths:
+      - 'material/urls.tsv'
+      - '.github/workflows/fetch-material.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fetch-material
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Descargar material
+        run: |
+          mkdir -p material/raw
+          fail=0
+          while IFS=$'\t' read -r url name; do
+            [ -z "$url" ] && continue
+            echo "::group::$name"
+            if curl -sSL --retry 4 --retry-all-errors --max-time 420 -o "material/raw/$name" "$url"; then
+              ls -la "material/raw/$name"
+            else
+              echo "FALLO descargando $name"; fail=1
+            fi
+            echo "::endgroup::"
+            sleep 1.5
+          done < material/urls.tsv
+          # elimina páginas de error / respuestas HTML vacías
+          find material/raw -type f -size -2k -print -delete
+          echo "== resumen =="; du -sh material/raw; ls -la material/raw | head -60
+          exit 0
+
+      - name: Commitear raw al branch de sesión
+        run: |
+          git config user.name "material-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add material/raw
+          if git diff --cached --quiet; then
+            echo "nada que commitear"; exit 1
+          fi
+          git commit -m "material: raw descargado (temporal, para edición)"
+          git push origin HEAD
