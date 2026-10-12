@@ -82,8 +82,12 @@ def quadin(p): return f"pow({p},2)"
 
 # ---------- overlays ----------
 def ov_aerial():
-    """eyebrow + H1 + pin + label de calle"""
+    """eyebrow + H1 + pin + label de calle + logo persistente"""
     els = {}
+    im, d = new_layer()
+    lg = Image.open(LOGO).convert('RGBA').resize((140, 140), Image.LANCZOS)
+    im.paste(lg, (W//2-70, 104), lg)
+    els['brand'] = im
     im, d = new_layer()
     draw_tracked(d, W//2, 300, 'ABYSS TATTOO STUDIO · SAN BERNARDO', mon(27), 9, CREMA2)
     els['eyebrow'] = im
@@ -144,7 +148,8 @@ def ov_card():
     im.paste(lg, (W//2-115, 150), lg)
     els['c_logo'] = im
     im, d = new_layer()
-    draw_tracked(d, W//2, 430, 'HORAS DISPONIBLES', cin(78), 9, CREMA)
+    s7 = fit_size('HORAS DISPONIBLES', 78, .12, 880, cin)
+    draw_tracked(d, W//2, 430, 'HORAS DISPONIBLES', cin(s7), int(s7*.12), CREMA)
     separator(d, 560)
     els['c_title'] = im
     im, d = new_layer()
@@ -156,9 +161,9 @@ def ov_card():
     draw_tracked(d, W//2, 830, 'DOMINGO ABIERTO CON RESERVA PREVIA', mon(29), 3, TEAL_L)
     els['c_note'] = im
     im, d = new_layer()
-    draw_tracked(d, W//2, 950, 'JOSÉ JOAQUÍN PÉREZ 528, SAN BERNARDO', mon(30), 4, CREMA)
-    draw_tracked(d, W//2, 1010, '+56 9 4778 6839', mon(30), 4, CREMA2)
-    draw_tracked(d, W//2, 1070, '@ABYSS_TATTOO_STUDIO', mon(30), 4, TEAL_L)
+    draw_tracked(d, W//2, 950, 'JOSÉ JOAQUÍN PÉREZ 528, SAN BERNARDO', mon(28), 3, CREMA)
+    draw_tracked(d, W//2, 1006, '+56 9 4778 6839', mon(28), 3, CREMA2)
+    draw_tracked(d, W//2, 1062, '@ABYSS_TATTOO_STUDIO', mon(28), 3, TEAL_L)
     els['c_contact'] = im
     im, d = new_layer()
     txt = 'CÓMO LLEGAR · WHATSAPP'
@@ -202,7 +207,7 @@ def compose():
     fc.append(f"[x1][s2]xfade=transition=slideup:duration={TR_[1]}:offset={O2}[x2]")
     fc.append(f"[x2][s3]xfade=transition=circleopen:duration={TR_[2]}:offset={O3}[x3]")
     fc.append(f"color=c=0x292521:s=1080x1920:r=30:d=12.0,format=rgba[vc];[x3][vc]blend=all_mode=normal:all_opacity=0.34:shortest=1[bv]")
-    tl = [('a__eyebrow', 0.55, 0.5, 'down', 3.0), ('a__h1a', 0.85, 0.55, 'back', 3.0),
+    tl = [('a__brand', 0.35, 0.5, 'fix', 10.9), ('a__eyebrow', 0.55, 0.5, 'down', 3.0), ('a__h1a', 0.85, 0.55, 'back', 3.0),
           ('a__h1b', 1.10, 0.55, 'back', 3.0), ('a__pin', 1.70, 0.6, 'pin', 3.0),
           ('a__chip', 2.30, 0.5, 'up', 3.0), ('s__cap_aerial', 1.4, 0.5, 'cap', 3.0),
           ('s__cap_night', 3.7, 0.5, 'cap', 5.7), ('s__cap_day', 6.4, 0.5, 'cap', 8.3),
@@ -212,7 +217,8 @@ def compose():
         ii = ain(['-loop', '1', '-t', f'{TOTAL:.2f}', '-i', f'{OV}/{name}.png'])
         p = P(stt, dd); ex = f"-260*{quadin(P(T_EXIT,0.25))}"
         fade = f"format=rgba,fade=t=in:st={stt}:d={dd*0.6}:alpha=1,fade=t=out:st={tout}:d=0.3:alpha=1"
-        if kind == 'down':   xy = f"x=0:y='(-90)*{cubic(p)}{ex}'"
+        if kind == 'fix':    xy = '0:0'
+        elif kind == 'down': xy = f"x=0:y='(-90)*{cubic(p)}{ex}'"
         elif kind == 'back': xy = f"x=0:y='150*{back(p)}{ex}'"
         elif kind == 'pin':  xy = f"x=0:y='-320*{back(p)}{ex}'"
         elif kind == 'cap':  xy = f"x=0:y='70*{cubic(p)}{ex}'"
