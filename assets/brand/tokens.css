@@ -1,0 +1,13 @@
+/* Abyss Tattoo Studio — tokens de marca (binding para todo trabajo visual) */
+:root {
+  --abyss-carbon: #292521;
+  --abyss-crema: #EAE3DD;
+  --abyss-crema-2: #C6B7AB;
+  --abyss-crema-3: #8F7F73;
+  --abyss-teal: #4F7A72;
+  --abyss-teal-light: #6C928A;
+  --abyss-teal-glow: #9EC4BA;   /* cobertura máx. 5% de superficie */
+  --abyss-font-display: 'Cinzel', serif;      /* 700, tracking .12em */
+  --abyss-font-ui: 'Montserrat', sans-serif;  /* 400/600, tracking .04em */
+  /* grade: sat .88 · S-curve 1.06 · sombras +.10 · luces -.06 · velo carbon .30-.55 */
+}
