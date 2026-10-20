@@ -16,6 +16,8 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install FFmpeg, Vulkan runtime & CPU PyTorch
         run: |
@@ -27,8 +29,8 @@ jobs:
       - name: Fetch raw videos & official Real-ESRGAN + RIFE v4 neural weights
         run: |
           mkdir -p /tmp/bundle/raw /tmp/bundle/models /tmp/bundle/prep
-          curl -fsSL "https://tmpfiles.org/dl/1792522169.21886cfb8b42a5ca/wVA3nXC55RhU/abyss_promo_10s_1080x19202.mp4" -o /tmp/bundle/raw/v2.mp4
-          curl -fsSL "https://tmpfiles.org/dl/1792522168.a2d405b64f334f71/w1AanxCb53sJ/abyss_promo_10s_1080x19203.mp4" -o /tmp/bundle/raw/v3.mp4
+          git show 6e43e5e:material/raw/abyss_promo_10s_1080x19202.mp4 > /tmp/bundle/raw/v2.mp4
+          git show 6e43e5e:material/raw/abyss_promo_10s_1080x19203.mp4 > /tmp/bundle/raw/v3.mp4
           curl -fsSL "https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.5.0/realesr-general-x4v3.pth" -o /tmp/bundle/models/realesr-general-x4v3.pth
           curl -fsSL "https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.5.0/realesr-general-wdn-x4v3.pth" -o /tmp/bundle/models/realesr-general-wdn-x4v3.pth
           curl -fsSL "https://github.com/nihui/rife-ncnn-vulkan/releases/download/20221029/rife-ncnn-vulkan-20221029-ubuntu.zip" -o /tmp/rife.zip
