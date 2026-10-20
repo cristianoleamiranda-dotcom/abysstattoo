@@ -1,7 +1,12 @@
 name: Abyss Neural 4K 60fps Cluster Remaster
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - arena/69de13c4-abysstattoo
+    paths:
+      - ".github/workflows/remaster-cluster.yml"
+      - "scripts/remaster_promo_pipeline.py"
 
 permissions:
   contents: write
