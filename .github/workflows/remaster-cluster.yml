@@ -20,9 +20,9 @@ jobs:
       - name: Install FFmpeg, Vulkan runtime & CPU PyTorch
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq ffmpeg libvulkan1 mesa-vulkan-drivers unzip
-          pip install --quiet --index-url https://download.pytorch.org/whl/cpu torch
-          pip install --quiet opencv-python-headless scipy numpy
+          sudo apt-get install -y -qq ffmpeg libvulkan1 mesa-vulkan-drivers unzip python3-pip
+          python3 -m pip install --quiet --break-system-packages --index-url https://download.pytorch.org/whl/cpu torch
+          python3 -m pip install --quiet --break-system-packages pillow opencv-python-headless scipy numpy
 
       - name: Fetch raw videos & official Real-ESRGAN + RIFE v4 neural weights
         run: |
@@ -38,12 +38,21 @@ jobs:
 
       - name: Precompute 4K Panorama Marquee (◈ Repair), Clean End Cards & Flash Curve
         run: |
+          set -o pipefail
           python3 scripts/remaster_promo_pipeline.py \
             --mode precompute \
             --raw-v2 /tmp/bundle/raw/v2.mp4 \
             --raw-v3 /tmp/bundle/raw/v3.mp4 \
             --models-dir /tmp/bundle/models \
-            --prep-dir /tmp/bundle/prep
+            --prep-dir /tmp/bundle/prep 2>&1 | tee /tmp/ci.log
+
+      - name: Report error log if failed
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BODY=$(tail -n 80 /tmp/ci.log 2>/dev/null || echo "no /tmp/ci.log")
+          gh api "/repos/${{ github.repository }}/commits/${{ github.sha }}/comments" -f body="$BODY" || true
 
       - name: Upload precomputed bundle
         uses: actions/upload-artifact@v4
@@ -65,9 +74,9 @@ jobs:
       - name: Install FFmpeg, Vulkan runtime & CPU PyTorch
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq ffmpeg libvulkan1 mesa-vulkan-drivers
-          pip install --quiet --index-url https://download.pytorch.org/whl/cpu torch
-          pip install --quiet opencv-python-headless scipy numpy
+          sudo apt-get install -y -qq ffmpeg libvulkan1 mesa-vulkan-drivers python3-pip
+          python3 -m pip install --quiet --break-system-packages --index-url https://download.pytorch.org/whl/cpu torch
+          python3 -m pip install --quiet --break-system-packages pillow opencv-python-headless scipy numpy
 
       - name: Download precomputed bundle
         uses: actions/download-artifact@v4
@@ -77,6 +86,7 @@ jobs:
 
       - name: Render Neural 4K UHD & 1080p 60fps Shard ${{ matrix.shard }}
         run: |
+          set -o pipefail
           chmod +x /tmp/bundle/models/*/rife-ncnn-vulkan
           python3 scripts/remaster_promo_pipeline.py \
             --mode shard \
@@ -85,8 +95,16 @@ jobs:
             --raw-v3 /tmp/bundle/raw/v3.mp4 \
             --models-dir /tmp/bundle/models \
             --prep-dir /tmp/bundle/prep \
-            --chunks-dir /tmp/chunks
+            --chunks-dir /tmp/chunks 2>&1 | tee /tmp/ci.log
           ls -lh /tmp/chunks
+
+      - name: Report error log if failed
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BODY="Shard ${{ matrix.shard }}: $(tail -n 80 /tmp/ci.log 2>/dev/null || echo 'no log')"
+          gh api "/repos/${{ github.repository }}/commits/${{ github.sha }}/comments" -f body="$BODY" || true
 
       - name: Upload rendered shard
         uses: actions/upload-artifact@v4
@@ -106,17 +124,17 @@ jobs:
       - name: Install FFmpeg & OpenCV QA tools
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq ffmpeg
-          pip install --quiet --index-url https://download.pytorch.org/whl/cpu torch
-          pip install --quiet opencv-python-headless scipy numpy
+          sudo apt-get install -y -qq ffmpeg python3-pip
+          python3 -m pip install --quiet --break-system-packages --index-url https://download.pytorch.org/whl/cpu torch
+          python3 -m pip install --quiet --break-system-packages pillow opencv-python-headless scipy numpy
 
-      - name: Download precomputed bundle & all 12 rendered shards
+      - name: Download precomputed bundle
         uses: actions/download-artifact@v4
         with:
-          pattern: prep-bundle
+          name: prep-bundle
           path: /tmp/bundle
 
-      - name: Download all 12 rendered chunks
+      - name: Download all 22 rendered chunks
         uses: actions/download-artifact@v4
         with:
           pattern: chunk-*
@@ -125,14 +143,23 @@ jobs:
 
       - name: Assemble 4K UHD + 1080p60 Social + 1080p60 Web GOP-8 + Audio R128 + QA Metrics
         run: |
+          set -o pipefail
           ls -lh /tmp/chunks
           python3 scripts/remaster_promo_pipeline.py \
             --mode assemble \
             --raw-v2 /tmp/bundle/raw/v2.mp4 \
             --raw-v3 /tmp/bundle/raw/v3.mp4 \
             --chunks-dir /tmp/chunks \
-            --out-dir promos
+            --out-dir promos 2>&1 | tee /tmp/ci.log
           ls -lh promos promos/comparisons
+
+      - name: Report QA Metrics & Status to Commit Comment
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BODY=$(tail -n 90 /tmp/ci.log 2>/dev/null || echo "no log")
+          gh api "/repos/${{ github.repository }}/commits/${{ github.sha }}/comments" -f body="$BODY" || true
 
       - name: Push Remastered Masters & QA Metrics to Branch
         run: |
