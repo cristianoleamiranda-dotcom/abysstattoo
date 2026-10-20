@@ -83,12 +83,14 @@ def load_realesrgan_dni(models_dir: Path, dni_denoise: float = 0.45, num_threads
     p_wdn = models_dir / "realesr-general-wdn-x4v3.pth"
     sd_s = torch.load(p_sharp, map_location="cpu", weights_only=False)
     sd_w = torch.load(p_wdn, map_location="cpu", weights_only=False)
-    sd_s = sd_s.get("params", sd_s)
-    sd_w = sd_w.get("params", sd_w)
+    if isinstance(sd_s, dict):
+        sd_s = sd_s["params_ema"] if "params_ema" in sd_s else sd_s.get("params", sd_s)
+    if isinstance(sd_w, dict):
+        sd_w = sd_w["params_ema"] if "params_ema" in sd_w else sd_w.get("params", sd_w)
     blended = {}
     w_sharp = 1.0 - dni_denoise
     for k in sd_s:
-        blended[k] = w_sharp * sd_s[k] + dni_denoise * sd_w[k]
+        blended[k] = w_sharp * sd_s[k].float() + dni_denoise * sd_w[k].float()
     net = SRVGGNetCompact(num_in_ch=3, num_out_ch=3, num_feat=64, num_conv=32, upscale=4, act_type="prelu")
     net.load_state_dict(blended, strict=True)
     net.eval()
@@ -96,21 +98,36 @@ def load_realesrgan_dni(models_dir: Path, dni_denoise: float = 0.45, num_threads
 
 
 @torch.inference_mode()
-def upscale_2x_realesrgan(bgr: np.ndarray, net: SRVGGNetCompact, ai_blend: float = 0.65, tile: int = 540, pad: int = 16) -> np.ndarray:
+def upscale_2x_realesrgan(
+    bgr: np.ndarray,
+    net: SRVGGNetCompact,
+    ai_blend: float = 0.68,
+    tile: int = 680,
+    pad: int = 16,
+    supersample_5k: bool = False,
+) -> np.ndarray:
     """
-    Tiled 4x Real-ESRGAN DNI inference followed by exact 2x area downsample + natural Lanczos4 blend.
-    Produces 2x dimensions (e.g. 1080x1920 -> 2160x3840 4K UHD) with crisp micro-detail and zero plastic skin.
+    Tiled 4x Real-ESRGAN DNI inference followed by exact area downsample to 2x target (2160x3840 4K UHD)
+    + natural Lanczos4 micro-texture blend so skin pores stay organic and typography stays razor sharp.
     """
     h, w = bgr.shape[:2]
-    out_4x = np.empty((h * 4, w * 4, 3), dtype=np.uint8)
-    rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB).astype(np.float32) * (1.0 / 255.0)
+    target_w, target_h = w * 2, h * 2
+    if supersample_5k and w >= 1000:
+        # 676x1200 -> 4x Real-ESRGAN = 2704x4800 (5K UHD supersampled!) -> area downsampled to 2160x3840 4K UHD
+        src_bgr = cv2.resize(bgr, (676, 1200), interpolation=cv2.INTER_AREA)
+    else:
+        src_bgr = bgr
 
-    for y in range(0, h, tile):
-        for x in range(0, w, tile):
-            y0, y1 = y, min(h, y + tile)
-            x0, x1 = x, min(w, x + tile)
-            py0, py1 = max(0, y0 - pad), min(h, y1 + pad)
-            px0, px1 = max(0, x0 - pad), min(w, x1 + pad)
+    sh, sw = src_bgr.shape[:2]
+    out_4x = np.empty((sh * 4, sw * 4, 3), dtype=np.uint8)
+    rgb = cv2.cvtColor(src_bgr, cv2.COLOR_BGR2RGB).astype(np.float32) * (1.0 / 255.0)
+
+    for y in range(0, sh, tile):
+        for x in range(0, sw, tile):
+            y0, y1 = y, min(sh, y + tile)
+            x0, x1 = x, min(sw, x + tile)
+            py0, py1 = max(0, y0 - pad), min(sh, y1 + pad)
+            px0, px1 = max(0, x0 - pad), min(sw, x1 + pad)
             patch = rgb[py0:py1, px0:px1]
             ten = torch.from_numpy(np.transpose(patch, (2, 0, 1))).unsqueeze(0)
             pred = net(ten).squeeze(0).clamp_(0.0, 1.0).numpy()
@@ -121,11 +138,10 @@ def upscale_2x_realesrgan(bgr: np.ndarray, net: SRVGGNetCompact, ai_blend: float
             ow = (x1 - x0) * 4
             out_4x[y0 * 4 : y1 * 4, x0 * 4 : x1 * 4] = pred[oy0 : oy0 + oh, ox0 : ox0 + ow]
 
-    ai_2x_rgb = cv2.resize(out_4x, (w * 2, h * 2), interpolation=cv2.INTER_AREA)
-    ai_2x_bgr = cv2.cvtColor(ai_2x_rgb, cv2.COLOR_RGB2BGR)
+    ai_2x_bgr = cv2.cvtColor(cv2.resize(out_4x, (target_w, target_h), interpolation=cv2.INTER_AREA), cv2.COLOR_RGB2BGR)
     if ai_blend >= 0.999:
         return ai_2x_bgr
-    base_2x = cv2.resize(bgr, (w * 2, h * 2), interpolation=cv2.INTER_LANCZOS4)
+    base_2x = cv2.resize(bgr, (target_w, target_h), interpolation=cv2.INTER_LANCZOS4)
     return cv2.addWeighted(ai_2x_bgr, ai_blend, base_2x, 1.0 - ai_blend, 0.0)
 
 
@@ -150,7 +166,26 @@ class RifeInterpolator:
 
         if self.pt_model is None and self.rife_bin.exists():
             os.chmod(self.rife_bin, 0o755)
-            print(f"[RIFE] Using compiled ncnn SIMD neural binary {self.rife_bin} with model {self.rife_model.name}.")
+            self.gpu_flag = "0"
+            t0 = models_dir / "_probe0.png"
+            t1 = models_dir / "_probe1.png"
+            tm = models_dir / "_probem.png"
+            cv2.imwrite(str(t0), np.zeros((64, 64, 3), dtype=np.uint8))
+            cv2.imwrite(str(t1), np.full((64, 64, 3), 128, dtype=np.uint8))
+            for gf in ("0", "-1"):
+                rc = subprocess.run(
+                    [str(self.rife_bin), "-0", str(t0), "-1", str(t1), "-o", str(tm), "-m", str(self.rife_model), "-g", gf],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                ).returncode
+                if rc == 0 and tm.exists():
+                    self.gpu_flag = gf
+                    break
+            else:
+                self.rife_bin = Path("/nonexistent")
+            for p in (t0, t1, tm):
+                p.unlink(missing_ok=True)
+            print(f"[RIFE] Verified neural binary {self.rife_bin.name} (model={self.rife_model.name}, -g={self.gpu_flag}).")
 
     @torch.inference_mode()
     def midpoint_4k(self, f0_4k: np.ndarray, f1_4k: np.ndarray, tmp_dir: Path, tag: str) -> np.ndarray:
@@ -185,14 +220,15 @@ class RifeInterpolator:
                 "-o", str(pm),
                 "-s", "0.5",
                 "-m", str(self.rife_model),
-                "-g", "-1",
+                "-g", self.gpu_flag,
             ]
-            subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            mid_1k = cv2.imread(str(pm), cv2.IMREAD_COLOR)
+            rc = subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode
+            if rc == 0 and pm.exists():
+                mid_1k = cv2.imread(str(pm), cv2.IMREAD_COLOR)
+                self.neural_calls += 1
             p0.unlink(missing_ok=True)
             p1.unlink(missing_ok=True)
             pm.unlink(missing_ok=True)
-            self.neural_calls += 1
 
         if mid_1k is None:
             # Bidirectional DIS optical flow fallback
@@ -413,8 +449,8 @@ def run_precompute(raw_v2: Path, raw_v3: Path, models_dir: Path, prep_dir: Path)
     # Super-resolve static master End Cards (52-sample noise-free) to 4K + grade!
     end_v1_1k = np.clip(end_v1_acc / end_cnt + 0.5, 0, 255).astype(np.uint8)
     end_v2_1k = np.clip(end_v2_acc / end_cnt + 0.5, 0, 255).astype(np.uint8)
-    end_v1_4k = grade_cinema_bt709(upscale_2x_realesrgan(end_v1_1k, net_sr, ai_blend=0.75, tile=540, pad=16))
-    end_v2_4k = grade_cinema_bt709(upscale_2x_realesrgan(end_v2_1k, net_sr, ai_blend=0.75, tile=540, pad=16))
+    end_v1_4k = grade_cinema_bt709(upscale_2x_realesrgan(end_v1_1k, net_sr, ai_blend=0.75, tile=680, pad=16, supersample_5k=True))
+    end_v2_4k = grade_cinema_bt709(upscale_2x_realesrgan(end_v2_1k, net_sr, ai_blend=0.75, tile=680, pad=16, supersample_5k=True))
     cv2.imwrite(str(prep_dir / "endcard_v1_4k.png"), end_v1_4k)
     cv2.imwrite(str(prep_dir / "endcard_v2_4k.png"), end_v2_4k)
 
@@ -553,12 +589,12 @@ def run_shard(raw_v2: Path, raw_v3: Path, models_dir: Path, prep_dir: Path, out_
     net_sr = load_realesrgan_dni(models_dir, dni_denoise=0.45, num_threads=4)
     rife = RifeInterpolator(models_dir)
 
-    if shard_id < 10:
+    if shard_id < 20:
         variant = "shared"
-        f_start = shard_id * 25
-        f_end = (shard_id + 1) * 25 - 1  # inclusive, e.g. 0..24; needs f_end+1 = 25 for midpoint 24.5!
+        f_start = (shard_id * 250) // 20
+        f_end = ((shard_id + 1) * 250) // 20 - 1
         endcard_4k = None
-    elif shard_id == 10:
+    elif shard_id == 20:
         variant = "v1"
         f_start, f_end = 250, 299
         endcard_4k = cv2.imread(str(prep_dir / "endcard_v1_4k.png"), cv2.IMREAD_COLOR)
@@ -585,7 +621,7 @@ def run_shard(raw_v2: Path, raw_v3: Path, models_dir: Path, prep_dir: Path, out_
             prev_f = raw_map.get(idx - 1) if (idx - 1) not in scene_cuts else None
             next_f = raw_map.get(idx + 1) if idx not in scene_cuts else None
             clean_1k = denoise_spatiotemporal(prev_f, raw_map[idx], next_f)
-            up_4k = upscale_2x_realesrgan(clean_1k, net_sr, ai_blend=0.65, tile=540, pad=16)
+            up_4k = upscale_2x_realesrgan(clean_1k, net_sr, ai_blend=0.68, tile=680, pad=16, supersample_5k=True)
             restored_4k[idx] = grade_cinema_bt709(up_4k)
 
     chunk_name = f"shard_{shard_id:02d}"
@@ -735,8 +771,8 @@ def run_assemble(raw_v2: Path, raw_v3: Path, chunks_dir: Path, out_dir: Path) ->
     am2 = master_audio(raw_v3, aud_v2)
 
     specs = [
-        ("v1_agenda_tu_hora", 10, aud_v1, raw_v2),
-        ("v2_reservar_con_marco", 11, aud_v2, raw_v3),
+        ("v1_agenda_tu_hora", 20, aud_v1, raw_v2),
+        ("v2_reservar_con_marco", 21, aud_v2, raw_v3),
     ]
 
     all_metrics = {
@@ -751,7 +787,7 @@ def run_assemble(raw_v2: Path, raw_v3: Path, chunks_dir: Path, out_dir: Path) ->
     for slug, tail_shard, aud_file, raw_src in specs:
         for res_key in ("4k", "1k"):
             concat_txt = out_dir / f"concat_{slug}_{res_key}.txt"
-            shard_ids = list(range(10)) + [tail_shard]
+            shard_ids = list(range(20)) + [tail_shard]
             lines = [f"file '{(chunks_dir / f'shard_{s:02d}_{res_key}.mp4').resolve()}'" for s in shard_ids]
             concat_txt.write_text("\n".join(lines) + "\n")
 
