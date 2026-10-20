@@ -360,8 +360,8 @@ def run_precompute(raw_v2: Path, raw_v3: Path, models_dir: Path, prep_dir: Path)
             outer = 0.5 * (f2.astype(np.float64) + f3.astype(np.float64))
             b1 = outer.copy()
             b2 = outer.copy()
-            b1[1240:1420] = f2[1240:1420].astype(np.float64)
-            b2[1240:1420] = f3[1240:1420].astype(np.float64)
+            b1[1240:1920] = f2[1240:1920].astype(np.float64)
+            b2[1240:1920] = f3[1240:1920].astype(np.float64)
             end_v1_acc += b1
             end_v2_acc += b2
             end_cnt += 1
@@ -561,7 +561,7 @@ def read_target_frames(raw_v2: Path, raw_v3: Path, mode_variant: str, indices: l
                 outer = 0.5 * (f2.astype(np.float32) + f3.astype(np.float32))
                 base = outer.copy()
                 src = f2 if mode_variant == "v1" else f3
-                base[1240:1420] = src[1240:1420].astype(np.float32)
+                base[1240:1920] = src[1240:1920].astype(np.float32)
                 out[i] = np.clip(base + 0.5, 0, 255).astype(np.uint8)
     c2.release()
     c3.release()

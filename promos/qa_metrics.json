@@ -53,7 +53,7 @@
   "remastered": {
     "abyss_promo_v1_agenda_tu_hora_2160x3840_60fps_4k_master.mp4": {
       "file": "abyss_promo_v1_agenda_tu_hora_2160x3840_60fps_4k_master.mp4",
-      "size_mb": 61.3,
+      "size_mb": 57.93,
       "width": 2160,
       "height": 3840,
       "codec": "h264",
@@ -72,7 +72,7 @@
     },
     "abyss_promo_v1_agenda_tu_hora_1080x1920_60fps_social.mp4": {
       "file": "abyss_promo_v1_agenda_tu_hora_1080x1920_60fps_social.mp4",
-      "size_mb": 26.48,
+      "size_mb": 23.29,
       "width": 1080,
       "height": 1920,
       "codec": "h264",
@@ -91,7 +91,7 @@
     },
     "abyss_promo_v1_agenda_tu_hora_1080x1920_60fps_web_gop8.mp4": {
       "file": "abyss_promo_v1_agenda_tu_hora_1080x1920_60fps_web_gop8.mp4",
-      "size_mb": 12.0,
+      "size_mb": 11.78,
       "width": 1080,
       "height": 1920,
       "codec": "h264",
@@ -110,7 +110,7 @@
     },
     "abyss_promo_v2_reservar_con_marco_2160x3840_60fps_4k_master.mp4": {
       "file": "abyss_promo_v2_reservar_con_marco_2160x3840_60fps_4k_master.mp4",
-      "size_mb": 61.37,
+      "size_mb": 57.93,
       "width": 2160,
       "height": 3840,
       "codec": "h264",
@@ -129,7 +129,7 @@
     },
     "abyss_promo_v2_reservar_con_marco_1080x1920_60fps_social.mp4": {
       "file": "abyss_promo_v2_reservar_con_marco_1080x1920_60fps_social.mp4",
-      "size_mb": 26.5,
+      "size_mb": 23.34,
       "width": 1080,
       "height": 1920,
       "codec": "h264",
@@ -148,7 +148,7 @@
     },
     "abyss_promo_v2_reservar_con_marco_1080x1920_60fps_web_gop8.mp4": {
       "file": "abyss_promo_v2_reservar_con_marco_1080x1920_60fps_web_gop8.mp4",
-      "size_mb": 12.0,
+      "size_mb": 11.83,
       "width": 1080,
       "height": 1920,
       "codec": "h264",

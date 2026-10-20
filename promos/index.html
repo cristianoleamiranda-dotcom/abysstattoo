@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ABYSS TATTOO STUDIO — Neural 4K UHD &amp; 60 FPS Video Remaster Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-void: #060608;
+      --bg-surface: #0d0d12;
+      --bg-elevated: #14141c;
+      --gold: #c9a96e;
+      --gold-deep: #b49059;
+      --gold-dim: rgba(201, 169, 110, 0.24);
+      --ivory: #f4f1ea;
+      --muted: #9c9890;
+      --ok: #5cd69d;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: radial-gradient(circle at 50% 0%, #16131c 0%, var(--bg-void) 55%);
+      color: var(--ivory);
+      font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container { max-width: 1320px; margin: 0 auto; padding: 34px 24px 80px; }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding-bottom: 26px;
+      border-bottom: 1px solid var(--gold-dim);
+      margin-bottom: 32px;
+    }
+
+    .brand { display: flex; align-items: center; gap: 16px; }
+    .brand img {
+      width: 54px; height: 54px; border-radius: 50%;
+      border: 1px solid var(--gold-dim); object-fit: cover; background: #000;
+    }
+    .eyebrow {
+      font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--gold); font-weight: 600;
+    }
+    h1 {
+      font-family: 'Cinzel', serif; font-size: clamp(22px, 3vw, 31px);
+      letter-spacing: 0.08em; font-weight: 600; color: var(--ivory); margin-top: 3px;
+    }
+
+    .cloud-banner {
+      display: inline-flex; align-items: center; gap: 10px;
+      text-decoration: none;
+      background: linear-gradient(135deg, rgba(201, 169, 110, 0.2), rgba(180, 144, 89, 0.08));
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .cloud-banner:hover { opacity: 0.9; }
+
+    .kpi-strip {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px; margin-bottom: 34px;
+    }
+    .kpi {
+      background: var(--bg-surface);
+      border: 1px solid var(--gold-dim);
+      border-radius: 12px;
+      padding: 16px 18px;
+    }
+    .kpi .k-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+    .kpi .k-val { font-family: 'Cinzel', serif; font-size: 22px; color: var(--gold); margin-top: 6px; font-weight: 600; }
+    .kpi .k-sub { font-size: 11.5px; color: var(--ivory); opacity: 0.84; margin-top: 3px; }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 425px 1fr;
+      gap: 30px;
+      align-items: start;
+      margin-bottom: 52px;
+    }
+    @media (max-width: 960px) {
+      .workspace { grid-template-columns: 1fr; }
+    }
+
+    .stage-wrap {
+      background: var(--bg-surface);
+      border: 1px solid var(--gold-dim);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+    }
+
+    .variant-tabs {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px;
+    }
+    .tab-btn {
+      background: var(--bg-elevated);
+      color: var(--muted);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 9px;
+      padding: 10px 8px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: all 0.2s ease;
+    }
+    .tab-btn.active {
+      background: linear-gradient(135deg, rgba(201, 169, 110, 0.24), rgba(180, 144, 89, 0.08));
+      color: var(--gold);
+      border-color: var(--gold);
+    }
+
+    .ab-viewport {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      background: #000;
+      border-radius: 10px;
+      overflow: hidden;
+      user-select: none;
+      touch-action: none;
+      cursor: ew-resize;
+    }
+    .ab-viewport video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    #vidAfter { z-index: 1; }
+    #vidBefore {
+      z-index: 2;
+      clip-path: inset(0 50% 0 0);
+    }
+
+    .ab-line {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 50%;
+      width: 2px;
+      background: var(--gold);
+      z-index: 4;
+      pointer-events: none;
+      box-shadow: 0 0 12px rgba(0,0,0,0.9);
+    }
+    .ab-handle {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: rgba(6, 6, 8, 0.9);
+      border: 1.5px solid var(--gold);
+      color: var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700;
+      z-index: 5;
+      pointer-events: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.85);
+    }
+
+    .badge-side {
+      position: absolute;
+      top: 12px;
+      z-index: 6;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+      pointer-events: none;
+    }
+    .badge-before { left: 12px; background: rgba(15, 15, 20, 0.8); color: #d8d4cc; border: 1px solid rgba(255,255,255,0.16); }
+    .badge-after { right: 12px; background: rgba(20, 16, 10, 0.88); color: var(--gold); border: 1px solid var(--gold); }
+
+    .controls { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
+    .scrubber-row { display: flex; align-items: center; gap: 10px; }
+    .scrubber-row input[type="range"] { flex: 1; accent-color: var(--gold); cursor: pointer; }
+    .timecode { font-size: 11px; font-variant-numeric: tabular-nums; color: var(--muted); min-width: 86px; text-align: right; }
+
+    .btn-row { display: flex; flex-wrap: wrap; gap: 7px; }
+    .ctrl-btn {
+      flex: 1; min-width: 92px;
+      background: var(--bg-elevated);
+      color: var(--ivory);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+    .ctrl-btn:hover, .ctrl-btn.active { border-color: var(--gold); color: var(--gold); }
+
+    .panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--gold-dim);
+      border-radius: 16px;
+      padding: 26px;
+      margin-bottom: 24px;
+    }
+    .panel h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 19px;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .panel p.lead { font-size: 13.5px; color: var(--muted); margin-bottom: 18px; }
+
+    .jump-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+    .chip {
+      background: var(--bg-elevated);
+      border: 1px solid rgba(201,169,110,0.32);
+      color: var(--ivory);
+      border-radius: 999px;
+      padding: 6px 13px;
+      font-size: 11.5px;
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+    .chip:hover { background: rgba(201,169,110,0.18); border-color: var(--gold); color: var(--gold); }
+
+    .dl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); gap: 14px; }
+    .dl-card {
+      background: var(--bg-elevated);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .dl-card.featured { border-color: var(--gold); }
+    .dl-tag { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); font-weight: 700; }
+    .dl-title { font-size: 14px; font-weight: 600; color: var(--ivory); margin-top: 4px; }
+    .dl-spec { font-size: 11.5px; color: var(--muted); line-height: 1.5; margin-top: 4px; }
+    .dl-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .dl-link {
+      display: inline-flex; align-items: center; justify-content: center;
+      flex: 1;
+      text-decoration: none;
+      padding: 9px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: var(--gold);
+      color: #09090b;
+      transition: opacity 0.18s;
+    }
+    .dl-link.secondary {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--gold-dim);
+    }
+    .dl-link:hover { opacity: 0.88; }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 22px;
+      letter-spacing: 0.08em;
+      color: var(--ivory);
+      margin-bottom: 6px;
+    }
+    .section-sub { font-size: 13.5px; color: var(--muted); margin-bottom: 22px; }
+
+    .comp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 20px;
+      margin-bottom: 44px;
+    }
+    .comp-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--gold-dim);
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: zoom-in;
+      transition: transform 0.2s ease;
+    }
+    .comp-card:hover { transform: translateY(-2px); border-color: var(--gold); }
+    .comp-card img { width: 100%; display: block; background: #000; }
+    .comp-caption { padding: 14px 16px; }
+    .comp-caption h3 { font-size: 13.5px; font-weight: 600; color: var(--gold); letter-spacing: 0.04em; }
+    .comp-caption p { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    table.metrics-tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+    table.metrics-tbl th, table.metrics-tbl td {
+      padding: 10px 10px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    table.metrics-tbl th { color: var(--gold); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .pill-ok { color: var(--ok); font-weight: 600; }
+
+    .lightbox {
+      position: fixed; inset: 0; background: rgba(4,4,6,0.94);
+      display: none; align-items: center; justify-content: center;
+      z-index: 999; padding: 24px; cursor: zoom-out;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 96vw; max-height: 92vh; border: 1px solid var(--gold); border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <img src="/assets/logo_abyss_256.png" alt="Abyss Tattoo Studio" onerror="this.style.display='none'" />
+        <div>
+          <div class="eyebrow">Abyss Tattoo Studio · Neural Mastering Suite</div>
+          <h1>Remasterización IA 4K UHD &amp; 60 FPS</h1>
+        </div>
+      </div>
+      <a class="cloud-banner" href="https://www.dropbox.com/scl/fo/f08tse8z7np20zu0lerue/ADcXPZkLI_b0AgZ3Ei-fc_Q?rlkey=nvt5aybirnfuqha860k1yfbwb&dl=0" target="_blank" rel="noopener">
+        ☁ Abrir Carpeta Master en Dropbox (6 Videos) ↗
+      </a>
+    </header>
+
+    <section class="kpi-strip">
+      <div class="kpi">
+        <div class="k-label">Resolución Master</div>
+        <div class="k-val">2160 × 3840</div>
+        <div class="k-sub">4K UHD (8.29 MP · Real-ESRGAN DNI)</div>
+      </div>
+      <div class="kpi">
+        <div class="k-label">Fluidez &amp; Movimiento</div>
+        <div class="k-val">60.00 FPS</div>
+        <div class="k-sub">RIFE v4.6 Neural Optical Flow (600 cuadros)</div>
+      </div>
+      <div class="kpi">
+        <div class="k-label">Reparación Tipográfica</div>
+        <div class="k-val">3× [?] → ◈</div>
+        <div class="k-sub">Cinta 4K sin drift + 60fps sub-píxel</div>
+      </div>
+      <div class="kpi">
+        <div class="k-label">Audio Broadcast</div>
+        <div class="k-val">-14.3 LUFS</div>
+        <div class="k-sub">Eliminado clipping +1.4 dBFS · AAC 306k</div>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <div class="stage-wrap">
+        <div class="variant-tabs">
+          <button class="tab-btn active" id="tabV1" onclick="selectVariant('v1')">
+            Promo 1 · Agenda Tu Hora →
+          </button>
+          <button class="tab-btn" id="tabV2" onclick="selectVariant('v2')">
+            Promo 2 · Reservar Con Marco →
+          </button>
+        </div>
+
+        <div class="ab-viewport" id="abViewport">
+          <span class="badge-side badge-before">Antes · 30 FPS Raw</span>
+          <span class="badge-side badge-after">Después · 60 FPS IA</span>
+          <video id="vidAfter" playsinline preload="auto" loop muted autoplay></video>
+          <video id="vidBefore" playsinline preload="auto" loop muted autoplay></video>
+          <div class="ab-line" id="abLine"></div>
+          <div class="ab-handle" id="abHandle">↔</div>
+        </div>
+
+        <div class="controls">
+          <div class="scrubber-row">
+            <input type="range" id="scrubber" min="0" max="10" step="0.0166" value="0" />
+            <span class="timecode" id="timeLabel">0.00s / 10.00s</span>
+          </div>
+          <div class="btn-row">
+            <button class="ctrl-btn active" id="btnPlay" onclick="togglePlay()">⏸ Pausar</button>
+            <button class="ctrl-btn" id="btnSlow" onclick="toggleSlowMo()">🐢 Cámara Lenta 0.5× (Ver 30 vs 60fps)</button>
+            <button class="ctrl-btn" id="btnAudio" onclick="cycleAudio()">🔇 Audio: Silencio</button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="panel">
+          <h2>Inspección Instantánea por Escena</h2>
+          <p class="lead">
+            Arrastra el divisor dorado sobre el video para comparar cuadro a cuadro el archivo original (izquierda) contra el master neural 60 FPS (derecha), activa <strong>Cámara Lenta 0.5×</strong> para apreciar la interpolación neural RIFE v4.6 o salta a cada escena clave:
+          </p>
+          <div class="jump-chips">
+            <button class="chip" onclick="jumpTo(0.90, true)">00.90s · Piel &amp; Retrato 4K</button>
+            <button class="chip" onclick="jumpTo(3.60, true)">03.60s · Reparación [?] → ◈</button>
+            <button class="chip" onclick="jumpTo(5.43, true)">05.43s · Flash &amp; Corte Limpio</button>
+            <button class="chip" onclick="jumpTo(7.23, true)">07.23s · Polaroids $70.000</button>
+            <button class="chip" onclick="jumpTo(9.03, true)">09.03s · End Card CTA Limpio</button>
+          </div>
+
+          <h2>Descargas Directas — Masters Finales (Local &amp; Dropbox Cloud)</h2>
+          <p class="lead">
+            Tres ediciones maestras por video: <strong>4K UHD 60fps Master</strong> (~58 MB, archivo maestro), <strong>1080p60 Social Pro</strong> (~24.4 MB, ideal para subir directo a Instagram Reels, TikTok y YouTube Shorts) y <strong>1080p60 Web GOP-8</strong> (~12.4 MB, scrubbing instantáneo web).
+          </p>
+          <div class="dl-grid" id="downloadsContainer"></div>
+        </div>
+
+        <div class="panel">
+          <h2>Telemetría Verificada FFprobe &amp; Nitidez (+20% Acutancia Real)</h2>
+          <div style="overflow-x: auto;">
+            <table class="metrics-tbl" id="metricsTable">
+              <thead>
+                <tr>
+                  <th>Edición</th>
+                  <th>Resolución</th>
+                  <th>FPS / Cuadros</th>
+                  <th>Bitrate / Peso</th>
+                  <th>Audio</th>
+                  <th>Nitidez</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Comparativa Forense 1:1 en Píxeles Reales 4K (Antes vs. Después)</h2>
+      <p class="section-sub">Haz clic en cualquier imagen para inspeccionar los píxeles 4K al 100% de tamaño real.</p>
+      <div class="comp-grid">
+        <div class="comp-card" onclick="openLightbox('/promos/comparisons/03_ticker_diamond_fix.jpg')">
+          <img src="/promos/comparisons/03_ticker_diamond_fix.jpg" alt="Reparación de glifos rotos [?] a diamantes Abyss" loading="lazy" />
+          <div class="comp-caption">
+            <h3>01 · Reparación de Glifos Rotos [?] → Diamante Facetado Abyss (◈) + 60 FPS Sub-píxel</h3>
+            <p>Arriba: glifo faltante renderizado como caja <code>[?]</code> con ruido H.264 a 30fps. Abajo: reconstrucción panorámica de 428 muestras + diamante vectorial 8× supersampled animado a 60.00 fps exactos.</p>
+          </div>
+        </div>
+        <div class="comp-card" onclick="openLightbox('/promos/comparisons/01_face_detail.jpg')">
+          <img src="/promos/comparisons/01_face_detail.jpg" alt="Detalle facial 4K Real-ESRGAN DNI" loading="lazy" />
+          <div class="comp-caption">
+            <h3>02 · Super-Resolución Neural Real-ESRGAN DNI + Fusión Dual-Stream (-3.01 dB Ruido)</h3>
+            <p>Eliminación limpia de ruido Gaussiano de sensor (σ ≈ 4.1) preservando poros, barba, pestañas y textura real sin piel plástica.</p>
+          </div>
+        </div>
+        <div class="comp-card" onclick="openLightbox('/promos/comparisons/02_ipad_typography.jpg')">
+          <img src="/promos/comparisons/02_ipad_typography.jpg" alt="iPad Pro y tipografía editorial" loading="lazy" />
+          <div class="comp-caption">
+            <h3>03 · Nitidez en iPad Pro, Líneas de Tatuaje y Tipografía Editorial</h3>
+            <p>Bordes limpios sin ringing en letras marfil/bermellón y mayor definición en el arte del iPad Pro.</p>
+          </div>
+        </div>
+        <div class="comp-card" onclick="openLightbox('/promos/comparisons/04_polaroids_70k.jpg')">
+          <img src="/promos/comparisons/04_polaroids_70k.jpg" alt="Collage Polaroids $70.000" loading="lazy" />
+          <div class="comp-caption">
+            <h3>04 · Collage Polaroids &amp; Piezas $70.000 — Micro-contraste BT.709</h3>
+            <p>Rojos densos sin macrobloques, negros profundos calibrados y detalle recuperado en cada tatuaje de las Polaroids.</p>
+          </div>
+        </div>
+        <div class="comp-card" onclick="openLightbox('/promos/comparisons/05_endcard_v1_agenda.jpg')">
+          <img src="/promos/comparisons/05_endcard_v1_agenda.jpg" alt="End Card Video 1 Agenda Tu Hora" loading="lazy" />
+          <div class="comp-caption">
+            <h3>05 · End Card 4K Sin Ruido — Promo 1 («AGENDA TU HORA →»)</h3>
+            <p>Apilado multi-exposición de 52 cuadros + Real-ESRGAN 4K que recupera hasta el texto fino inferior oculto bajo el ruido original.</p>
+          </div>
+        </div>
+        <div class="comp-card" onclick="openLightbox('/promos/comparisons/06_endcard_v2_marco.jpg')">
+          <img src="/promos/comparisons/06_endcard_v2_marco.jpg" alt="End Card Video 2 Reservar Con Marco" loading="lazy" />
+          <div class="comp-caption">
+            <h3>06 · End Card 4K Sin Ruido — Promo 2 («RESERVAR CON MARCO →»)</h3>
+            <p>Variante específica de Marco con botón CTA ultra-nítido, sello de cráneo limpio y curva exacta de loop-fade.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="lightbox" id="lightbox" onclick="this.classList.remove('open')">
+    <img id="lightboxImg" src="" alt="Vista ampliada 4K" />
+  </div>
+
+  <script>
+    const CLOUD_LINKS = {
+      'abyss_promo_v1_agenda_tu_hora_2160x3840_60fps_4k_master.mp4': 'https://www.dropbox.com/scl/fi/7kn2phxrdevsizerriita/abyss_promo_v1_agenda_tu_hora_2160x3840_60fps_4k_master.mp4?rlkey=756sxucr36ak25az89wuk2efe&dl=1',
+      'abyss_promo_v1_agenda_tu_hora_1080x1920_60fps_social.mp4': 'https://www.dropbox.com/scl/fi/n8ewkm99tbx304ojlhgvj/abyss_promo_v1_agenda_tu_hora_1080x1920_60fps_social.mp4?rlkey=s5hz3midf6tw6l07vzvg3siv0&dl=1',
+      'abyss_promo_v1_agenda_tu_hora_1080x1920_60fps_web_gop8.mp4': 'https://www.dropbox.com/scl/fi/gstt3f410tpux76yoak6p/abyss_promo_v1_agenda_tu_hora_1080x1920_60fps_web_gop8.mp4?rlkey=00zuduv8143gunciuejg85ppk&dl=1',
+      'abyss_promo_v2_reservar_con_marco_2160x3840_60fps_4k_master.mp4': 'https://www.dropbox.com/scl/fi/ygyict55gtbhsv73u8ezb/abyss_promo_v2_reservar_con_marco_2160x3840_60fps_4k_master.mp4?rlkey=qkpz8oogb1hdqrvwkvxm2cwc0&dl=1',
+      'abyss_promo_v2_reservar_con_marco_1080x1920_60fps_social.mp4': 'https://www.dropbox.com/scl/fi/arq4ixjfxq4ecm0mwvd8x/abyss_promo_v2_reservar_con_marco_1080x1920_60fps_social.mp4?rlkey=rsjs07afn7wbhqnmv99n6f2bt&dl=1',
+      'abyss_promo_v2_reservar_con_marco_1080x1920_60fps_web_gop8.mp4': 'https://www.dropbox.com/scl/fi/5zx2n9rpktvwaazbofcz4/abyss_promo_v2_reservar_con_marco_1080x1920_60fps_web_gop8.mp4?rlkey=uhst4kk8xca6hskx8vukhj6j9&dl=1'
+    };
+
+    const VARIANTS = {
+      v1: {
+        label: 'Promo 1 — AGENDA TU HORA →',
+        beforeSrc: '/promos/orig_ref_v1_agenda_tu_hora_30fps.mp4',
+        afterSrc: '/promos/abyss_promo_v1_agenda_tu_hora_1080x1920_60fps_social.mp4',
+        poster: '/promos/abyss_promo_v1_agenda_tu_hora_poster.jpg',
+        files: [
+          {
+            featured: true,
+            tag: 'Master Archivo · 4K UHD 60fps',
+            title: 'Promo 1 — 4K UHD (2160×3840 @ 60fps)',
+            spec: '58 MB · Real-ESRGAN DNI 4K · RIFE v4.6 60fps · H.264 High L5.2 · AAC 306k (-14.3 LUFS)',
+            file: 'abyss_promo_v1_agenda_tu_hora_2160x3840_60fps_4k_master.mp4'
+          },
+          {
+            featured: true,
+            tag: 'Instagram Reels / TikTok / Shorts',
+            title: 'Promo 1 — 1080p60 Social Pro Master',
+            spec: '24.4 MB · 1080×1920 @ 60fps · Supersampled desde 4K · CRF 15 BT.709 · AAC 306k',
+            file: 'abyss_promo_v1_agenda_tu_hora_1080x1920_60fps_social.mp4'
+          },
+          {
+            featured: false,
+            tag: 'Landing Web & Scrubbing Rápido',
+            title: 'Promo 1 — 1080p60 Web GOP-8 Edition',
+            spec: '12.4 MB · 1080×1920 @ 60fps · Keyframe cada 8 cuadros · Faststart + sRGB',
+            file: 'abyss_promo_v1_agenda_tu_hora_1080x1920_60fps_web_gop8.mp4'
+          }
+        ]
+      },
+      v2: {
+        label: 'Promo 2 — RESERVAR CON MARCO →',
+        beforeSrc: '/promos/orig_ref_v2_reservar_con_marco_30fps.mp4',
+        afterSrc: '/promos/abyss_promo_v2_reservar_con_marco_1080x1920_60fps_social.mp4',
+        poster: '/promos/abyss_promo_v2_reservar_con_marco_poster.jpg',
+        files: [
+          {
+            featured: true,
+            tag: 'Master Archivo · 4K UHD 60fps',
+            title: 'Promo 2 — 4K UHD (2160×3840 @ 60fps)',
+            spec: '58 MB · Real-ESRGAN DNI 4K · RIFE v4.6 60fps · H.264 High L5.2 · AAC 306k (-14.3 LUFS)',
+            file: 'abyss_promo_v2_reservar_con_marco_2160x3840_60fps_4k_master.mp4'
+          },
+          {
+            featured: true,
+            tag: 'Instagram Reels / TikTok / Shorts',
+            title: 'Promo 2 — 1080p60 Social Pro Master',
+            spec: '24.5 MB · 1080×1920 @ 60fps · Supersampled desde 4K · CRF 15 BT.709 · AAC 306k',
+            file: 'abyss_promo_v2_reservar_con_marco_1080x1920_60fps_social.mp4'
+          },
+          {
+            featured: false,
+            tag: 'Landing Web & Scrubbing Rápido',
+            title: 'Promo 2 — 1080p60 Web GOP-8 Edition',
+            spec: '12.4 MB · 1080×1920 @ 60fps · Keyframe cada 8 cuadros · Faststart + sRGB',
+            file: 'abyss_promo_v2_reservar_con_marco_1080x1920_60fps_web_gop8.mp4'
+          }
+        ]
+      }
+    };
+
+    let currentVariant = 'v1';
+    let slowMo = false;
+    let audioState = 0;
+
+    const vBefore = document.getElementById('vidBefore');
+    const vAfter = document.getElementById('vidAfter');
+    const scrubber = document.getElementById('scrubber');
+    const timeLabel = document.getElementById('timeLabel');
+    const abViewport = document.getElementById('abViewport');
+    const abLine = document.getElementById('abLine');
+    const abHandle = document.getElementById('abHandle');
+
+    function setSplit(pct) {
+      const clamped = Math.max(2, Math.min(98, pct));
+      vBefore.style.clipPath = `inset(0 ${100 - clamped}% 0 0)`;
+      abLine.style.left = clamped + '%';
+      abHandle.style.left = clamped + '%';
+    }
+
+    let dragging = false;
+    abViewport.addEventListener('pointerdown', (e) => {
+      dragging = true;
+      abViewport.setPointerCapture(e.pointerId);
+      updateFromPointer(e);
+    });
+    abViewport.addEventListener('pointermove', (e) => { if (dragging) updateFromPointer(e); });
+    abViewport.addEventListener('pointerup', () => { dragging = false; });
+
+    function updateFromPointer(e) {
+      const r = abViewport.getBoundingClientRect();
+      setSplit(((e.clientX - r.left) / r.width) * 100);
+    }
+
+    function renderDownloads() {
+      const container = document.getElementById('downloadsContainer');
+      const allFiles = [...VARIANTS.v1.files, ...VARIANTS.v2.files];
+      container.innerHTML = allFiles.map(item => {
+        const cloudUrl = CLOUD_LINKS[item.file];
+        return `
+          <div class="dl-card ${item.featured ? 'featured' : ''}">
+            <div>
+              <div class="dl-tag">${item.tag}</div>
+              <div class="dl-title">${item.title}</div>
+              <div class="dl-spec">${item.spec}</div>
+            </div>
+            <div class="dl-actions">
+              <a class="dl-link" href="/promos/${item.file}" download>⬇ Descargar MP4</a>
+              <a class="dl-link secondary" href="${cloudUrl}" target="_blank" rel="noopener">☁ Dropbox</a>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectVariant(key) {
+      currentVariant = key;
+      document.getElementById('tabV1').classList.toggle('active', key === 'v1');
+      document.getElementById('tabV2').classList.toggle('active', key === 'v2');
+      const t = vAfter.currentTime || 0;
+      const cfg = VARIANTS[key];
+      vBefore.poster = cfg.poster;
+      vAfter.poster = cfg.poster;
+      vBefore.src = cfg.beforeSrc;
+      vAfter.src = cfg.afterSrc;
+      vBefore.playbackRate = slowMo ? 0.5 : 1.0;
+      vAfter.playbackRate = slowMo ? 0.5 : 1.0;
+      vAfter.currentTime = t;
+      vBefore.currentTime = t;
+      vAfter.play().catch(() => {});
+      vBefore.play().catch(() => {});
+    }
+
+    function togglePlay() {
+      const btn = document.getElementById('btnPlay');
+      if (vAfter.paused) {
+        vBefore.currentTime = vAfter.currentTime;
+        vAfter.play(); vBefore.play();
+        btn.textContent = '⏸ Pausar';
+        btn.classList.add('active');
+      } else {
+        vAfter.pause(); vBefore.pause();
+        btn.textContent = '▶ Reproducir';
+        btn.classList.remove('active');
+      }
+    }
+
+    function toggleSlowMo() {
+      slowMo = !slowMo;
+      const rate = slowMo ? 0.5 : 1.0;
+      vAfter.playbackRate = rate;
+      vBefore.playbackRate = rate;
+      const btn = document.getElementById('btnSlow');
+      btn.classList.toggle('active', slowMo);
+      btn.textContent = slowMo ? '⚡ Velocidad Real 1.0× (Activo: 0.5×)' : '🐢 Cámara Lenta 0.5× (Ver 30 vs 60fps)';
+    }
+
+    function cycleAudio() {
+      audioState = (audioState + 1) % 3;
+      const btn = document.getElementById('btnAudio');
+      if (audioState === 0) {
+        vAfter.muted = true; vBefore.muted = true;
+        btn.textContent = '🔇 Audio: Silencio';
+        btn.classList.remove('active');
+      } else if (audioState === 1) {
+        vAfter.muted = false; vBefore.muted = true;
+        btn.textContent = '🔊 Audio: Master IA (-14 LUFS)';
+        btn.classList.add('active');
+      } else {
+        vAfter.muted = true; vBefore.muted = false;
+        btn.textContent = '🔊 Audio: Original Raw (+1.4 dB)';
+        btn.classList.add('active');
+      }
+    }
+
+    function jumpTo(sec, pauseHere) {
+      vAfter.currentTime = sec;
+      vBefore.currentTime = sec;
+      if (pauseHere) {
+        vAfter.pause(); vBefore.pause();
+        const btn = document.getElementById('btnPlay');
+        btn.textContent = '▶ Reproducir';
+        btn.classList.remove('active');
+      }
+    }
+
+    scrubber.addEventListener('input', () => {
+      const t = parseFloat(scrubber.value);
+      vAfter.currentTime = t;
+      vBefore.currentTime = t;
+    });
+
+    setInterval(() => {
+      if (!vAfter.paused && Math.abs(vBefore.currentTime - vAfter.currentTime) > 0.045) {
+        vBefore.currentTime = vAfter.currentTime;
+      }
+      const t = vAfter.currentTime || 0;
+      scrubber.value = t;
+      timeLabel.textContent = `${t.toFixed(2)}s / 10.00s`;
+    }, 60);
+
+    function openLightbox(src) {
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightbox').classList.add('open');
+    }
+
+    fetch('/promos/qa_metrics.json')
+      .then(r => r.json())
+      .then(data => {
+        const tbody = document.querySelector('#metricsTable tbody');
+        const rows = [];
+        for (const [k, m] of Object.entries(data.originals || {})) {
+          rows.push(`<tr>
+            <td>Original · <code>${k.includes('v1') ? '1080x19202.mp4' : '1080x19203.mp4'}</code></td>
+            <td>${m.width}×${m.height}</td>
+            <td>${m.r_frame_rate.replace('/1','')} fps (${m.decoded_frames})</td>
+            <td>${m.overall_bitrate_Mbps} Mbps (${m.size_mb} MB)</td>
+            <td>AAC ${m.audio_bitrate_kbps}k (+1.4 dB clip)</td>
+            <td>${m.normalized_sharpness_laplacian}</td>
+          </tr>`);
+        }
+        for (const [k, m] of Object.entries(data.remastered || {})) {
+          rows.push(`<tr>
+            <td class="pill-ok">★ ${m.file}</td>
+            <td><strong>${m.width}×${m.height}</strong></td>
+            <td class="pill-ok">${m.r_frame_rate.replace('/1','')} fps (${m.decoded_frames})</td>
+            <td>${m.overall_bitrate_Mbps} Mbps (${m.size_mb} MB)</td>
+            <td class="pill-ok">AAC ${m.audio_bitrate_kbps}k (-14.3 LUFS)</td>
+            <td class="pill-ok"><strong>${m.normalized_sharpness_laplacian}</strong></td>
+          </tr>`);
+        }
+        tbody.innerHTML = rows.join('');
+      })
+      .catch(() => {});
+
+    renderDownloads();
+    setSplit(50);
+    selectVariant('v1');
+  </script>
+</body>
+</html>
