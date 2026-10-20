@@ -1,0 +1,30 @@
+name: fetch-tmp-videos
+on:
+  push:
+    paths:
+      - '.github/workflows/fetch-tmp.yml'
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download tmpfiles videos
+        run: |
+          mkdir -p /tmp/dl
+          for item in \
+            "https://tmpfiles.org/w1AanxCb53sJ/abyss_promo_10s_1080x19203.mp4|abyss_promo_10s_1080x19203.mp4" \
+            "https://tmpfiles.org/wVA3nXC55RhU/abyss_promo_10s_1080x19202.mp4|abyss_promo_10s_1080x19202.mp4"
+          do
+            url="${item%|*}"
+            name="${item#*|}"
+            page="$(curl -sSL --retry 3 --max-time 60 "$url")"
+            real="$(printf '%s' "$page" | grep -oE 'https://tmpfiles\.org/dl/[^"]+' | head -1)"
+            echo "Resolved $name -> $real"
+            curl -sSL --retry 4 --retry-all-errors --max-time 300 -o "/tmp/dl/$name" "$real"
+            ls -lh "/tmp/dl/$name"
+            ffprobe -v quiet -print_format json -show_format -show_streams "/tmp/dl/$name" > "/tmp/dl/${name}.json"
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: raw-promo-videos
+          path: /tmp/dl/*
+          retention-days: 1
