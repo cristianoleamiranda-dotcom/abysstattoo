@@ -1,1 +1,9 @@
 .DS_Store
+.venv/
+dropbox/
+# máster de archivo (>150 MB): se conserva fuera de Git
+film/reel_comercial_abyss_15s_1080x1920_60fps_master.mp4
+# placas de video intermedias (se regeneran con scripts/prepare_commercial_assets.py)
+assets/reel_plates/*.mp4
+# material crudo descargado
+scripts/__pycache__/

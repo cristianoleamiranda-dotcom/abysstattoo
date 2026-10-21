@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reel Comercial 15 s — Abyss Tattoo Studio</title>
+<style>
+  :root{
+    --negro:#14100D; --panel:#1A1512; --crema:#EAE3DD; --crema2:#C6B7AB;
+    --crema3:#8F7F73; --teal:#6C928A; --tealL:#9EC4BA; --bone:#B5A295;
+    --rule:rgba(234,227,221,.16);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--negro);color:var(--crema);
+       font:16px/1.6 'Montserrat','Helvetica Neue',Arial,sans-serif}
+  .wrap{max-width:1180px;margin:0 auto;padding:48px 24px 96px}
+  .kicker{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--tealL)}
+  h1{font-family:Georgia,'Times New Roman',serif;font-weight:400;font-size:clamp(30px,4vw,52px);
+     line-height:1.1;margin:10px 0 6px;letter-spacing:.01em}
+  h1 em{color:var(--tealL);font-style:normal}
+  .sub{color:var(--crema2);max-width:62ch}
+  .grid{display:grid;grid-template-columns:minmax(280px,1fr) 1.15fr;gap:40px;margin-top:40px;align-items:start}
+  @media(max-width:880px){.grid{grid-template-columns:1fr}}
+  .player{position:relative;border:1px solid var(--rule);border-radius:14px;overflow:hidden;
+          background:#0b0908;box-shadow:0 30px 80px rgba(0,0,0,.55)}
+  .player video{display:block;width:100%;aspect-ratio:9/16;object-fit:cover;background:#0b0908}
+  .badge{position:absolute;top:12px;left:12px;display:flex;gap:8px;font-size:10px;letter-spacing:.18em;
+         text-transform:uppercase;color:var(--crema2)}
+  .badge span{border:1px solid var(--rule);border-radius:99px;padding:4px 10px;background:rgba(11,9,8,.6)}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 26px}
+  .chip{font-size:12px;letter-spacing:.06em;border:1px solid var(--rule);border-radius:99px;
+        padding:6px 14px;color:var(--crema2)}
+  .chip b{color:var(--crema);font-weight:600}
+  h2{font-family:Georgia,serif;font-weight:400;font-size:22px;margin:34px 0 12px;letter-spacing:.01em}
+  .steps{counter-reset:s;list-style:none;margin:0;padding:0}
+  .steps li{position:relative;padding:16px 0 16px 56px;border-top:1px solid var(--rule)}
+  .steps li:last-child{border-bottom:1px solid var(--rule)}
+  .steps li::before{counter-increment:s;content:"0" counter(s);position:absolute;left:0;top:16px;
+                    font-size:12px;letter-spacing:.18em;color:var(--tealL)}
+  .steps b{display:block;font-weight:600;font-size:15px}
+  .steps small{color:var(--crema3)}
+  .dl{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+  .dl a{display:inline-block;text-decoration:none;color:var(--negro);background:var(--crema);
+        border-radius:99px;padding:11px 20px;font-size:13px;font-weight:600}
+  .dl a.ghost{background:transparent;color:var(--crema);border:1px solid var(--rule)}
+  .dl a:hover{opacity:.88}
+  .note{margin-top:26px;padding:16px 18px;border-left:2px solid var(--teal);
+        background:rgba(108,146,138,.07);font-size:13.5px;color:var(--crema2)}
+  .sheet{margin-top:34px;border:1px solid var(--rule);border-radius:12px;overflow:hidden}
+  .sheet img{display:block;width:100%}
+  footer{margin-top:56px;color:var(--crema3);font-size:12px;letter-spacing:.05em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="kicker">Abyss Tattoo Studio · San Bernardo</p>
+  <h1>Reel Comercial <em>15 s</em></h1>
+  <p class="sub">Pieza vertical 9:16 construida desde el material real del estudio: curaduría, limpieza de
+  rótulos heredados, etalonaje unificado, cámara virtual con zooms y movimiento, diseño sonoro y un CTA único.</p>
+
+  <div class="grid">
+    <div>
+      <div class="player">
+        <div class="badge"><span>1080 × 1920</span><span>60 fps</span><span>15,00 s</span></div>
+        <video src="film/reel_comercial_abyss_15s_1080x1920_60fps_social.mp4"
+               poster="film/reel_comercial_abyss_15s_cover_hook.jpg"
+               controls playsinline preload="metadata"></video>
+      </div>
+      <div class="meta">
+        <span class="chip"><b>9:16</b> vertical</span>
+        <span class="chip"><b>H.264</b> BT.709</span>
+        <span class="chip"><b>AAC</b> 48 kHz</span>
+        <span class="chip"><b>100 BPM</b> corte cada 0,6 s</span>
+      </div>
+      <div class="dl">
+        <a href="film/reel_comercial_abyss_15s_1080x1920_60fps_social.mp4" download>Descargar para publicar</a>
+        <a class="ghost" href="film/reel_comercial_abyss_15s_1080x1920_30fps_web.mp4" download>Versión web</a>
+        <a class="ghost" href="film/reel_comercial_abyss_15s_poster_cta.jpg" download>Póster CTA</a>
+      </div>
+      <div class="note">El archivo que se sube a Instagram o TikTok es el de <b>14 Mbps</b>. El máster de archivo
+      (≈100 Mbps) queda fuera de la web por peso, en <code>film/</code>.</div>
+    </div>
+
+    <div>
+      <h2>Estructura comercial</h2>
+      <ol class="steps">
+        <li><b>0,00 – 2,40 s · Hook</b><small>Macro de aguja y zoom de impacto. “Esto no es un tatuaje. Es una firma.”</small></li>
+        <li><b>2,40 – 7,80 s · Contexto y autoridad</b><small>Fachada, pasillo, cabina clínica y macro de sombreado.</small></li>
+        <li><b>7,80 – 11,40 s · Prueba</b><small>Portafolio, diseño sin plantillas y titanio ASTM F136.</small></li>
+        <li><b>11,40 – 12,60 s · Equipo</b><small>Cinco artistas, un mismo estándar.</small></li>
+        <li><b>12,60 – 15,00 s · CTA</b><small>Emblema, “Agenda tu hora”, WhatsApp, dirección y usuario.</small></li>
+      </ol>
+
+      <h2>Cómo se hizo</h2>
+      <p class="sub" style="font-size:14.5px">Se auditó el material crudo y se descartaron las tarjetas promocionales
+      antiguas y los rótulos quemados del story. Cada clip se reencuadró a 9:16 con 20 % de overscan para poder
+      hacer zooms y paneos sin perder resolución, y se convirtió el clip HDR (HLG/BT.2020) a BT.709 para que el color
+      no cambie entre planos. La música se reeditó a una grilla de negras y se le sumó foley sintetizado en cada corte.</p>
+
+      <div class="dl">
+        <a class="ghost" href="REEL_A_COMERCIAL_GUIA.md">Guía: de reel a comercial</a>
+        <a class="ghost" href="ENTREGA_REEL_COMERCIAL_15S.md">Ficha de entrega</a>
+        <a class="ghost" href="film/storyboard_reel_abyss_15s.jpg">Storyboard</a>
+        <a class="ghost" href="film/auditoria_edicion_material_reel.jpg">Auditoría del material</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet">
+    <img src="film/storyboard_reel_abyss_15s.jpg" alt="Storyboard del reel comercial con planos, lentes, copy y función comercial">
+  </div>
+
+  <footer>ABYSS TATTOO STUDIO · José Joaquín Pérez 528, San Bernardo · +56 9 4778 6839 · @abyss_tattoo_studio</footer>
+</div>
+</body>
+</html>
