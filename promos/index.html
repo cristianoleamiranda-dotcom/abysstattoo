@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ABYSS CREATOR SUITE — CapCut PRO #InvitaHalloween + Remaster 4K 60FPS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-void: #07060a;
+      --bg-surface: #0e0c15;
+      --bg-elevated: #171324;
+      --orange: #ff6b1a;
+      --purple: #9b38ff;
+      --green: #39ff88;
+      --gold: #c9a96e;
+      --border: rgba(255, 107, 26, 0.28);
+      --ivory: #f6f3ee;
+      --muted: #a8a2b5;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: radial-gradient(circle at 20% 0%, #1d1030 0%, var(--bg-void) 48%), var(--bg-void);
+      color: var(--ivory);
+      font-family: 'Montserrat', system-ui, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container { max-width: 1320px; margin: 0 auto; padding: 30px 22px 84px; }
+
+    header {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      gap: 18px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 28px;
+    }
+    .brand { display: flex; align-items: center; gap: 15px; }
+    .brand img { width: 52px; height: 52px; border-radius: 50%; border: 1.5px solid var(--orange); background: #000; }
+    .eyebrow { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--green); font-weight: 700; }
+    h1 { font-family: 'Cinzel', serif; font-size: clamp(21px, 2.8vw, 30px); letter-spacing: 0.06em; margin-top: 2px; }
+
+    .mode-switcher { display: flex; gap: 10px; flex-wrap: wrap; }
+    .mode-btn {
+      background: var(--bg-elevated); color: var(--ivory); border: 1px solid rgba(255,255,255,0.14);
+      padding: 11px 18px; border-radius: 10px; font-family: inherit; font-size: 12px; font-weight: 700;
+      cursor: pointer; letter-spacing: 0.05em; text-transform: uppercase; transition: all 0.2s;
+    }
+    .mode-btn.active { background: linear-gradient(135deg, var(--orange), #b833ff); border-color: var(--green); color: #fff; }
+
+    .kpi-strip {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(205px, 1fr));
+      gap: 14px; margin-bottom: 30px;
+    }
+    .kpi {
+      background: var(--bg-surface); border: 1px solid var(--border); border-radius: 13px; padding: 15px 18px;
+    }
+    .kpi .k-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+    .kpi .k-val { font-size: 21px; font-weight: 800; color: var(--orange); margin-top: 5px; }
+    .kpi .k-sub { font-size: 11.5px; color: var(--ivory); opacity: 0.88; margin-top: 3px; }
+
+    .workspace {
+      display: grid; grid-template-columns: 420px 1fr; gap: 28px; align-items: start; margin-bottom: 48px;
+    }
+    @media (max-width: 960px) { .workspace { grid-template-columns: 1fr; } }
+
+    .stage-wrap {
+      background: var(--bg-surface); border: 1px solid var(--border); border-radius: 16px;
+      padding: 16px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+    }
+    .variant-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+    .tab-btn {
+      background: var(--bg-elevated); color: var(--muted); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 9px; padding: 10px 8px; cursor: pointer; font-family: inherit;
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+    }
+    .tab-btn.active { border-color: var(--orange); color: var(--ivory); background: rgba(255, 107, 26, 0.2); }
+
+    .viewport-916 {
+      position: relative; width: 100%; aspect-ratio: 9 / 16; background: #000;
+      border-radius: 11px; overflow: hidden;
+    }
+    .viewport-916 video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .panel {
+      background: var(--bg-surface); border: 1px solid rgba(155, 56, 255, 0.3);
+      border-radius: 16px; padding: 24px; margin-bottom: 22px;
+    }
+    .panel h2 { font-size: 18px; font-weight: 800; color: var(--orange); margin-bottom: 8px; letter-spacing: 0.03em; }
+    .panel p.lead { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+
+    .copy-box {
+      background: var(--bg-elevated); border: 1px solid rgba(57, 255, 136, 0.35);
+      border-radius: 11px; padding: 13px 15px; margin-bottom: 12px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .copy-box code { font-size: 12.5px; color: var(--green); word-break: break-word; font-weight: 600; }
+    .copy-btn {
+      background: var(--green); color: #050a07; border: none; border-radius: 8px;
+      padding: 8px 13px; font-family: inherit; font-size: 11px; font-weight: 800;
+      cursor: pointer; white-space: nowrap; text-transform: uppercase;
+    }
+
+    .dl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(245px, 1fr)); gap: 13px; }
+    .dl-card {
+      background: var(--bg-elevated); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px;
+    }
+    .dl-card.featured { border-color: var(--orange); }
+    .dl-tag { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green); font-weight: 700; }
+    .dl-title { font-size: 14px; font-weight: 700; color: var(--ivory); margin-top: 4px; }
+    .dl-spec { font-size: 11.5px; color: var(--muted); margin-top: 4px; }
+    .dl-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .dl-link {
+      flex: 1; text-align: center; text-decoration: none; padding: 9px 10px; border-radius: 8px;
+      font-size: 11px; font-weight: 700; text-transform: uppercase; background: var(--orange); color: #fff;
+    }
+    .dl-link.secondary { background: transparent; color: var(--purple); border: 1px solid var(--purple); }
+
+    .clips-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 14px; }
+    .clip-pill {
+      display: block; text-decoration: none; background: var(--bg-elevated);
+      border: 1px solid rgba(155, 56, 255, 0.35); border-radius: 10px; padding: 10px 12px;
+      color: var(--ivory); font-size: 11.5px; font-weight: 600; transition: border-color 0.18s;
+    }
+    .clip-pill:hover { border-color: var(--green); color: var(--green); }
+
+    .posters-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 18px; }
+    @media (max-width: 760px) { .posters-row { grid-template-columns: 1fr; } }
+    .posters-row img { width: 100%; border-radius: 12px; border: 1px solid var(--border); }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <img src="/assets/logo_abyss_256.png" alt="Abyss Studio" onerror="this.style.display='none'" />
+        <div>
+          <div class="eyebrow">CapCut Creator Task ID 307926551812 · Vigente 19/10 – 26/10/2026</div>
+          <h1>🎃 PRO | #InvitaHalloween + Remaster 4K 60FPS</h1>
+        </div>
+      </div>
+      <div class="mode-switcher">
+        <button class="mode-btn active" id="modeHalloween" onclick="switchSuite('halloween')">🎃 Misión CapCut #InvitaHalloween</button>
+        <button class="mode-btn" id="modeRemaster" onclick="switchSuite('remaster')">◈ Promos Abyss 4K UHD &amp; 60FPS</button>
+      </div>
+    </header>
+
+    <!-- SUITE 1: CAPCUT PRO #InvitaHalloween -->
+    <div id="suiteHalloween">
+      <section class="kpi-strip">
+        <div class="kpi">
+          <div class="k-label">Duración Oficial</div>
+          <div class="k-val">16.00 Segundos</div>
+          <div class="k-sub">Cumple exacto rango obligatorio 12–20s (960 frames @ 60fps)</div>
+        </div>
+        <div class="kpi">
+          <div class="k-label">Bloque Datos Evento</div>
+          <div class="k-val">3.70 Segundos</div>
+          <div class="k-sub">Pantalla exclusiva (supera mínimo obligatorio de 2.0s)</div>
+        </div>
+        <div class="kpi">
+          <div class="k-label">Escenas &amp; Paleta</div>
+          <div class="k-val">6 Clips @ 60 FPS</div>
+          <div class="k-sub">Negro + Naranja + Morado + Verde Acento · Cero franquicias</div>
+        </div>
+        <div class="kpi">
+          <div class="k-label">Hashtags Obligatorios</div>
+          <div class="k-val" style="color: var(--green); font-size: 16px;">#🎃 #InvitaHalloween</div>
+          <div class="k-sub">+ #Halloween + #Celebración + #MundialPRO</div>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <div class="stage-wrap">
+          <div class="variant-tabs">
+            <button class="tab-btn active" id="hwTabUni" onclick="setHwVideo('uni')">🎃 Plantilla Universal</button>
+            <button class="tab-btn" id="hwTabAbyss" onclick="setHwVideo('abyss')">🖤 Edición Abyss Party</button>
+          </div>
+          <div class="viewport-916">
+            <video id="hwPlayer" src="/promos/invita_halloween/invita_halloween_pro_master_1080x1920_60fps.mp4" poster="/promos/invita_halloween/poster_hook.jpg" controls autoplay loop playsinline></video>
+          </div>
+        </div>
+
+        <div>
+          <div class="panel">
+            <h2>1. Copiar en 1 Clic para Publicar en CapCut Creator Center</h2>
+            <p class="lead">Pega este texto exacto en el título/descripción al subir tu plantilla en la misión <code>307926551812</code>:</p>
+            <div class="copy-box">
+              <code id="htText">Invitación Halloween Party Editable 🎃👻 #🎃 #InvitaHalloween #Halloween #Celebración #MundialPRO</code>
+              <button class="copy-btn" onclick="copyElem('htText', this)">Copiar HTs</button>
+            </div>
+            <div class="copy-box">
+              <code id="infoBlockText">📅 SÁBADO 31 DE OCTUBRE · 🕙 22:00 HRS · 📍 [TU DIRECCIÓN / BAR] · 🎭 DRESS CODE: DISFRAZ CREATIVO</code>
+              <button class="copy-btn" onclick="copyElem('infoBlockText', this)">Copiar Datos</button>
+            </div>
+
+            <h2 style="margin-top: 22px;">2. Descargas Directas — Pack Completo 60 FPS + Proyecto Editable CapCut</h2>
+            <div class="dl-grid">
+              <div class="dl-card featured">
+                <div>
+                  <div class="dl-tag">Proyecto Editable CapCut PC + 6 Clips</div>
+                  <div class="dl-title">CapCut_Proyecto_InvitaHalloween_PRO.zip</div>
+                  <div class="dl-spec">Incluye <code>draft_content.json</code> con textos editables + los 6 clips limpios 1080×1920 @ 60fps + guía.</div>
+                </div>
+                <div class="dl-actions">
+                  <a class="dl-link" href="/promos/invita_halloween/CapCut_Proyecto_InvitaHalloween_PRO.zip" download>⬇ Descargar ZIP</a>
+                  <a class="dl-link secondary" href="https://www.dropbox.com/scl/fi/e1ag90lca69pxwocoszlx/CapCut_Proyecto_InvitaHalloween_PRO.zip?rlkey=qqg2z868ibjva7tun9a6cqnnk&dl=1" target="_blank" rel="noopener">☁ Dropbox</a>
+                </div>
+              </div>
+
+              <div class="dl-card featured">
+                <div>
+                  <div class="dl-tag">Master Universal · 16.0s @ 60 FPS</div>
+                  <div class="dl-title">invita_halloween_pro_master_60fps.mp4</div>
+                  <div class="dl-spec">1080×1920 @ 60.00 fps · BT.709 · Audio Spooky-Synth 125 BPM (-14 LUFS) listo para vista previa/uso.</div>
+                </div>
+                <div class="dl-actions">
+                  <a class="dl-link" href="/promos/invita_halloween/invita_halloween_pro_master_1080x1920_60fps.mp4" download>⬇ Descargar MP4</a>
+                  <a class="dl-link secondary" href="https://www.dropbox.com/scl/fi/uovuxmadu9ba0u272ff0p/invita_halloween_pro_master_1080x1920_60fps.mp4?rlkey=5h7iujz1vo29uhg2qbc9q84h6&dl=1" target="_blank" rel="noopener">☁ Dropbox</a>
+                </div>
+              </div>
+
+              <div class="dl-card">
+                <div>
+                  <div class="dl-tag">Bonus · Edición Abyss Tattoo Studio</div>
+                  <div class="dl-title">invita_halloween_abyss_edition_60fps.mp4</div>
+                  <div class="dl-spec">1080×1920 @ 60.00 fps · Invitación Halloween Flash Night &amp; Party para Reels/TikTok de Abyss.</div>
+                </div>
+                <div class="dl-actions">
+                  <a class="dl-link" href="/promos/invita_halloween/invita_halloween_abyss_edition_1080x1920_60fps.mp4" download>⬇ Descargar MP4</a>
+                  <a class="dl-link secondary" href="https://www.dropbox.com/scl/fi/tz1sks8g9da3lfhxr1l0g/invita_halloween_abyss_edition_1080x1920_60fps.mp4?rlkey=edf5klqzxk2z879hwaq60mcjw&dl=1" target="_blank" rel="noopener">☁ Dropbox</a>
+                </div>
+              </div>
+            </div>
+
+            <h2 style="margin-top: 22px;">3. Clips Individuales Limpios @ 60 FPS (Para armar en CapCut Móvil en 1 minuto)</h2>
+            <p class="lead" style="margin-bottom: 8px;">Importa estos 6 clips en orden en CapCut App, agrega los textos nativos editables y elige música de Halloween autorizada de CapCut:</p>
+            <div class="clips-strip">
+              <a class="clip-pill" href="/promos/invita_halloween/clips_editables_capcut/clip_01_hook_1080x1920_60fps.mp4" download>⬇ Clip 01 · Hook Entrada (2.5s)</a>
+              <a class="clip-pill" href="/promos/invita_halloween/clips_editables_capcut/clip_02_snacks_1080x1920_60fps.mp4" download>⬇ Clip 02 · Snacks &amp; Drinks (2.5s)</a>
+              <a class="clip-pill" href="/promos/invita_halloween/clips_editables_capcut/clip_03_disfraces_1080x1920_60fps.mp4" download>⬇ Clip 03 · Disfraces (2.5s)</a>
+              <a class="clip-pill" href="/promos/invita_halloween/clips_editables_capcut/clip_04_datos_evento_1080x1920_60fps.mp4" download>⬇ Clip 04 · Fondo Datos (3.7s)</a>
+              <a class="clip-pill" href="/promos/invita_halloween/clips_editables_capcut/clip_05_photospot_1080x1920_60fps.mp4" download>⬇ Clip 05 · Photo Spot (2.3s)</a>
+              <a class="clip-pill" href="/promos/invita_halloween/clips_editables_capcut/clip_06_cta_1080x1920_60fps.mp4" download>⬇ Clip 06 · Cierre CTA (2.5s)</a>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h2>Vista Previa de Pantallas Clave Renderizadas (1080×1920 @ 60 FPS)</h2>
+            <div class="posters-row">
+              <img src="/promos/invita_halloween/poster_hook.jpg" alt="Hook Inicial" />
+              <img src="/promos/invita_halloween/poster_datos_evento.jpg" alt="Pantalla Exclusiva Datos Evento 3.7s" />
+              <img src="/promos/invita_halloween/poster_cta.jpg" alt="Cierre CTA" />
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- SUITE 2: REMASTER 4K UHD & 60FPS PROMOS ABYSS -->
+    <div id="suiteRemaster" class="hidden">
+      <div class="panel">
+        <h2>Masters Remasterizados 4K UHD &amp; 60 FPS — Abyss Tattoo Studio</h2>
+        <p class="lead">Ambos videos promocionales remasterizados con Real-ESRGAN DNI 4K + RIFE v4.6 (60fps) + reparación de diamantes <code>◈</code> + Audio EBU R128 (-14.3 LUFS):</p>
+        <div class="dl-grid">
+          <div class="dl-card featured">
+            <div>
+              <div class="dl-tag">Promo 1 · 4K UHD 60FPS</div>
+              <div class="dl-title">Agenda Tu Hora → (2160×3840)</div>
+              <div class="dl-spec">58 MB · H.264 High L5.2 · AAC 306k</div>
+            </div>
+            <div class="dl-actions">
+              <a class="dl-link" href="https://www.dropbox.com/scl/fi/7kn2phxrdevsizerriita/abyss_promo_v1_agenda_tu_hora_2160x3840_60fps_4k_master.mp4?rlkey=756sxucr36ak25az89wuk2efe&dl=1" target="_blank" rel="noopener">☁ Dropbox 4K</a>
+              <a class="dl-link secondary" href="/promos/abyss_promo_v1_agenda_tu_hora_1080x1920_60fps_social.mp4" download>⬇ 1080p60 Social</a>
+            </div>
+          </div>
+          <div class="dl-card featured">
+            <div>
+              <div class="dl-tag">Promo 2 · 4K UHD 60FPS</div>
+              <div class="dl-title">Reservar Con Marco → (2160×3840)</div>
+              <div class="dl-spec">58 MB · H.264 High L5.2 · AAC 306k</div>
+            </div>
+            <div class="dl-actions">
+              <a class="dl-link" href="https://www.dropbox.com/scl/fi/ygyict55gtbhsv73u8ezb/abyss_promo_v2_reservar_con_marco_2160x3840_60fps_4k_master.mp4?rlkey=qkpz8oogb1hdqrvwkvxm2cwc0&dl=1" target="_blank" rel="noopener">☁ Dropbox 4K</a>
+              <a class="dl-link secondary" href="/promos/abyss_promo_v2_reservar_con_marco_1080x1920_60fps_social.mp4" download>⬇ 1080p60 Social</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function switchSuite(which) {
+      document.getElementById('suiteHalloween').classList.toggle('hidden', which !== 'halloween');
+      document.getElementById('suiteRemaster').classList.toggle('hidden', which !== 'remaster');
+      document.getElementById('modeHalloween').classList.toggle('active', which === 'halloween');
+      document.getElementById('modeRemaster').classList.toggle('active', which === 'remaster');
+    }
+
+    function setHwVideo(mode) {
+      const p = document.getElementById('hwPlayer');
+      document.getElementById('hwTabUni').classList.toggle('active', mode === 'uni');
+      document.getElementById('hwTabAbyss').classList.toggle('active', mode === 'abyss');
+      p.src = mode === 'uni'
+        ? '/promos/invita_halloween/invita_halloween_pro_master_1080x1920_60fps.mp4'
+        : '/promos/invita_halloween/invita_halloween_abyss_edition_1080x1920_60fps.mp4';
+      p.play().catch(() => {});
+    }
+
+    function copyElem(id, btn) {
+      const txt = document.getElementById(id).textContent;
+      navigator.clipboard.writeText(txt).then(() => {
+        const prev = btn.textContent;
+        btn.textContent = '✓ ¡Copiado!';
+        setTimeout(() => { btn.textContent = prev; }, 1600);
+      });
+    }
+  </script>
+</body>
+</html>
