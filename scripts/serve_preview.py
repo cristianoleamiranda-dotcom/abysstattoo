@@ -8,6 +8,16 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
 
 class RangeHTTPRequestHandler(SimpleHTTPRequestHandler):
+    def do_GET(self):
+        if self.path in ("/", "/?"):
+            self.path = "/reel.html"
+        return super().do_GET()
+
+    def do_HEAD(self):
+        if self.path in ("/", "/?"):
+            self.path = "/reel.html"
+        return super().do_HEAD()
+
     def send_head(self):
         path = self.translate_path(self.path)
         if os.path.isdir(path) or "Range" not in self.headers or not os.path.isfile(path):

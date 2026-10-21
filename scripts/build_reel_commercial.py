@@ -57,6 +57,17 @@ POSTER_CTA = "film/reel_comercial_abyss_15s_poster_cta.jpg"
 COVER_HOOK = "film/reel_comercial_abyss_15s_cover_hook.jpg"
 
 PLATES = "assets/reel_plates"
+PLATES_CACHE = "/tmp/abyss_build_cache"
+
+
+def plate_path(name: str) -> str:
+    p1 = os.path.join(PLATES, name)
+    if os.path.exists(p1):
+        return p1
+    p2 = os.path.join(PLATES_CACHE, name)
+    if os.path.exists(p2):
+        return p2
+    raise FileNotFoundError(name)
 
 # ---------------------------------------------------------------- carga de placas en RAM
 still_cache = {}
@@ -67,7 +78,7 @@ def load_still_rgb(name: str) -> np.ndarray:
     if name not in still_cache:
         if len(still_cache) >= 3:
             still_cache.clear()
-        bgr = cv2.imread(os.path.join(PLATES, name))
+        bgr = cv2.imread(plate_path(name))
         if bgr is None:
             raise FileNotFoundError(name)
         still_cache[name] = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
@@ -77,7 +88,7 @@ def load_still_rgb(name: str) -> np.ndarray:
 def load_video_rgb(name: str):
     if name not in video_cache:
         video_cache.clear()  # mantiene solo la toma activa en RAM (< 650 MB pico total)
-        cap = cv2.VideoCapture(os.path.join(PLATES, name))
+        cap = cv2.VideoCapture(plate_path(name))
         vfps = cap.get(cv2.CAP_PROP_FPS) or 30.0
         frames = []
         while True:

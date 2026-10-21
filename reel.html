@@ -3,63 +3,78 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Reel Comercial 15s — Abyss Tattoo Studio · José Joaquín Pérez 528</title>
+<title>Sala de Proyección — Reel Comercial 15s · Abyss Tattoo Studio (528)</title>
 <style>
   :root{
-    --obs:#14100D; --panel:#1A1512; --bone:#B5A295; --cream:#EAE3DD;
+    --obs:#14100D; --panel:#1A1512; --card:#211B17; --bone:#B5A295; --cream:#EAE3DD;
     --paper:#F6F1ED; --sage:#556C65; --teal:#9EC4BA; --line:rgba(181,162,149,.22);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{
-    background:radial-gradient(900px 600px at 26% 18%, rgba(85,108,101,.18), transparent 70%), var(--obs);
+    background:radial-gradient(950px 620px at 24% 14%, rgba(85,108,101,.20), transparent 70%), var(--obs);
     color:var(--cream); font-family:Montserrat,system-ui,-apple-system,sans-serif;
-    min-height:100vh; padding:32px 24px 72px;
+    min-height:100vh; padding:28px 22px 72px;
   }
-  .wrap{max-width:1220px;margin:0 auto}
+  .wrap{max-width:1240px;margin:0 auto}
   .topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;
-    padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:30px}
-  .eyebrow{letter-spacing:.32em;font-size:11px;color:var(--teal);text-transform:uppercase;font-weight:700}
-  .navlink{color:var(--bone);text-decoration:none;font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+    padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:28px}
+  .eyebrow{letter-spacing:.30em;font-size:11px;color:var(--teal);text-transform:uppercase;font-weight:700}
+  .navlink{color:var(--bone);text-decoration:none;font-size:12px;letter-spacing:.15em;text-transform:uppercase;
     border:1px solid var(--line);padding:9px 16px;border-radius:999px;transition:.2s}
   .navlink:hover{border-color:var(--teal);color:var(--paper)}
-  .grid{display:grid;grid-template-columns:minmax(310px,410px) 1fr;gap:46px;align-items:start}
-  @media(max-width:900px){.grid{grid-template-columns:1fr;justify-items:center}}
-  .stage{
-    position:relative;width:100%;max-width:410px;aspect-ratio:9/16;background:#0a0807;
-    border-radius:20px;overflow:hidden;border:1px solid var(--line);
-    box-shadow:0 30px 90px rgba(0,0,0,.78), 0 0 0 1px rgba(255,255,255,.04);
+  .grid{display:grid;grid-template-columns:minmax(310px,420px) 1fr;gap:42px;align-items:start}
+  @media(max-width:920px){.grid{grid-template-columns:1fr;justify-items:center}}
+  .player-col{width:100%;max-width:420px}
+  .tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+  .tab{
+    background:var(--panel);color:var(--bone);border:1px solid var(--line);border-radius:10px;
+    padding:9px 10px;font-size:11.5px;font-weight:700;letter-spacing:.08em;cursor:pointer;
+    text-align:left;transition:.18s;line-height:1.35;
   }
+  .tab small{display:block;font-weight:500;color:rgba(234,227,221,.62);font-size:10.5px;margin-top:2px}
+  .tab.active{background:rgba(85,108,101,.28);border-color:var(--teal);color:var(--paper)}
+  .stage{
+    position:relative;width:100%;aspect-ratio:9/16;background:#0a0807;
+    border-radius:20px;overflow:hidden;border:1px solid var(--line);
+    box-shadow:0 30px 90px rgba(0,0,0,.80), 0 0 0 1px rgba(255,255,255,.04);
+    transition:aspect-ratio .25s ease;
+  }
+  .stage.ratio-4x5{aspect-ratio:4/5}
   video{width:100%;height:100%;object-fit:cover;display:block}
-  h1{font-family:Cinzel,Georgia,serif;font-weight:800;font-size:clamp(28px,3.5vw,44px);
-    letter-spacing:.06em;color:var(--paper);line-height:1.14;margin:10px 0 14px}
-  p.lead{color:var(--bone);line-height:1.68;font-size:15px;max-width:60ch;margin-bottom:22px}
-  .actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:26px}
+  h1{font-family:Cinzel,Georgia,serif;font-weight:800;font-size:clamp(27px,3.4vw,42px);
+    letter-spacing:.05em;color:var(--paper);line-height:1.14;margin:10px 0 14px}
+  p.lead{color:var(--bone);line-height:1.66;font-size:14.8px;max-width:62ch;margin-bottom:20px}
+  .badges-confirm{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+  .badge-ok{font-size:11.5px;padding:6px 12px;border-radius:999px;background:rgba(85,108,101,.22);
+    border:1px solid rgba(158,196,186,.36);color:var(--teal);font-weight:600;letter-spacing:.04em}
+  .actions{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px}
   .btn{
-    display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border-radius:999px;
-    font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:9px;padding:12px 20px;border-radius:999px;
+    font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
     text-decoration:none;cursor:pointer;border:1px solid var(--line);transition:.2s;
   }
   .btn-primary{background:var(--paper);color:var(--obs);border-color:var(--paper)}
   .btn-primary:hover{background:#fff;transform:translateY(-1px)}
-  .btn-ghost{background:rgba(26,21,18,.8);color:var(--cream)}
+  .btn-ghost{background:rgba(26,21,18,.86);color:var(--cream)}
   .btn-ghost:hover{border-color:var(--teal);color:var(--paper)}
-  .specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;
-    margin-bottom:26px}
-  .spec{background:var(--panel);border:1px solid var(--line);padding:13px 15px;border-radius:10px}
-  .spec b{display:block;font-size:10.5px;letter-spacing:.22em;color:var(--teal);
-    text-transform:uppercase;margin-bottom:5px}
-  .spec span{font-size:13.5px;color:var(--paper);font-weight:600}
-  h2{font-family:Cinzel,Georgia,serif;font-size:15px;letter-spacing:.22em;color:var(--paper);
-    text-transform:uppercase;margin:24px 0 12px}
+  .specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:10px;margin-bottom:24px}
+  .spec{background:var(--panel);border:1px solid var(--line);padding:12px 14px;border-radius:10px}
+  .spec b{display:block;font-size:10px;letter-spacing:.22em;color:var(--teal);text-transform:uppercase;margin-bottom:4px}
+  .spec span{font-size:13px;color:var(--paper);font-weight:600}
+  h2{font-family:Cinzel,Georgia,serif;font-size:14.5px;letter-spacing:.20em;color:var(--paper);
+    text-transform:uppercase;margin:22px 0 10px}
   ol.shots{list-style:none;border-top:1px solid var(--line)}
-  ol.shots li{display:grid;grid-template-columns:92px 190px 1fr;gap:14px;padding:9px 2px;
-    border-bottom:1px solid rgba(181,162,149,.1);font-size:12.8px;align-items:baseline;cursor:pointer;transition:.15s}
-  ol.shots li:hover{background:rgba(158,196,186,.06);padding-left:8px}
+  ol.shots li{display:grid;grid-template-columns:88px 182px 1fr;gap:12px;padding:8.5px 4px;
+    border-bottom:1px solid rgba(181,162,149,.1);font-size:12.6px;align-items:baseline;cursor:pointer;transition:.15s}
+  ol.shots li:hover{background:rgba(158,196,186,.08);padding-left:10px}
   ol.shots time{font-variant-numeric:tabular-nums;color:var(--teal);font-weight:700;letter-spacing:.04em}
   ol.shots em{font-style:normal;color:var(--paper);font-weight:600}
   ol.shots span{color:var(--bone)}
   @media(max-width:640px){ol.shots li{grid-template-columns:80px 1fr}ol.shots span{grid-column:2}}
-  .sheets{margin-top:46px;display:grid;gap:28px}
+  .copy-box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:22px}
+  .copy-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px}
+  .copy-pre{white-space:pre-wrap;font-size:12.8px;line-height:1.6;color:var(--cream);font-family:inherit}
+  .sheets{margin-top:44px;display:grid;gap:28px}
   .card-img{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
   .card-img img{width:100%;height:auto;border-radius:8px;display:block;margin-top:12px;border:1px solid rgba(181,162,149,.16)}
 </style>
@@ -69,51 +84,77 @@
 <body>
 <div class="wrap">
   <div class="topbar">
-    <div class="eyebrow">Abyss Tattoo Studio · Spot Comercial Vertical 9:16</div>
-    <a class="navlink" href="index.html">← Volver al sitio oficial</a>
+    <div class="eyebrow">Abyss Tattoo Studio · Campaña Audiovisual Comercial 15s (Numeración Oficial 528)</div>
+    <a class="navlink" href="index.html">Ver Sitio Oficial Completo →</a>
   </div>
 
   <div class="grid">
-    <div class="stage">
-      <video id="reel" controls playsinline loop preload="auto"
-             poster="film/reel_comercial_abyss_15s_cover_hook.jpg">
-        <source src="film/reel_comercial_abyss_15s_1080x1920_60fps_social.mp4" type="video/mp4">
-        <source src="film/reel_comercial_abyss_15s_1080x1920_30fps_web.mp4" type="video/mp4">
-      </video>
+    <div class="player-col">
+      <div class="tabs">
+        <button class="tab active" onclick="switchCut(0, this)">
+          9:16 · Hook A (Arte)
+          <small>1080×1920 · 60 fps Master</small>
+        </button>
+        <button class="tab" onclick="switchCut(1, this)">
+          9:16 · Hook B (Dron 528)
+          <small>1080×1920 · 60 fps Local Ads</small>
+        </button>
+        <button class="tab" onclick="switchCut(2, this)">
+          4:5 · Feed Instagram
+          <small>1080×1350 · Nativo Meta Ads</small>
+        </button>
+        <button class="tab" onclick="switchCut(3, this)">
+          9:16 · Ligero Web / WA
+          <small>1080×1920 · 30 fps Rápido</small>
+        </button>
+      </div>
+
+      <div id="stage" class="stage">
+        <video id="reel" controls playsinline loop preload="auto"
+               poster="film/reel_comercial_abyss_15s_cover_hook.jpg"
+               src="film/reel_comercial_abyss_15s_1080x1920_60fps_social.mp4">
+        </video>
+      </div>
     </div>
 
     <div class="meta">
       <div class="eyebrow">José Joaquín Pérez 528 · San Bernardo · Santiago</div>
-      <h1>Reel Comercial 15s<br>Abyss Tattoo Studio</h1>
+      <h1>Pack Comercial 15s<br>Abyss Tattoo Studio</h1>
       <p class="lead">
-        Spot publicitario vertical masterizado a 60&nbsp;fps desde material real curado, recortado y etalonado en BT.709:
-        12 planos con rig de cámara virtual 3D sub-píxel, vuelo FPV de dron, fachada verificada en numeración <b>528</b>,
-        cabina Seremi, <i>Ink Wipe Reveal</i>, joyería de Titanio ASTM&nbsp;F136 y Packshot CTA directo.
+        Campaña publicitaria completa producida tras auditar, recortar y etalonar todo el material fuente en BT.709:
+        <b>Máster 9:16 Social a 60&nbsp;fps</b> (Hook Macro Aguja), <b>Variante A/B Local a 60&nbsp;fps</b> (Vuelo FPV Dron sobre San Bernardo),
+        <b>Adaptación Nativa 4:5 Feed (1080×1350)</b> y <b>Versión Web/WhatsApp 30&nbsp;fps</b>.
       </p>
+
+      <div class="badges-confirm">
+        <span class="badge-ok">✓ Dirección confirmada: José Joaquín Pérez 528</span>
+        <span class="badge-ok">✓ Cero precios ni promociones pasadas</span>
+        <span class="badge-ok">✓ 12 planos · Rig 3D sub-píxel · 100 BPM</span>
+      </div>
 
       <div class="actions">
         <button class="btn btn-primary" onclick="const v=document.getElementById('reel');v.muted=false;v.currentTime=0;v.play();">
           ♦ Reproducir con sonido
         </button>
-        <a class="btn btn-ghost" download href="film/reel_comercial_abyss_15s_1080x1920_60fps_social.mp4">
-          Descargar máster 60 fps (Social)
+        <a id="dl-active" class="btn btn-ghost" download href="film/reel_comercial_abyss_15s_1080x1920_60fps_social.mp4">
+          Descargar versión activa
         </a>
-        <a class="btn btn-ghost" download href="film/reel_comercial_abyss_15s_1080x1920_30fps_web.mp4">
-          Descargar versión 30 fps (Web)
+        <a class="btn btn-ghost" download href="film/reel_comercial_abyss_15s_1080x1350_4x5_feed.mp4">
+          Descargar 4:5 Feed (1080×1350)
         </a>
-        <a class="btn btn-ghost" target="_blank" rel="noopener" href="https://wa.me/56947786839?text=Hola%20Abyss%20Tattoo%20Studio,%20vi%20el%20Reel%20 y%20quiero%20agendar%20mi%20hora.">
+        <a class="btn btn-ghost" target="_blank" rel="noopener" href="https://wa.me/56947786839?text=Hola%20Abyss%20Tattoo%20Studio,%20vi%20el%20Reel%20y%20quiero%20cotizar%20mi%20idea.">
           WhatsApp +56 9 4778 6839
         </a>
       </div>
 
       <div class="specs">
-        <div class="spec"><b>Formato</b><span>1080 × 1920 · 9:16 BT.709</span></div>
-        <div class="spec"><b>Duración</b><span>15.00 s · 900 frames @ 60 fps</span></div>
+        <div class="spec"><b>Formatos incluidos</b><span>9:16 (60/30 fps) + 4:5 Nativo</span></div>
+        <div class="spec"><b>Duración exacta</b><span>15.00 s · 25 negras @ 100 BPM</span></div>
         <div class="spec"><b>Dirección verificada</b><span>José Joaquín Pérez 528</span></div>
-        <div class="spec"><b>Sonido</b><span>48 kHz Estéreo · 100 BPM + Foley</span></div>
+        <div class="spec"><b>Diseño sonoro</b><span>48 kHz Estéreo + Foley Estudio</span></div>
       </div>
 
-      <h2>Escaleta interactiva (haz clic en un plano para ir al instante exacto)</h2>
+      <h2>Escaleta interactiva (clic en cualquier plano para saltar en el reproductor)</h2>
       <ol class="shots">
         <li onclick="seekShot(0.05)"><time>0.00–1.20s</time><em>01 · ECU Macro 100mm</em><span>Video aguja real · Crash pull-back — “Esto no es un tatuaje.”</span></li>
         <li onclick="seekShot(1.25)"><time>1.20–2.40s</time><em>02 · Primer Plano 50mm</em><span>Video chiaroscuro · Punch zoom + whip X — “Es una firma.”</span></li>
@@ -128,12 +169,28 @@
         <li onclick="seekShot(11.45)"><time>11.40–12.60s</time><em>11 · Plano Medio 50mm</em><span>Video artista en cabina + Riser sonoro — “5 Artistas”</span></li>
         <li onclick="seekShot(13.40)"><time>12.60–15.00s</time><em>12 · Packshot CTA</em><span>Emblema + WhatsApp +56 9 4778 6839 · @abyss_tattoo_studio · 528</span></li>
       </ol>
+
+      <div class="copy-box">
+        <div class="copy-head">
+          <div class="eyebrow">Copy listo para Instagram Reels / Meta Ads</div>
+          <button id="copy-btn" class="navlink" style="background:transparent;cursor:pointer" onclick="copyCaption()">Copiar texto</button>
+        </div>
+        <div id="caption-text" class="copy-pre">Esto no es un tatuaje. Es una firma en la piel. ♦
+
+Desde 2009 en el corazón de San Bernardo: 5 artistas residentes, diseño 100 % personalizado, cabina con autorización sanitaria Seremi y perforación clínica con joyería de Titanio Grado Implante ASTM F136.
+
+📍 José Joaquín Pérez 528, San Bernardo
+📲 Agenda tu hora o cotiza tu idea por WhatsApp: +56 9 4778 6839 (link directo en bio)
+🕒 Lunes a Domingo · 10:00 a 20:00 hrs
+
+#AbyssTattooStudio #TatuajesChile #SanBernardo #TatuajesSantiago #RealismoBlackAndGrey #PiercingTitanio #ASTMF136</div>
+      </div>
     </div>
   </div>
 
   <div class="sheets">
     <div class="card-img">
-      <div class="eyebrow">Paso previo al montaje · Auditoría, recorte de rótulos antiguos y etalonaje</div>
+      <div class="eyebrow">Paso previo al montaje · Auditoría, descarte de promos antiguas, corrección 528 y etalonaje BT.709</div>
       <img src="film/auditoria_edicion_material_reel.jpg" alt="Auditoría y curaduría previa del material">
     </div>
     <div class="card-img">
@@ -143,10 +200,36 @@
   </div>
 </div>
 <script>
+const CUTS = [
+  {src: 'film/reel_comercial_abyss_15s_1080x1920_60fps_social.mp4', poster: 'film/reel_comercial_abyss_15s_cover_hook.jpg', ratio: ''},
+  {src: 'film/reel_comercial_abyss_15s_hook_b_local_60fps.mp4', poster: 'film/reel_comercial_abyss_15s_cover_hook_b.jpg', ratio: ''},
+  {src: 'film/reel_comercial_abyss_15s_1080x1350_4x5_feed.mp4', poster: 'film/reel_comercial_abyss_15s_4x5_poster.jpg', ratio: 'ratio-4x5'},
+  {src: 'film/reel_comercial_abyss_15s_1080x1920_30fps_web.mp4', poster: 'film/reel_comercial_abyss_15s_cover_hook.jpg', ratio: ''}
+];
+function switchCut(idx, btn){
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const c = CUTS[idx];
+  const st = document.getElementById('stage');
+  st.className = 'stage ' + c.ratio;
+  const v = document.getElementById('reel');
+  v.pause();
+  v.poster = c.poster;
+  v.src = c.src;
+  document.getElementById('dl-active').href = c.src;
+  v.load();
+  v.play().catch(()=>{});
+}
 function seekShot(sec){
   const v = document.getElementById('reel');
   v.currentTime = sec;
   v.play();
+}
+function copyCaption(){
+  navigator.clipboard.writeText(document.getElementById('caption-text').innerText);
+  const b = document.getElementById('copy-btn');
+  b.textContent = '✓ Copiado';
+  setTimeout(()=>{ b.textContent = 'Copiar texto'; }, 1800);
 }
 </script>
 </body>
