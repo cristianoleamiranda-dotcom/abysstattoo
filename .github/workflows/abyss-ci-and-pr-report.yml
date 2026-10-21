@@ -1,0 +1,80 @@
+name: Abyss CI — Auditoría Audiovisual, PR Bot & GitHub Pages
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main, "arena/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: abyss-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  media-and-brand-audit:
+    name: Auditoría de Másters MP4, Marca (528) & Enlaces
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Ejecutar Acción Personalizada Abyss Media Audit
+        id: media_check
+        uses: ./.github/actions/abyss-media-audit
+        with:
+          report-path: /tmp/abyss-pr-audit.md
+
+      - name: Publicar / Actualizar comentario en Pull Request vía GitHub REST API
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            if (!fs.existsSync('/tmp/abyss-pr-audit.md')) return;
+            const body = fs.readFileSync('/tmp/abyss-pr-audit.md', 'utf8');
+            const marker = '<!-- abyss-media-audit-comment -->';
+
+            let issueNumber = context.payload.pull_request ? context.payload.pull_request.number : null;
+            if (!issueNumber) {
+              const prs = await github.rest.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                head: `${context.repo.owner}:${context.ref.replace('refs/heads/', '')}`,
+                state: 'open'
+              });
+              if (prs.data.length > 0) issueNumber = prs.data[0].number;
+            }
+            if (!issueNumber) return;
+
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber
+            });
+            const existing = comments.data.find(c => c.body && c.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body
+              });
+            }

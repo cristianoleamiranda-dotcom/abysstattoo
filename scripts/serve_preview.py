@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Servidor HTTP con soporte nativo de Range Requests (HTTP 206) para streaming instantáneo MP4."""
+"""Servidor HTTP multi-hilo con soporte de Range Requests (HTTP 206) y CORS/iframe seguro en 0.0.0.0:8000."""
 
 import os
 import re
@@ -7,15 +7,27 @@ import sys
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
 
+class ReusableThreadingHTTPServer(ThreadingHTTPServer):
+    allow_reuse_address = True
+    daemon_threads = True
+
+
 class RangeHTTPRequestHandler(SimpleHTTPRequestHandler):
-    def do_GET(self):
-        if self.path in ("/", "/?"):
+    def end_headers(self):
+        self.send_header("Access-Control-Allow-Origin", "*")
+        super().end_headers()
+
+    def _rewrite_root(self):
+        clean = self.path.split("?", 1)[0]
+        if clean == "/":
             self.path = "/reel.html"
+
+    def do_GET(self):
+        self._rewrite_root()
         return super().do_GET()
 
     def do_HEAD(self):
-        if self.path in ("/", "/?"):
-            self.path = "/reel.html"
+        self._rewrite_root()
         return super().do_HEAD()
 
     def send_head(self):
@@ -61,7 +73,7 @@ class RangeHTTPRequestHandler(SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     os.chdir("/home/user/abysstattoo")
-    port = int(sys.argv[1]) if len(sys.argv) > 1 else 8080
-    srv = ThreadingHTTPServer(("0.0.0.0", port), RangeHTTPRequestHandler)
+    port = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
+    srv = ReusableThreadingHTTPServer(("0.0.0.0", port), RangeHTTPRequestHandler)
     print(f"Serving Abyss preview on 0.0.0.0:{port}", flush=True)
     srv.serve_forever()
