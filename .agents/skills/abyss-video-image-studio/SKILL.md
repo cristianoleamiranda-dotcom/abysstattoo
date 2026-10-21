@@ -1,25 +1,30 @@
 ---
 name: abyss-video-image-studio
-description: Suite activa de edición profesional de imagen y video comercial (PhotoCraft + LightCraft + VectorCraft + FilmCraft + Remotion Reels Best Practices) para Abyss Tattoo Studio. Úsala para curar activos crudos, limpiar capturas/bordes, aplicar etalonaje colorimétrico LAB, componer gráficos vectoriales HUD y masterizar Reels comerciales 9:16 (1080x1920 @ 60fps / 30fps) con escala de planos, tiros de cámara, zooms ópticos, diseño sonoro y CTA de conversión.
+description: >
+  Suite integrada de edición profesional de video, imagen, color, tipografía cinética y sonido publicitario
+  para Abyss Tattoo Studio (José Joaquín Pérez 528, San Bernardo). Aplica auditoría y curaduría previa al montaje,
+  conversión HDR HLG 10-bit -> BT.709, rig de cámara virtual 3D sub-píxel (zooms ópticos, tiros de cámara,
+  perspectiva 3D, speed ramps, whip pans), tipografía editorial en zonas seguras 9:16 y masterización H.264 + AAC 48 kHz.
 ---
 
-# Abyss Video & Image Studio — Active Skill Suite
+# Abyss Video & Image Studio — Skill Activa
 
-## 1. Módulos Activos Integrados
+Implementación ejecutable del ecosistema audiovisual de **Abyss Tattoo Studio** en `/home/user/abysstattoo/scripts/`.
 
-1. **`photocraft` (Curaduría, Reencuadre & Restauración Óptica)**:
-   - Auditoría previa obligatoria de todo activo crudo antes de entrar a línea de tiempo: descartar o reencuadrar capturas con interfaz móvil (barras de estado/Instagram), eliminar textos promocionales obsoletos quemados en bordes, descartar miniaturas `< 100 KB` con macrobloques y reescalar mediante interpolación `Lanczos-4` + máscara de enfoque adaptativa (`Unsharp Mask`).
-2. **`lightcraft` (Etalonaje Colorimétrico & Tone-Mapping BT.709)**:
-   - Conversión de clips HDR HLG (`bt2020nc / arib-std-b67` 10-bit) a curva estándar `BT.709` (`yuv420p`) sin sobreexposición de altas luces.
-   - Revelado unificado en espacio perceptual `CIE LAB` (`CLAHE clipLimit=1.7`) + *Split-Toning* de identidad Abyss: sombras profundas en **Obsidiana/Negro (`#14100D` / `#1E1B18`)**, medios tonos cálidos en **Hueso (`#B5A295` / `#C6B7AB`)**, altas luces en **Crema Editorial (`#EAE3DD` / `#F6F1ED`)** y acento mineral en **Verde Salvia / Teal (`#556C65` / `#6C928A`)**.
-3. **`vectorcraft` (Identidad Gráfica, HUD Óptico & Tipografía Variable)**:
-   - Instanciación de pesos estáticos reales desde fuentes variables oficiales (`Cinzel` 600–800 para titulares clásicos y `Montserrat` 500–800 para UI técnica y CTA).
-   - Visor cinematográfico (`┌ ┐ └ ┘`, indicador `● REC`, distancia focal, clasificación de plano, líneas de llamada `•───╲____`, emblema circular oficial y pastilla CTA de alto contraste).
-   - **Zona Segura Estricta 9:16 (`1080×1920`)**: Todo texto crítico y CTA dentro de `x ∈ [84, 920]`, `y ∈ [220, 1560]` para evitar solapamiento con iconos laterales y descripción inferior de Instagram Reels / TikTok / Meta Ads.
-4. **`filmcraft` + `remotion-best-practices` (Dirección Cinematográfica & Audio Master)**:
-   - Estructura comercial de 15.00 segundos sincronizada a pulso musical (`120 BPM`, `1 beat = 0.50s = 30 frames @ 60fps`):
-     - `0.00s – 2.50s` **Hook**: Interrupción visual en movimiento desde el frame `0` + promesa de valor inmediata.
-     - `2.50s – 7.50s` **Contexto & Autoridad en Vivo**: Progresión de planos (Cenital → Crash Zoom → Macro Aguja ECU → Travelling Gimbal → Plano Americano en Cabina Seremi).
-     - `7.50s – 11.50s` **Payoff de Portafolio**: Montaje rápido al golpe del bombo con contraste de direcciones, zooms y pantalla dividida dual (*Split-Screen*).
-     - `11.50s – 15.00s` **Cierre & CTA Accionable**: Lockup de marca + llamado a la acción único y directo (WhatsApp, dirección verificada y usuario) + loop invisible hacia el frame `0`.
-   - Curvas físicas no lineales (`easeInQuad`, `easeOutQuart`, `easeInOutCubic`, `spring`) + *Directional / Radial Motion Blur* en transiciones rápidas + masterización de audio estéreo `48 kHz` con foley y compresión suave.
+## Módulos activos y scripts ejecutables
+
+| Módulo | Script | Función principal |
+|---|---|---|
+| **PhotoCraft & LightCraft** | `scripts/prepare_commercial_assets.py` | Auditoría y filtrado previo al montaje; descarte de promos antiguas (`20% / 10% / $70.000`) y dirección errónea (`548`); recorte limpio 9:16 + overscan +20 % (`1296×2304`); conversión HDR HLG 10-bit (`bt2020nc / arib-std-b67`) -> `BT.709` SDR; etalonaje LAB CLAHE + split-toning Obsidiana/Salvia/Hueso; extracción radial sub-píxel del emblema circular con canal alfa. |
+| **Audit Proof** | `scripts/build_audit_sheet.py` | Lámina comparativa Antes vs. Después (`film/auditoria_edicion_material_reel.jpg`) documentando recorte de rótulos quemados, corrección de numeración oficial (`528`), descarte de promociones caducadas y tone-mapping HDR. |
+| **VectorCraft & Virtual Rig 3D** | `scripts/reel_kit.py` | Rig de cámara virtual proyectiva 3×3 sub-píxel (`cv2.warpPerspective`: *crash zoom*, *push-in*, *pull-out*, *dolly*, inclinación 3D *pitch/yaw*, *Dutch roll*, vibración orgánica de cámara en mano, *whip-pan shutter blur* y *radial zoom blur*); tipografía con `ink-bbox` real, pastillas CTA con centrado óptico sub-píxel y barrido especular (*shimmer*), y visor HUD estilo Solen (`┌ ┐ └ ┘`, `•───`). |
+| **SoundCraft** | `scripts/build_reel_audio.py` | Mezcla publicitaria estéreo 48 kHz sincronizada a 100 BPM exactos (`0.60 s/negra`): cama musical oficial con *sidechain ducking*, foley de máquina rotativa en macros de aguja, ráfaga aérea FPV en vuelo de dron, obturadores en cortes rápidos, *riser* de tensión, *sub-bass drop* y campana cristalina en el CTA. |
+| **FilmCraft Master** | `scripts/build_reel_commercial.py` + `scripts/build_storyboard.py` | Montaje de 12 planos cinematográficos en **15.00 s exactos (900 frames @ 60 fps)**, masterización `1080×1920` H.264 High Level 4.2 (`BT.709`, `+faststart`, `AAC 192 kbps`), derivada web `30 fps`, portadas `cover_hook.jpg` / `poster_cta.jpg` y storyboard completo (`storyboard_reel_abyss_15s.jpg`). |
+
+## Reglas editoriales e identidad invariables
+
+1. **Dirección oficial verificada**: **José Joaquín Pérez 528, San Bernardo · Santiago** (jamás usar la numeración antigua `548`).
+2. **Prohibición de promociones pasadas**: cero menciones a `20% dcto`, `10% adicional`, `$70.000 CLP`, `2x1` ni campañas temporales vencidas.
+3. **Curaduría previa obligatoria**: auditar resolución, códec, rango dinámico e interfaces quemadas **antes** de incorporar cualquier activo a la línea de tiempo.
+4. **Zonas seguras 9:16 (Instagram Reels / TikTok / Meta Ads)**: textos y CTA estrictamente contenidos en `x ∈ [84, 960]`, `y ∈ [210, 1500]`, dejando el tercio superior/central despejado para lucir el arte y los tatuajes sin obstrucción.
+5. **Paleta cromática oficial**: Obsidiana `#14100D`, Panel `#1A1512`, Hueso `#B5A295`, Crema `#EAE3DD`, Papel `#F6F1ED`, Verde Salvia `#556C65` y Teal Claro `#9EC4BA`.
