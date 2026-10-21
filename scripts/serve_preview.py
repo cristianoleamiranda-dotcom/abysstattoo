@@ -1,63 +1,57 @@
 #!/usr/bin/env python3
-"""Servidor estático mínimo con soporte de Range (necesario para hacer seek en el video del reel)."""
+"""Servidor HTTP con soporte nativo de Range Requests (HTTP 206) para streaming instantáneo MP4."""
 
 import os
 import re
 import sys
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-os.chdir(ROOT)
 
-
-class RangeHandler(SimpleHTTPRequestHandler):
-    protocol_version = "HTTP/1.1"
-
-    def end_headers(self):
-        self.send_header("Accept-Ranges", "bytes")
-        self.send_header("Cache-Control", "no-store")
-        super().end_headers()
-
-    def do_GET(self):
+class RangeHTTPRequestHandler(SimpleHTTPRequestHandler):
+    def send_head(self):
         path = self.translate_path(self.path)
-        if os.path.isdir(path):
-            return super().do_GET()
-        rng = self.headers.get("Range")
-        if not rng or not os.path.isfile(path):
-            return super().do_GET()
-        size = os.path.getsize(path)
-        m = re.match(r"bytes=(\d*)-(\d*)", rng)
+        if os.path.isdir(path) or "Range" not in self.headers or not os.path.isfile(path):
+            return super().send_head()
+        m = re.match(r"bytes=(\d+)-(\d*)", self.headers["Range"])
         if not m:
-            return super().do_GET()
-        start = int(m.group(1)) if m.group(1) else 0
+            return super().send_head()
+        f = open(path, "rb")
+        fs = os.fstat(f.fileno())
+        size = fs.st_size
+        start = int(m.group(1))
         end = int(m.group(2)) if m.group(2) else size - 1
         end = min(end, size - 1)
-        if start > end:
-            self.send_error(416, "Range Not Satisfiable")
-            return
-        ctype = self.guess_type(path)
+        if start >= size:
+            f.close()
+            self.send_error(416, "Requested Range Not Satisfiable")
+            return None
         self.send_response(206)
-        self.send_header("Content-Type", ctype)
+        self.send_header("Content-type", self.guess_type(path))
+        self.send_header("Accept-Ranges", "bytes")
         self.send_header("Content-Range", f"bytes {start}-{end}/{size}")
         self.send_header("Content-Length", str(end - start + 1))
+        self.send_header("Cache-Control", "no-cache")
         self.end_headers()
-        with open(path, "rb") as f:
-            f.seek(start)
-            remaining = end - start + 1
-            while remaining > 0:
-                chunk = f.read(min(262144, remaining))
-                if not chunk:
-                    break
-                try:
-                    self.wfile.write(chunk)
-                except (BrokenPipeError, ConnectionResetError):
-                    return
-                remaining -= len(chunk)
+        f.seek(start)
+        self._range_len = end - start + 1
+        return f
 
-    def log_message(self, fmt, *args):
-        sys.stderr.write("%s - %s\n" % (self.address_string(), fmt % args))
+    def copyfile(self, source, outputfile):
+        rem = getattr(self, "_range_len", None)
+        if rem is None:
+            return super().copyfile(source, outputfile)
+        self._range_len = None
+        while rem > 0:
+            buf = source.read(min(65536, rem))
+            if not buf:
+                break
+            outputfile.write(buf)
+            rem -= len(buf)
 
 
 if __name__ == "__main__":
-    port = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
-    ThreadingHTTPServer(("0.0.0.0", port), RangeHandler).serve_forever()
+    os.chdir("/home/user/abysstattoo")
+    port = int(sys.argv[1]) if len(sys.argv) > 1 else 8080
+    srv = ThreadingHTTPServer(("0.0.0.0", port), RangeHTTPRequestHandler)
+    print(f"Serving Abyss preview on 0.0.0.0:{port}", flush=True)
+    srv.serve_forever()
