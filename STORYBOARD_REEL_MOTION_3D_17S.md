@@ -4,7 +4,7 @@
 **Destino:** Instagram Reels, TikTok y WhatsApp  
 **Objetivo:** mostrar tatuajes reales, proceso, estudio y piercing; cerrar con un CTA inequívoco.
 
-> Este archivo es la nueva guía de montaje de 17 s. El MP4 que ya está publicado en el repositorio es una versión anterior de 15 s; esta especificación no afirma que el nuevo render ya se haya exportado.
+> **Estado: render de 17 s EXPORTADO y verificado** (máster social 60 fps + copia ligera WhatsApp). Detalle completo, mediciones y copy de publicación en `ENTREGA_REEL_MOTION_3D_17S.md`. El MP4 de 15 s sigue publicado como versión anterior.
 
 ## Recursos del repositorio
 
@@ -53,3 +53,21 @@
 3. Comprobar 17.00 s exactos, 1080×1920, 60 fps, H.264, BT.709 y AAC 48 kHz.
 4. Verificar CTA, legibilidad móvil, sincronía de audio y ausencia de texto deformado.
 5. Exportar el máster social y una copia ligera para WhatsApp.
+
+## Entregables exportados según esta guía
+
+| Archivo | Especificación medida |
+|---|---|
+| `film/reel_comercial_abyss_17s_1080x1920_60fps_social.mp4` | Máster social: 1080×1920 · 60 fps · 17.00 s (1020 frames) · H.264 High · BT.709 · AAC 48 kHz estéreo · 11.9 MB |
+| `film/reel_comercial_abyss_17s_720x1280_30fps_whatsapp.mp4` | Copia ligera WhatsApp: 720×1280 · 30 fps · 17.00 s · BT.709 · AAC 48 kHz · 4.1 MB |
+| `film/reel_comercial_abyss_17s_cover_hook.jpg` | Portada de gancho (t = 0.85 s) |
+| `film/reel_comercial_abyss_17s_poster_cta.jpg` | Póster del CTA (t = 15.90 s) |
+| `film/storyboard_reel_abyss_17s.jpg` | Hoja de contacto de la escaleta (S1–S6) extraída del render |
+
+Reproducción del render:
+
+```bash
+.venv/bin/python scripts/build_reel_audio_17s.py   # audio 17.00 s / 48 kHz autocontenido
+.venv/bin/python scripts/build_reel_17s.py         # máster + copia WhatsApp + portadas + storyboard
+.venv/bin/python scripts/ci_audit_deliverables.py  # auditoría de másters y marca (528)
+```
