@@ -2,40 +2,46 @@
 """
 build_reel_17s.py
 
-Genera un reel comercial de 17 segundos para Abyss Tattoo Studio con la lógica
-visual del storyboard 17s. Reutiliza reel_kit.py y se encarga de exportar una
-versión social 1080x1920 @ 60 fps.
-
-Importante: requiere que existan los assets y el audio del proyecto en la estructura
-actual del repo. Si ya tienes un render previo en film/, este script se puede usar
-como base para una versión 17s del reel.
+Versión portable y corregida del render comercial de 17 s para Abyss Tattoo Studio.
+- No usa rutas rígidas a /home/user/abysstattoo.
+- Resuelve el repo y los assets desde la ubicación del propio script.
+- Reutiliza reel_kit.py y genera una salida social 1080x1920 @ 60 fps.
+- Tiene validación de archivos faltantes y exporta web/WhatsApp en 30 fps.
 """
+
+from __future__ import annotations
 
 import os
 import shutil
 import subprocess
 import sys
+from pathlib import Path
 
 import cv2
 import numpy as np
 from PIL import Image, ImageDraw
 
-ROOT = "/home/user/abysstattoo"
-sys.path.insert(0, os.path.join(ROOT, "scripts"))
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
 os.chdir(ROOT)
 
 import reel_kit as K  # noqa: E402
 
 
+# ------------------------------ utilidades ------------------------------
+
 def resolve_ffmpeg() -> str:
-    local_venv = os.path.join(ROOT, ".venv/bin/ffmpeg")
-    if os.path.exists(local_venv):
-        return local_venv
+    local_venv = ROOT / ".venv" / "bin" / "ffmpeg"
+    if local_venv.exists():
+        return str(local_venv)
     sys_ff = shutil.which("ffmpeg")
     if sys_ff:
         return sys_ff
-    import imageio_ffmpeg
-    return imageio_ffmpeg.get_ffmpeg_exe()
+    try:
+        import imageio_ffmpeg
+        return imageio_ffmpeg.get_ffmpeg_exe()
+    except Exception:
+        raise RuntimeError("No se encontró ffmpeg. Instálalo o crea un entorno con ffmpeg disponible.")
 
 
 FFMPEG = resolve_ffmpeg()
@@ -43,32 +49,37 @@ FPS = 60
 DUR = 17.0
 N = int(round(DUR * FPS))
 
-AUDIO = "film/reel_abyss_15s_audio.wav"
-OUT_SOCIAL = "film/reel_comercial_abyss_17s_1080x1920_60fps_social.mp4"
-OUT_WEB = "film/reel_comercial_abyss_17s_1080x1920_30fps_web.mp4"
-
-PLATES = "assets/reel_plates"
-PLATES_CACHE = "/tmp/abyss_build_cache"
+AUDIO = ROOT / "film" / "reel_abyss_15s_audio.wav"
+OUT_SOCIAL = ROOT / "film" / "reel_comercial_abyss_17s_1080x1920_60fps_social.mp4"
+OUT_WEB = ROOT / "film" / "reel_comercial_abyss_17s_1080x1920_30fps_web.mp4"
+PLATES = ROOT / "assets" / "reel_plates"
+PLATES_CACHE = Path("/tmp/abyss_build_cache")
 
 still_cache = {}
 video_cache = {}
 
 
+def require_exists(path: Path, label: str) -> None:
+    if not path.exists():
+        raise FileNotFoundError(f"Falta {label}: {path}")
+
+
 def plate_path(name: str) -> str:
-    p1 = os.path.join(PLATES, name)
-    if os.path.exists(p1):
-        return p1
-    p2 = os.path.join(PLATES_CACHE, name)
-    if os.path.exists(p2):
-        return p2
-    raise FileNotFoundError(name)
+    candidates = [
+        PLATES / name,
+        PLATES_CACHE / name,
+    ]
+    for p in candidates:
+        if p.exists():
+            return str(p)
+    raise FileNotFoundError(f"No existe la placa '{name}' en {PLATES} ni en {PLATES_CACHE}")
 
 
 def load_still_rgb(name: str) -> np.ndarray:
     if name not in still_cache:
         bgr = cv2.imread(plate_path(name))
         if bgr is None:
-            raise FileNotFoundError(name)
+            raise FileNotFoundError(f"No se pudo leer imagen: {name}")
         still_cache[name] = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
     return still_cache[name]
 
@@ -77,6 +88,8 @@ def load_video_rgb(name: str):
     if name not in video_cache:
         video_cache.clear()
         cap = cv2.VideoCapture(plate_path(name))
+        if not cap.isOpened():
+            raise FileNotFoundError(f"No se pudo abrir video: {name}")
         vfps = cap.get(cv2.CAP_PROP_FPS) or 30.0
         frames = []
         while True:
@@ -104,6 +117,8 @@ def sample_plate(name: str, local_t: float, speed: float = 1.0, offset: float = 
         return frames[i0]
     return cv2.addWeighted(frames[i0], 1.0 - fr, frames[i1], fr, 0)
 
+
+# ------------------------------ elementos gui ------------------------------
 
 HUD = K.corner_hud(132)
 HUD_SOFT = K.corner_hud(68)
@@ -178,6 +193,8 @@ def whip_envelope(local_t: float, dur: float, window: float = 0.16) -> float:
     return max(a, b) ** 2.0
 
 
+# ------------------------------ guion 17s ------------------------------
+
 SHOTS = [
     dict(
         t0=0.00, t1=1.60, kind="single",
@@ -248,7 +265,8 @@ SHOTS = [
     ),
 ]
 
-EMBLEM = K.load_rgba(os.path.join(PLATES, "emblema_abyss_alpha.png"), (310, 310))
+# CTA assets
+EMBLEM = K.load_rgba(str(PLATES / "emblema_abyss_alpha.png"), (310, 310))
 CTA_GLOW = K.glow(480, K.TEAL, 82.0)
 CTA_RINGS = K.concentric_rings(780, rings=8, color=K.BONE, max_alpha=30)
 CTA_DIV = K.divider(520, K.BONE, K.TEAL_L, 215, r=8)
@@ -281,6 +299,7 @@ CTA_ADDR = K.pill(
     with_diamond=False,
 )
 CTA_HOURS = K.tracked_text("LUN A DOM · 10:00 A 20:00 HRS  ·  COTIZA TU IDEA HOY", K.font("mont500", 18), K.BONE, 5, shadow=False)
+
 _bg_src = cv2.GaussianBlur(load_still_rgb("plate_p01_fachada_real.jpg"), (0, 0), 34)
 CTA_BG_BASE = np.clip(_bg_src.astype(np.float32) * 0.14 + np.array(K.OBSIDIAN, np.float32) * 0.90, 0, 255).astype(np.uint8)
 
@@ -374,29 +393,43 @@ def render_frame(idx: int) -> np.ndarray:
 
 
 def encode():
-    os.makedirs("film", exist_ok=True)
+    require_exists(ROOT / "scripts" / "reel_kit.py", "reel_kit.py")
+    if not AUDIO.exists():
+        print(f"Advertencia: no existe {AUDIO}. El render puede fallar si falta el audio.")
+    os.makedirs(ROOT / "film", exist_ok=True)
+
     cmd_social = [
         FFMPEG, "-y",
         "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{K.W}x{K.H}", "-r", str(FPS),
         "-i", "-",
-        "-i", AUDIO,
+    ]
+    if AUDIO.exists():
+        cmd_social += ["-i", str(AUDIO)]
+    cmd_social += [
         "-c:v", "libx264", "-preset", "fast", "-crf", "20",
         "-maxrate", "16M", "-bufsize", "32M",
         "-profile:v", "high", "-level", "4.2",
         "-pix_fmt", "yuv420p",
         "-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709",
-        "-c:a", "aac", "-b:a", "192k", "-ar", "48000",
-        "-movflags", "+faststart", "-shortest",
-        OUT_SOCIAL,
     ]
+    if AUDIO.exists():
+        cmd_social += ["-c:a", "aac", "-b:a", "192k", "-ar", "48000"]
+    cmd_social += [
+        "-movflags", "+faststart",
+        "-shortest", str(OUT_SOCIAL),
+    ]
+
     log_f = open("/tmp/ff_social_17s.log", "wb")
     proc = subprocess.Popen(cmd_social, stdin=subprocess.PIPE, stderr=log_f)
-    for i in range(N):
-        frame = render_frame(i)
-        proc.stdin.write(frame.tobytes())
-        if (i + 1) % 150 == 0 or i == N - 1:
-            print(f"renderizado {i + 1}/{N} frames ({(i + 1) / FPS:.1f}s)", flush=True)
-    proc.stdin.close()
+    try:
+        for i in range(N):
+            frame = render_frame(i)
+            proc.stdin.write(frame.tobytes())
+            if (i + 1) % 150 == 0 or i == N - 1:
+                print(f"renderizado {i + 1}/{N} frames ({(i + 1) / FPS:.1f}s)", flush=True)
+    finally:
+        proc.stdin.close()
+
     rc = proc.wait()
     log_f.close()
     if rc != 0:
@@ -406,13 +439,13 @@ def encode():
 
     subprocess.run(
         [
-            FFMPEG, "-y", "-i", OUT_SOCIAL,
+            FFMPEG, "-y", "-i", str(OUT_SOCIAL),
             "-vf", "fps=30",
             "-c:v", "libx264", "-preset", "medium", "-crf", "21",
             "-profile:v", "high", "-pix_fmt", "yuv420p",
             "-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709",
             "-c:a", "aac", "-b:a", "160k", "-movflags", "+faststart",
-            OUT_WEB,
+            str(OUT_WEB),
         ],
         check=True,
         stderr=subprocess.DEVNULL,
