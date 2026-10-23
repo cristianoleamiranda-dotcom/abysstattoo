@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#100d0b">
+  <meta name="description" content="Motion poster 2.5D de Abyss Tattoo Studio: una imagen promocional convertida en una pieza vertical de 10 segundos.">
+  <title>Motion Poster 2.5D · Abyss Tattoo Studio</title>
+  <style>
+    @font-face{font-family:Cinzel;src:url('assets/fonts/cinzel-400.ttf') format('truetype');font-weight:400;font-display:swap}
+    @font-face{font-family:Cinzel;src:url('assets/fonts/cinzel-700.ttf') format('truetype');font-weight:700;font-display:swap}
+    @font-face{font-family:Montserrat;src:url('assets/fonts/montserrat-400.ttf') format('truetype');font-weight:400;font-display:swap}
+    @font-face{font-family:Montserrat;src:url('assets/fonts/montserrat-600.ttf') format('truetype');font-weight:600;font-display:swap}
+    @font-face{font-family:Montserrat;src:url('assets/fonts/montserrat-700.ttf') format('truetype');font-weight:700;font-display:swap}
+    :root{
+      color-scheme:dark;
+      --obsidian:#100d0b;--panel:#191411;--panel2:#211a16;--cream:#eee7e1;
+      --bone:#b5a295;--gold:#caa47b;--sage:#8eaaa0;--line:rgba(202,164,123,.23);
+      --soft:rgba(238,231,225,.68);--serif:Cinzel,Georgia,serif;--sans:Montserrat,system-ui,sans-serif;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;min-height:100vh;color:var(--cream);font-family:var(--sans);
+      background:
+        radial-gradient(920px 660px at 82% 6%,rgba(128,83,52,.18),transparent 72%),
+        radial-gradient(760px 640px at 7% 48%,rgba(62,78,72,.14),transparent 70%),
+        var(--obsidian);
+    }
+    a{color:inherit}
+    .wrap{width:min(1180px,calc(100% - 40px));margin:0 auto}
+    .topbar{min-height:84px;display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid var(--line)}
+    .mark{display:flex;align-items:center;gap:13px;text-decoration:none}
+    .mark-star{width:33px;height:33px;color:var(--gold);font-family:var(--serif);font-size:30px;line-height:1;text-align:center}
+    .mark-copy{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--bone);line-height:1.7}
+    .mark-copy b{display:block;color:var(--cream);font:700 14px/1.1 var(--serif);letter-spacing:.18em}
+    .nav{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+    .nav a,.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:42px;padding:0 15px;border:1px solid var(--line);border-radius:999px;background:rgba(28,22,18,.72);color:var(--cream);font:600 10px var(--sans);letter-spacing:.13em;text-decoration:none;text-transform:uppercase;transition:transform .2s,border-color .2s,background .2s}
+    .nav a:hover,.btn:hover{transform:translateY(-2px);border-color:var(--gold)}
+    .hero{display:grid;grid-template-columns:minmax(280px,390px) minmax(0,1fr);gap:clamp(32px,6vw,84px);align-items:center;padding:58px 0 66px}
+    .stage-wrap{position:relative;width:min(100%,370px);margin:0 auto}
+    .stage-label{display:flex;justify-content:space-between;align-items:center;margin:0 4px 12px;color:var(--bone);font-size:9px;letter-spacing:.19em;text-transform:uppercase}
+    .live-dot{display:inline-block;width:6px;height:6px;margin-right:7px;border-radius:50%;background:#d1976e;box-shadow:0 0 12px rgba(209,151,110,.85);vertical-align:1px}
+    .stage{position:relative;aspect-ratio:9/16;overflow:hidden;border:1px solid rgba(202,164,123,.38);border-radius:19px;background:#060504;box-shadow:0 28px 82px rgba(0,0,0,.68),0 0 50px rgba(180,119,72,.08)}
+    .stage::before{content:"";position:absolute;z-index:2;inset:9px;border:1px solid rgba(236,204,164,.17);border-radius:12px;pointer-events:none}
+    video{width:100%;height:100%;display:block;object-fit:cover;background:#090706}
+    .stage-caption{display:flex;justify-content:space-between;gap:12px;margin:11px 3px 0;color:rgba(238,231,225,.54);font-size:9px;letter-spacing:.11em;text-transform:uppercase}
+    .stage-caption span:last-child{color:var(--sage)}
+    .intro{max-width:650px}
+    .eyebrow{color:var(--sage);font-size:10px;font-weight:700;letter-spacing:.27em;text-transform:uppercase}
+    h1{max-width:690px;margin:16px 0 18px;font:400 clamp(37px,5.2vw,68px)/1.03 var(--serif);letter-spacing:-.035em;color:#f4ede7}
+    h1 span{color:var(--gold);font-style:italic}
+    .lead{max-width:59ch;margin:0;color:var(--bone);font-size:15px;line-height:1.8}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin:23px 0 25px}
+    .chip{padding:8px 11px;border:1px solid rgba(142,170,160,.25);border-radius:999px;background:rgba(70,91,83,.12);color:#c3d4cd;font-size:9px;letter-spacing:.11em;text-transform:uppercase}
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 24px}
+    .btn-primary{border-color:#d2b18f;background:linear-gradient(135deg,#e1c09a,#b78b63);color:#17100b;font-weight:700}
+    .btn-quiet{background:rgba(23,18,15,.55)}
+    .specs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;max-width:530px}
+    .spec{padding:12px 13px;border:1px solid rgba(202,164,123,.13);border-radius:10px;background:rgba(25,20,17,.62)}
+    .spec b{display:block;margin-bottom:5px;color:var(--sage);font-size:8px;letter-spacing:.2em;text-transform:uppercase}
+    .spec span{color:var(--cream);font-size:12px;font-weight:600}
+    .section{padding:38px 0 42px;border-top:1px solid var(--line)}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:20px}
+    h2{margin:8px 0 0;font:400 clamp(24px,3vw,36px)/1.15 var(--serif);letter-spacing:-.02em}
+    .section-intro{max-width:55ch;margin:0;color:var(--soft);font-size:12px;line-height:1.7}
+    .timeline{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+    .beat{min-height:138px;padding:14px;border:1px solid rgba(202,164,123,.16);border-radius:12px;background:linear-gradient(160deg,rgba(35,27,22,.86),rgba(22,18,15,.7))}
+    .beat time{display:block;margin-bottom:19px;color:var(--gold);font-size:10px;font-variant-numeric:tabular-nums;letter-spacing:.13em}
+    .beat b{display:block;margin-bottom:7px;font:400 13px/1.35 var(--serif);color:var(--cream)}
+    .beat p{margin:0;color:var(--soft);font-size:10px;line-height:1.55}
+    .tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .tech-card{padding:22px 23px;border:1px solid rgba(202,164,123,.16);border-radius:14px;background:rgba(25,20,17,.72)}
+    .tech-card h3{margin:0 0 13px;color:var(--gold);font:400 19px var(--serif)}
+    .tech-card p{margin:0;color:var(--soft);font-size:12px;line-height:1.78}
+    .skill-list{display:flex;flex-wrap:wrap;gap:7px;margin-top:15px}
+    .skill-list span{padding:7px 9px;border-radius:6px;background:rgba(202,164,123,.08);color:#ddc4a8;font-size:9px;letter-spacing:.08em}
+    .note{display:grid;grid-template-columns:24px 1fr;gap:12px;margin-top:14px;padding:15px 17px;border:1px solid rgba(202,164,123,.24);border-radius:11px;background:rgba(116,77,45,.12);color:#ddc9b6;font-size:11px;line-height:1.65}
+    .note strong{color:#f1d0a8}
+    .sources{display:flex;flex-wrap:wrap;gap:10px 22px;margin:19px 0 0;padding:0;list-style:none}
+    .sources a{color:var(--sage);font-size:11px;text-decoration:none;border-bottom:1px solid rgba(142,170,160,.35);padding-bottom:3px}
+    .sources a:hover{color:var(--cream);border-color:var(--cream)}
+    .foot{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 0 34px;border-top:1px solid var(--line);color:rgba(238,231,225,.42);font-size:9px;letter-spacing:.1em;text-transform:uppercase}
+    .foot a{color:var(--bone);text-decoration:none}
+    @media(max-width:850px){.hero{grid-template-columns:minmax(250px,330px) minmax(0,1fr);gap:38px;padding-top:42px}.timeline{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    @media(max-width:650px){.wrap{width:min(100% - 28px,500px)}.topbar{align-items:flex-start;padding:16px 0;flex-direction:column}.nav{justify-content:flex-start}.nav a{min-height:38px;font-size:9px}.hero{grid-template-columns:1fr;gap:34px;padding:34px 0 46px}.stage-wrap{width:min(100%,340px)}.intro{grid-row:1}.lead{font-size:14px}.section{padding:29px 0 32px}.section-head{align-items:flex-start;flex-direction:column;gap:9px}.timeline{grid-template-columns:repeat(2,minmax(0,1fr))}.beat{min-height:124px}.tech-grid{grid-template-columns:1fr}.foot{align-items:flex-start;flex-direction:column}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <a class="mark" href="index.html" aria-label="Abyss Tattoo Studio, inicio">
+        <span class="mark-star" aria-hidden="true">✦</span>
+        <span class="mark-copy"><b>ABYSS</b>Motion study · Tattoo studio</span>
+      </a>
+      <nav class="nav" aria-label="Navegación">
+        <a href="reel.html">Reel comercial 15s</a>
+        <a href="index.html">Sitio oficial</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="title">
+        <div class="stage-wrap">
+          <div class="stage-label"><span><i class="live-dot" aria-hidden="true"></i>Motion poster · loop</span><span>01 / 01</span></div>
+          <div class="stage">
+            <video id="motion-video" controls muted loop playsinline preload="metadata" poster="film/abyss_promocion_motion_cover.jpg" aria-label="Animación vertical 2.5D de la promoción de Abyss Tattoo Studio">
+              <source src="film/abyss_promocion_motion_10s_1080x1920_60fps_hq.mp4" type="video/mp4">
+              Tu navegador no puede reproducir el video. Descárgalo usando el botón de esta página.
+            </video>
+          </div>
+          <div class="stage-caption"><span>10 segundos · sin audio</span><span>cámara 2.5D</span></div>
+        </div>
+
+        <div class="intro">
+          <div class="eyebrow">Imagen fija · dirección de movimiento · profundidad</div>
+          <h1 id="title">La promoción<br>ahora <span>respira.</span></h1>
+          <p class="lead">Convertí el afiche de Abyss en una pieza vertical para redes: una cámara virtual se acerca al tatuaje, recorre los tres porcentajes y vuelve a revelar la composición completa, con luz cálida y movimiento contenido.</p>
+          <div class="chips" aria-label="Técnicas utilizadas">
+            <span class="chip">2.5D / parallax</span>
+            <span class="chip">motion graphics</span>
+            <span class="chip">cámara virtual</span>
+            <span class="chip">sin alterar el tatuaje</span>
+          </div>
+          <div class="actions">
+            <a class="btn btn-primary" download href="film/abyss_promocion_motion_10s_1080x1920_60fps_hq.mp4">Descargar MP4 <span aria-hidden="true">↓</span></a>
+            <a class="btn btn-quiet" download href="assets/promocion/abyss-promo-corrected.png">Descargar afiche PNG 2048 × 2048 ↓</a>
+          </div>
+          <div class="specs" aria-label="Especificaciones del video">
+            <div class="spec"><b>Formato</b><span>1080 × 1920 · 9:16</span></div>
+            <div class="spec"><b>Entrega</b><span>MP4 · H.264 · BT.709</span></div>
+            <div class="spec"><b>Ritmo</b><span>60 fps · 10 s</span></div>
+            <div class="spec"><b>Audio</b><span>Sin audio · listo para musicalizar</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="beats-title">
+        <div class="section-head">
+          <div><div class="eyebrow">Montaje y puesta en escena</div><h2 id="beats-title">Un recorrido en seis beats</h2></div>
+          <p class="section-intro">El afiche mantiene su diseño y el texto corregido. El movimiento dirige la mirada en lugar de tapar la información.</p>
+        </div>
+        <div class="timeline">
+          <article class="beat"><time>0.00 — 1.28 s</time><b>Entrada con profundidad</b><p>El plano frontal aparece desde sombra, con tilt y settle suave.</p></article>
+          <article class="beat"><time>1.28 — 2.72 s</time><b>Macro del tatuaje</b><p>Push-in hacia los ojos; el fondo se desplaza a otra velocidad.</p></article>
+          <article class="beat"><time>2.72 — 4.18 s</time><b>Primer beneficio</b><p>La cámara aterriza en el 35% y deja leer el primer tramo.</p></article>
+          <article class="beat"><time>4.18 — 5.46 s</time><b>Segundo beneficio</b><p>Pan descendente hacia la nueva cotización del 20%.</p></article>
+          <article class="beat"><time>5.46 — 6.72 s</time><b>Tercer beneficio</b><p>Recorrido al 10% y al recuadro de cupos limitados.</p></article>
+          <article class="beat"><time>6.72 — 10.00 s</time><b>Revelado y cierre</b><p>Pull-back a la pieza completa, filetes dorados y brillo final.</p></article>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="tech-title">
+        <div class="section-head">
+          <div><div class="eyebrow">Técnica, diseño y habilidades</div><h2 id="tech-title">Cómo se construyó</h2></div>
+        </div>
+        <div class="tech-grid">
+          <article class="tech-card">
+            <h3>2.5D con una sola imagen</h3>
+            <p>La foto original funciona como plano frontal; detrás, una copia ampliada y desenfocada forma el ambiente. Una cámara virtual aplica perspectiva, inclinación y cambios de escala. El desfase entre ambos planos crea parallax sin reconstruir ni deformar el tatuaje. Es una ilusión 2.5D, no una malla 3D real ni un mapa de profundidad generado.</p>
+          </article>
+          <article class="tech-card">
+            <h3>Diseño de movimiento</h3>
+            <p>La secuencia usa staging para priorizar el ojo y luego los descuentos; curvas ease-in/ease-out para que la cámara acelere y frene con naturalidad; y brillos secundarios medidos para acompañar los separadores dorados sin competir con la tipografía.</p>
+          </article>
+        </div>
+        <div class="tech-card" style="margin-top:14px">
+          <h3>Habilidades que sostienen la técnica</h3>
+          <p>Para llevar este método más lejos —en After Effects, Blender o un pipeline web— conviene dominar:</p>
+          <div class="skill-list" aria-label="Habilidades">
+            <span>composición y jerarquía</span><span>máscaras / rotoscopia</span><span>cámara 3D y parallax</span>
+            <span>timing + easing</span><span>tipografía cinética</span><span>composición y luz</span>
+            <span>color y contraste</span><span>exportación H.264 / BT.709</span><span>accesibilidad de movimiento</span>
+          </div>
+        </div>
+        <div class="note"><span aria-hidden="true">✦</span><span><strong>Antes de publicar:</strong> se corrigió la errata “echas” a “hechas” sin alterar porcentajes ni montos. Confirma la vigencia, los montos y los cupos de la promoción antes de publicar.</span></div>
+        <ul class="sources" aria-label="Fuentes consultadas">
+          <li><a href="https://helpx.adobe.com/ph_fil/after-effects/how-to/animate-picture.html" target="_blank" rel="noopener">Adobe · parallax de fotografía ↗</a></li>
+          <li><a href="https://www.adobe.com/uk/creativecloud/animation/discover/easing.html" target="_blank" rel="noopener">Adobe · easing y keyframes ↗</a></li>
+          <li><a href="https://www.adobe.com/in/creativecloud/roc/blog/video/animation-principles.html" target="_blank" rel="noopener">Adobe · staging, timing y principios ↗</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion" target="_blank" rel="noopener">MDN · preferencia de movimiento reducido ↗</a></li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="foot"><span>Abyss Tattoo Studio · pieza motion 2.5D</span><a href="PROMO_MOTION_TECNICA.md">Ficha técnica y fuentes ↗</a></footer>
+  </div>
+  <script>
+    const video = document.getElementById('motion-video');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (!reduceMotion.matches) video.play().catch(() => {});
+    reduceMotion.addEventListener?.('change', event => {
+      if (event.matches) video.pause();
+    });
+  </script>
+</body>
+</html>
