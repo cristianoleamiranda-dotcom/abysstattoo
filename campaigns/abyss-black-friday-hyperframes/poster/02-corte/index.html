@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A VISTA / BLACK — 02 CORTE poster template</title>
+  <style>
+    @page { size: 2160px 2700px; margin: 0; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 2160px; height: 2700px; overflow: hidden; }
+    body { background: #080808; color: #EAE3DD; font-family: Inter, Arial, sans-serif; }
+    .poster {
+      position: relative; width: 2160px; height: 2700px; overflow: hidden;
+      background:
+        radial-gradient(ellipse at 74% 22%, rgba(181,162,149,.12), transparent 42%),
+        linear-gradient(142deg, #14100D 0%, #080808 56%, #10100F 100%);
+      isolation: isolate;
+    }
+    .masthead {
+      position: absolute; z-index: 5; top: 112px; left: 132px; right: 132px;
+      display: flex; justify-content: space-between; align-items: center;
+      font: 600 34px/1.1 Inter, Arial, sans-serif; letter-spacing: .12em;
+      color: #EAE3DD; text-transform: uppercase;
+    }
+    .image-window {
+      position: absolute; z-index: 1; left: 160px; top: 430px;
+      width: 1840px; height: 1760px; overflow: hidden;
+      background: #14100D; border: 1px solid rgba(234,227,221,.28);
+    }
+    .image-window img {
+      display: block; width: 100%; height: 100%; object-fit: cover;
+      filter: contrast(1.04);
+    }
+    .asset-placeholder {
+      position: absolute; inset: 0; display: grid; place-items: center;
+      padding: 90px; text-align: center; color: rgba(234,227,221,.68);
+      font: 500 30px/1.5 Inter, Arial, sans-serif; letter-spacing: .12em;
+      text-transform: uppercase; border: 2px dashed rgba(234,227,221,.24);
+    }
+    .diagonal-type {
+      position: absolute; z-index: 3; left: -150px; top: 950px;
+      width: 2460px; transform: rotate(-9deg); transform-origin: 50% 50%;
+      pointer-events: none; text-transform: uppercase;
+      font-family: Anton, Impact, 'Arial Narrow', sans-serif;
+      font-weight: 900; line-height: .72; letter-spacing: -.045em;
+      white-space: nowrap;
+    }
+    .black {
+      display: block; color: #EAE3DD; font-size: 600px;
+      -webkit-text-stroke: 0;
+    }
+    .friday {
+      display: block; margin-top: 24px; margin-left: 200px;
+      color: transparent; -webkit-text-fill-color: transparent;
+      -webkit-text-stroke: 5px #EAE3DD;
+      font-size: 500px;
+    }
+    .footer {
+      position: absolute; z-index: 5; left: 132px; right: 132px; bottom: 112px;
+      display: flex; align-items: flex-end; justify-content: space-between;
+      gap: 60px; font: 600 28px/1.25 Inter, Arial, sans-serif;
+      letter-spacing: .1em; text-transform: uppercase; color: #B5A295;
+    }
+    .footer .brand { color: #EAE3DD; }
+    .emblem-slot {
+      position: absolute; z-index: 4; right: 170px; bottom: 330px;
+      width: 210px; height: 210px; border: 1px dashed rgba(234,227,221,.35);
+      border-radius: 50%; display: grid; place-items: center;
+      color: rgba(234,227,221,.55); font: 500 16px/1.4 Inter, Arial, sans-serif;
+      text-align: center; letter-spacing: .08em;
+    }
+    @media screen {
+      body { transform-origin: top left; }
+    }
+  </style>
+</head>
+<body>
+  <main class="poster" aria-label="A VISTA BLACK, direction 02 CORTE">
+    <header class="masthead">
+      <span>A VISTA / BLACK</span>
+      <span>ABYSS TATTOO STUDIO</span>
+    </header>
+
+    <section class="image-window" aria-label="Approved real campaign photograph">
+      <!-- Add the approved original photograph as assets/corte-source.jpg and uncomment the image below. -->
+      <!-- <img src="../../assets/footage/corte-source.jpg" alt="Approved ABYSS campaign photograph"> -->
+      <div class="asset-placeholder">
+        Approved original photograph required<br>
+        No generated or substitute imagery
+      </div>
+    </section>
+
+    <div class="diagonal-type" aria-label="BLACK FRIDAY">
+      <span class="black">BLACK</span>
+      <span class="friday">FRIDAY</span>
+    </div>
+
+    <div class="emblem-slot" aria-label="Original emblem asset required">
+      ORIGINAL<br>EMBLEM
+    </div>
+
+    <footer class="footer">
+      <span class="brand">ART. DISCIPLINE. LEGACY.</span>
+      <span>INK. METAL. SKIN.</span>
+    </footer>
+  </main>
+</body>
+</html>
