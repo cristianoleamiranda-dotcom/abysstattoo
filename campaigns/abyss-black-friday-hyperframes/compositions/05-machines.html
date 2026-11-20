@@ -1,0 +1,24 @@
+<template>
+  <style>
+    #root { position:absolute; inset:0; overflow:hidden; background:linear-gradient(135deg,#11110f,#30302d 48%,#141412); color:#f1eee7; }
+    .media-slot { position:absolute; left:8%; top:14%; width:84%; height:48%; border:1px solid rgba(241,238,231,.45); background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(0,0,0,.22)); display:flex; align-items:center; justify-content:center; }
+    .slot-label { max-width:72%; text-align:center; font:500 18px 'Space Mono',monospace; line-height:1.7; letter-spacing:.12em; color:#c1c1b9; }
+    .title { position:absolute; left:8%; right:6%; bottom:19%; font:900 88px/.9 'Archivo Black',sans-serif; letter-spacing:-.065em; }
+    .caption { position:absolute; left:9%; bottom:10%; font:17px 'Space Mono',monospace; letter-spacing:.14em; color:#c0c0b9; }
+    .axis { position:absolute; left:9%; top:10%; width:82%; height:1px; background:rgba(241,238,231,.3); }
+  </style>
+  <div id="root" data-composition-id="machines" data-width="1080" data-height="1920">
+    <div id="machines-axis" class="clip axis" data-start="0" data-duration="4.4"></div>
+    <div id="machines-media" class="clip media-slot" data-start="0" data-duration="4.4"><div class="slot-label">REPLACE WITH ACTUAL<br>TATTOO MACHINE / EQUIPMENT</div></div>
+    <h2 id="machines-title" class="clip title" data-start=".35" data-duration="4.05">ENGINEERED<br>FOR ART.</h2>
+    <div id="machines-caption" class="clip caption" data-start="1.25" data-duration="3.1">TOOLS OF THE CRAFT.</div>
+  </div>
+  <script>
+    const tl = gsap.timeline({paused:true});
+    tl.fromTo("#machines-axis",{scaleX:0,transformOrigin:"left center"},{scaleX:1,duration:.4,ease:"power2.out"},0);
+    tl.fromTo("#machines-media",{opacity:0,scale:1.05},{opacity:1,scale:1,duration:.58,ease:"power2.out"},.1);
+    tl.fromTo("#machines-title",{opacity:0,x:-65,filter:"blur(8px)"},{opacity:1,x:0,filter:"blur(0px)",duration:.6,ease:"expo.out"},.4);
+    tl.fromTo("#machines-caption",{opacity:0},{opacity:1,duration:.3},1.25);
+    window.__timelines["machines"] = tl;
+  </script>
+</template>
