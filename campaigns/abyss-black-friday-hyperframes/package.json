@@ -1,0 +1,12 @@
+{
+  "name": "abyss-black-friday-hyperframes",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Editable 30-second vertical Black Friday campaign for ABYSS Tattoo Studio",
+  "scripts": {
+    "check": "npx hyperframes check --json",
+    "preview": "npx hyperframes preview",
+    "render": "npx hyperframes render"
+  }
+}
