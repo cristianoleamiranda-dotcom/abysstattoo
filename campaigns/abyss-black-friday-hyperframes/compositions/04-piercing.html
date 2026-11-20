@@ -1,0 +1,24 @@
+<template>
+  <style>
+    #root { position:absolute; inset:0; overflow:hidden; background:linear-gradient(155deg,#30302c,#141412 56%,#252522); color:#f1eee7; }
+    .media-slot { position:absolute; left:8%; top:14%; width:84%; height:51%; border:1px solid rgba(241,238,231,.5); background:linear-gradient(130deg,rgba(255,255,255,.13),rgba(0,0,0,.2)); display:flex; align-items:center; justify-content:center; }
+    .slot-label { max-width:72%; text-align:center; font:500 18px 'Space Mono',monospace; line-height:1.7; letter-spacing:.12em; color:#c6c6bf; }
+    .title { position:absolute; left:8%; bottom:20%; font:900 122px/.86 'Archivo Black',sans-serif; letter-spacing:-.075em; }
+    .caption { position:absolute; left:9%; bottom:11%; font:17px 'Space Mono',monospace; letter-spacing:.14em; color:#c0c0b9; }
+    .vertical { position:absolute; right:8%; top:12%; writing-mode:vertical-rl; font:15px 'Space Mono',monospace; letter-spacing:.2em; }
+  </style>
+  <div id="root" data-composition-id="piercing" data-width="1080" data-height="1920">
+    <div id="piercing-vertical" class="clip vertical" data-start="0" data-duration="4.4">TITANIUM / STEEL / FORM</div>
+    <div id="piercing-media" class="clip media-slot" data-start="0" data-duration="4.4"><div class="slot-label">REPLACE WITH REAL<br>PIERCING / JEWELRY MACRO</div></div>
+    <h2 id="piercing-title" class="clip title" data-start=".35" data-duration="4.05">PRECI<br>SION.</h2>
+    <div id="piercing-caption" class="clip caption" data-start="1.25" data-duration="3.1">DETAIL IS EVERYTHING.</div>
+  </div>
+  <script>
+    const tl = gsap.timeline({paused:true});
+    tl.fromTo("#piercing-media",{opacity:0,scale:1.08},{opacity:1,scale:1,duration:.58,ease:"power2.inOut"},0);
+    tl.fromTo("#piercing-vertical",{opacity:0},{opacity:1,duration:.32},.18);
+    tl.fromTo("#piercing-title",{opacity:0,letterSpacing:".02em"},{opacity:1,letterSpacing:"-.075em",duration:.62,ease:"expo.out"},.4);
+    tl.fromTo("#piercing-caption",{opacity:0,y:10},{opacity:1,y:0,duration:.3,ease:"power3.out"},1.2);
+    window.__timelines["piercing"] = tl;
+  </script>
+</template>
