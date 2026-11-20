@@ -1,0 +1,25 @@
+<template>
+  <style>
+    #root { position:absolute; inset:0; overflow:hidden; background:linear-gradient(145deg,#282824,#10100f 58%,#30302b); color:#f1eee7; }
+    .card-stage { position:absolute; left:14%; top:21%; width:72%; height:38%; transform:rotate(-5deg); border:1px solid rgba(241,238,231,.6); background:linear-gradient(125deg,#343430,#171715 55%,#42423c); box-shadow:28px 35px 70px rgba(0,0,0,.4); display:flex; align-items:center; justify-content:center; }
+    .card-stage:before { content:""; position:absolute; inset:14px; border:1px solid rgba(241,238,231,.22); }
+    .card-mark { position:relative; font:900 62px 'Archivo Black',sans-serif; letter-spacing:-.06em; color:#e6e4dc; }
+    .title { position:absolute; left:8%; bottom:20%; font:900 124px/.85 'Archivo Black',sans-serif; letter-spacing:-.075em; }
+    .caption { position:absolute; left:9%; bottom:10%; font:17px 'Space Mono',monospace; letter-spacing:.14em; color:#c0c0b9; }
+    .note { position:absolute; left:9%; top:12%; font:16px 'Space Mono',monospace; letter-spacing:.2em; }
+  </style>
+  <div id="root" data-composition-id="gift" data-width="1080" data-height="1920">
+    <div id="gift-note" class="clip note" data-start="0" data-duration="4.4">THE GIFT OF ART</div>
+    <div id="gift-card" class="clip card-stage" data-start=".1" data-duration="4.3"><div class="card-mark">ABYSS</div></div>
+    <h2 id="gift-title" class="clip title" data-start=".65" data-duration="3.8">GIVE<br>ART.</h2>
+    <div id="gift-caption" class="clip caption" data-start="1.5" data-duration="2.9">GIFT CARDS / DETAILS TO BE CONFIRMED</div>
+  </div>
+  <script>
+    const tl = gsap.timeline({paused:true});
+    tl.fromTo("#gift-note",{opacity:0},{opacity:1,duration:.3},0);
+    tl.fromTo("#gift-card",{opacity:0,scale:.82,rotation:-11},{opacity:1,scale:1,rotation:-5,duration:.72,ease:"expo.out"},.12);
+    tl.fromTo("#gift-title",{opacity:0,y:65},{opacity:1,y:0,duration:.55,ease:"power4.out"},.55);
+    tl.fromTo("#gift-caption",{opacity:0},{opacity:1,duration:.3},1.5);
+    window.__timelines["gift"] = tl;
+  </script>
+</template>
