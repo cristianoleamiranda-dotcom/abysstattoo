@@ -1,0 +1,28 @@
+<template>
+  <style>
+    #root { position:absolute; inset:0; overflow:hidden; background:linear-gradient(145deg,#242421 0%,#11110f 48%,#292925 100%); color:#f1eee7; }
+    #root:before { content:""; position:absolute; inset:-15%; background:repeating-linear-gradient(112deg,transparent 0 74px,rgba(255,255,255,.035) 75px,transparent 77px 148px); transform:rotate(-7deg); }
+    .eyebrow { position:absolute; left:9%; top:15%; font:600 22px 'Space Mono',monospace; letter-spacing:.22em; color:#b8b8b0; }
+    .hero { position:absolute; left:7%; right:5%; top:34%; font:900 150px/0.82 'Archivo Black',sans-serif; letter-spacing:-.075em; }
+    .hero span { display:block; }
+    .rule { position:absolute; left:9%; top:68%; width:0; height:2px; background:#bfc2c2; }
+    .sub { position:absolute; left:9%; top:71%; font:500 23px 'Space Mono',monospace; letter-spacing:.12em; }
+    .stamp { position:absolute; right:9%; bottom:13%; writing-mode:vertical-rl; font:500 16px 'Space Mono',monospace; letter-spacing:.22em; color:#9b9b94; }
+  </style>
+  <div id="root" data-composition-id="hook" data-width="1080" data-height="1920">
+    <div id="hook-kicker" class="clip eyebrow" data-start="0" data-duration="3.7">ABYSS TATTOO STUDIO / PRESENTS</div>
+    <h1 id="hook-title" class="clip hero" data-start="0" data-duration="3.7"><span>BLACK</span><span>FRIDAY.</span></h1>
+    <div id="hook-rule" class="clip rule" data-start="0.2" data-duration="3.4"></div>
+    <div id="hook-sub" class="clip sub" data-start="1.1" data-duration="2.6">ART IS PERMANENT.</div>
+    <div id="hook-stamp" class="clip stamp" data-start="0.4" data-duration="3.3">LIMITED CAMPAIGN / 2026</div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused:true });
+    tl.fromTo("#hook-kicker",{opacity:0,y:18},{opacity:1,y:0,duration:.42,ease:"power4.out"},0);
+    tl.fromTo("#hook-title",{opacity:0,y:90,filter:"blur(12px)"},{opacity:1,y:0,filter:"blur(0px)",duration:.62,ease:"expo.out"},.12);
+    tl.fromTo("#hook-rule",{width:0},{width:"82%",duration:.55,ease:"power2.inOut"},.5);
+    tl.fromTo("#hook-sub",{opacity:0,letterSpacing:".3em"},{opacity:1,letterSpacing:".12em",duration:.42,ease:"power3.out"},1.0);
+    tl.fromTo("#hook-stamp",{opacity:0},{opacity:1,duration:.3},.8);
+    window.__timelines["hook"] = tl;
+  </script>
+</template>
