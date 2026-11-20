@@ -20,3 +20,8 @@ Do not replace the photo or emblem with generated approximations. No CTA, offer,
 
 ## Review gate
 The HTML is an editable layout template, not the finished poster. After the source assets are added, render a mobile-friendly preview, provide its review link, and wait for the client's approval before moving to motion graphics.
+
+
+## Original Dropbox materials located
+
+The approved 02 CORTE proof and the technical source archive are catalogued in [the source manifest](../../assets/footage/SOURCE_MANIFEST.md). The Dropbox originals remain untouched. The technical ZIP contains the real-photo and emblem assets needed for final materialization; do not use the separate D01 SIGNAL master as a substitute.
