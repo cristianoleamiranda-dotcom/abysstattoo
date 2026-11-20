@@ -1,0 +1,24 @@
+<template>
+  <style>
+    #root { position:absolute; inset:0; overflow:hidden; background:linear-gradient(135deg,#171715,#292925 52%,#10100f); color:#f1eee7; }
+    .media-slot { position:absolute; left:8%; top:13%; width:84%; height:53%; border:1px solid rgba(241,238,231,.42); background:linear-gradient(145deg,rgba(255,255,255,.10),rgba(0,0,0,.24)); display:flex; align-items:center; justify-content:center; }
+    .slot-label { max-width:72%; text-align:center; font:500 18px 'Space Mono',monospace; line-height:1.7; letter-spacing:.12em; color:#c1c1b9; }
+    .title { position:absolute; left:8%; bottom:18%; font:900 106px/.86 'Archivo Black',sans-serif; letter-spacing:-.075em; }
+    .side { position:absolute; right:8%; top:12%; writing-mode:vertical-rl; font:15px 'Space Mono',monospace; letter-spacing:.2em; }
+    .caption { position:absolute; left:9%; bottom:10%; font:17px 'Space Mono',monospace; letter-spacing:.14em; color:#b8b8b0; }
+  </style>
+  <div id="root" data-composition-id="tattoo" data-width="1080" data-height="1920">
+    <div id="tattoo-side" class="clip side" data-start="0" data-duration="4.4">INK / SKIN / CRAFT</div>
+    <div id="tattoo-media" class="clip media-slot" data-start="0" data-duration="4.4"><div class="slot-label">REPLACE WITH REAL<br>ABYSS TATTOO WORK</div></div>
+    <h2 id="tattoo-title" class="clip title" data-start=".35" data-duration="4.05">MADE<br>BY HAND.</h2>
+    <div id="tattoo-caption" class="clip caption" data-start="1.2" data-duration="3.2">NO TWO STORIES ARE THE SAME.</div>
+  </div>
+  <script>
+    const tl = gsap.timeline({paused:true});
+    tl.fromTo("#tattoo-media",{opacity:0,scale:1.04},{opacity:1,scale:1,duration:.5,ease:"power2.out"},0);
+    tl.fromTo("#tattoo-side",{opacity:0,y:-20},{opacity:1,y:0,duration:.35,ease:"power4.out"},.12);
+    tl.fromTo("#tattoo-title",{opacity:0,y:75,filter:"blur(10px)"},{opacity:1,y:0,filter:"blur(0px)",duration:.6,ease:"expo.out"},.42);
+    tl.fromTo("#tattoo-caption",{opacity:0},{opacity:1,duration:.3},1.2);
+    window.__timelines["tattoo"] = tl;
+  </script>
+</template>
