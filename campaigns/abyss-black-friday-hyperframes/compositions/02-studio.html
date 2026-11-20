@@ -1,0 +1,25 @@
+<template>
+  <style>
+    #root { position:absolute; inset:0; overflow:hidden; background:linear-gradient(160deg,#282824,#10100f 58%,#33332f); color:#f1eee7; }
+    .media-slot { position:absolute; left:8%; top:15%; width:84%; height:48%; border:1px solid rgba(241,238,231,.45); background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(0,0,0,.16)); display:flex; align-items:center; justify-content:center; }
+    .media-slot:before { content:""; position:absolute; inset:12px; border:1px solid rgba(241,238,231,.12); }
+    .slot-label { position:relative; max-width:70%; text-align:center; font:500 18px 'Space Mono',monospace; letter-spacing:.14em; line-height:1.7; color:#bcbcb4; }
+    .index { position:absolute; left:9%; top:10%; font:16px 'Space Mono',monospace; letter-spacing:.2em; }
+    .title { position:absolute; left:8%; right:6%; bottom:19%; font:900 112px/.88 'Archivo Black',sans-serif; letter-spacing:-.07em; }
+    .caption { position:absolute; left:9%; bottom:11%; font:18px 'Space Mono',monospace; letter-spacing:.16em; color:#c0c0b9; }
+  </style>
+  <div id="root" data-composition-id="studio" data-width="1080" data-height="1920">
+    <div id="studio-index" class="clip index" data-start="0" data-duration="4.4">01 / THE SPACE</div>
+    <div id="studio-media" class="clip media-slot" data-start="0" data-duration="4.4"><div class="slot-label">REPLACE WITH APPROVED<br>ABYSS STUDIO FOOTAGE</div></div>
+    <h2 id="studio-title" class="clip title" data-start=".35" data-duration="4.05">THE<br>SPACE.</h2>
+    <div id="studio-caption" class="clip caption" data-start="1.2" data-duration="3.2">A PLACE BUILT AROUND ART.</div>
+  </div>
+  <script>
+    const tl = gsap.timeline({paused:true});
+    tl.fromTo("#studio-index",{opacity:0,x:-24},{opacity:1,x:0,duration:.35,ease:"power4.out"},0);
+    tl.fromTo("#studio-media",{opacity:0,scale:1.06},{opacity:1,scale:1,duration:.6,ease:"power2.out"},.12);
+    tl.fromTo("#studio-title",{opacity:0,x:-70,filter:"blur(8px)"},{opacity:1,x:0,filter:"blur(0px)",duration:.55,ease:"expo.out"},.45);
+    tl.fromTo("#studio-caption",{opacity:0},{opacity:1,duration:.3},1.2);
+    window.__timelines["studio"] = tl;
+  </script>
+</template>
