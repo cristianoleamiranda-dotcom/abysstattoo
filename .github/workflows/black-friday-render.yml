@@ -1,0 +1,71 @@
+name: ABYSS Black Friday — Reference Motion Transfer
+
+on:
+  push:
+    branches: [feat/black-friday-motion-v01]
+    paths:
+      - "scripts/black_friday_motion.py"
+      - "tests/test_black_friday_motion.py"
+      - ".github/workflows/black-friday-render.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: abyss-black-friday-render
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install video dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          python -m pip install --upgrade pip
+          python -m pip install numpy pillow opencv-python-headless
+
+      - name: Download supplied Dropbox reference and campaign folder
+        env:
+          REF_URL: "https://www.dropbox.com/scl/fi/i1x6nkdb8vdfc2iafbitn/type_01_pindown.io_1795195281.mp4?rlkey=qtejb6mly49gzwzw9oqkop6he&dl=1"
+          ASSETS_URL: "https://www.dropbox.com/scl/fo/jyz7yetpy5wxaogj9xxve/ABr_8l9Fk-QNW8eVmGyXILw?rlkey=kdhwsh5arq4r3j9p3lyzolk3r&dl=1"
+        run: |
+          mkdir -p work/assets work/output
+          curl --fail --location --retry 5 --retry-all-errors --max-time 600 "$REF_URL" -o work/reference.mp4
+          curl --fail --location --retry 5 --retry-all-errors --max-time 900 "$ASSETS_URL" -o work/assets.zip
+          file work/reference.mp4 work/assets.zip
+          unzip -q work/assets.zip -d work/assets
+          find work/assets -maxdepth 4 -type f | sort | head -100
+          test -s work/reference.mp4
+          test "$(find work/assets -type f | wc -l)" -gt 0
+
+      - name: Run development tests
+        run: |
+          python -m unittest discover -s tests -v
+
+      - name: Analyze every reference frame and render campaign
+        run: |
+          python scripts/black_friday_motion.py \
+            --reference work/reference.mp4 \
+            --assets work/assets \
+            --out work/output/ABYSS_BLACK_FRIDAY_v01_1080x1920.mp4 \
+            --analysis work/output/reference_motion_timeline.json
+          ffprobe -v error -show_entries stream=codec_name,width,height,r_frame_rate -show_entries format=duration,size -of json work/output/ABYSS_BLACK_FRIDAY_v01_1080x1920.mp4
+
+      - name: Upload final video, motion data and extracted reference frames
+        uses: actions/upload-artifact@v4
+        with:
+          name: ABYSS-BLACK-FRIDAY-v01
+          path: |
+            work/output/ABYSS_BLACK_FRIDAY_v01_1080x1920.mp4
+            work/output/reference_motion_timeline.json
+            work/output/reference_contact_sheet.jpg
+            work/output/reference_frames.zip
+            work/output/render_probe.json
+          if-no-files-found: error
+          retention-days: 14
