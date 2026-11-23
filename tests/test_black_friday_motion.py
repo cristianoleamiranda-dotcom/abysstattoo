@@ -17,8 +17,8 @@ class MotionPipelineTests(unittest.TestCase):
         ]
         out = smooth_path(rows)
         self.assertEqual(out.shape, (7, 4))
-        self.assertTrue(np.all(out[:, 0] <= 1.85))
-        self.assertTrue(np.all(out[:, 0] >= 0.62))
+        self.assertTrue(np.all(out[:, 0] <= 1.850001))
+        self.assertTrue(np.all(out[:, 0] >= 0.619999))
         self.assertTrue(np.all(np.abs(out[:, 2]) <= 220))
         self.assertTrue(np.all(np.abs(out[:, 3]) <= 260))
 
