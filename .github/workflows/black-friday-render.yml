@@ -14,7 +14,7 @@ permissions:
 
 concurrency:
   group: abyss-black-friday-render
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   render:
@@ -25,8 +25,7 @@ jobs:
 
       - name: Install video dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg
+          command -v ffmpeg || { echo 'ffmpeg no está instalado en el runner'; exit 1; }
           python -m pip install --upgrade pip
           python -m pip install numpy pillow opencv-python-headless
 
