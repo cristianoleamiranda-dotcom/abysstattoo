@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: abyss-black-friday-render
+  group: abyss-black-friday-render-v02
   cancel-in-progress: true
 
 jobs:
