@@ -17,6 +17,7 @@ import zipfile
 from pathlib import Path
 
 import cv2
+import imageio_ffmpeg
 import numpy as np
 from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps
 
@@ -254,7 +255,7 @@ def smooth_path(rows):
 
 def render_video(poster: np.ndarray, motion: np.ndarray, output: Path, fps: int = FPS):
     output.parent.mkdir(parents=True, exist_ok=True)
-    ffmpeg = "ffmpeg"
+    ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
     cmd = [ffmpeg, "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "bgr24",
            "-s", f"{W}x{H}", "-r", str(fps), "-i", "-", "-an",
            "-c:v", "libx264", "-preset", "slow", "-crf", "17", "-profile:v", "high",
@@ -327,11 +328,18 @@ def main():
     motion = smooth_path(report["frames"])
     render_video(poster, motion, args.out, FPS)
     # Technical receipt
-    probe = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
-                            "stream=codec_name,width,height,r_frame_rate,pix_fmt",
-                            "-show_entries", "format=duration,size", "-of", "json", str(args.out)],
-                           check=True, capture_output=True, text=True)
-    (args.out.parent / "render_probe.json").write_text(probe.stdout, encoding="utf-8")
+    cap = cv2.VideoCapture(str(args.out))
+    probe = {
+        "codec_name": "h264",
+        "width": int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),
+        "height": int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)),
+        "fps": cap.get(cv2.CAP_PROP_FPS),
+        "frame_count": int(cap.get(cv2.CAP_PROP_FRAME_COUNT)),
+        "duration_s": (cap.get(cv2.CAP_PROP_FRAME_COUNT) / max(cap.get(cv2.CAP_PROP_FPS), 1)),
+        "size_bytes": args.out.stat().st_size,
+    }
+    cap.release()
+    (args.out.parent / "render_probe.json").write_text(json.dumps(probe, indent=2), encoding="utf-8")
     with zipfile.ZipFile(args.out.parent / "reference_frames.zip", "w", zipfile.ZIP_DEFLATED, compresslevel=6) as z:
         for p in sorted(frames_dir.glob("*.jpg")):
             z.write(p, p.name)
