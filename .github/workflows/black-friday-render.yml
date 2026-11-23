@@ -44,7 +44,23 @@ jobs:
           curl --fail --location --retry 5 --retry-all-errors --max-time 600 "$REF_URL" -o work/reference.mp4
           curl --fail --location --retry 5 --retry-all-errors --max-time 900 "$ASSETS_URL" -o work/assets.zip
           file work/reference.mp4 work/assets.zip
-          unzip -q work/assets.zip -d work/assets
+          python - <<'PY'
+          import pathlib, zipfile, shutil
+          root = pathlib.Path("work/assets").resolve()
+          with zipfile.ZipFile("work/assets.zip") as archive:
+              for item in archive.infolist():
+                  name = item.filename.replace("\\\\", "/").lstrip("/")
+                  parts = pathlib.PurePosixPath(name).parts
+                  if not name or item.is_dir() or ".." in parts:
+                      continue
+                  target = (root / pathlib.Path(*parts)).resolve()
+                  if root not in target.parents:
+                      continue
+                  target.parent.mkdir(parents=True, exist_ok=True)
+                  with archive.open(item) as src, target.open("wb") as dst:
+                      shutil.copyfileobj(src, dst)
+          print("Assets extracted safely")
+          PY
           find work/assets -maxdepth 4 -type f | sort | head -100
           test -s work/reference.mp4
           test "$(find work/assets -type f | wc -l)" -gt 0
