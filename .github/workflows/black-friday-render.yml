@@ -25,9 +25,8 @@ jobs:
 
       - name: Install video dependencies
         run: |
-          command -v ffmpeg || { echo 'ffmpeg no está instalado en el runner'; exit 1; }
           python -m pip install --upgrade pip
-          python -m pip install numpy pillow opencv-python-headless
+          python -m pip install numpy pillow opencv-python-headless imageio-ffmpeg
 
       - name: Download supplied Dropbox reference and campaign folder
         env:
@@ -54,7 +53,6 @@ jobs:
             --assets work/assets \
             --out work/output/ABYSS_BLACK_FRIDAY_v01_1080x1920.mp4 \
             --analysis work/output/reference_motion_timeline.json
-          ffprobe -v error -show_entries stream=codec_name,width,height,r_frame_rate -show_entries format=duration,size -of json work/output/ABYSS_BLACK_FRIDAY_v01_1080x1920.mp4
 
       - name: Upload final video, motion data and extracted reference frames
         uses: actions/upload-artifact@v4
