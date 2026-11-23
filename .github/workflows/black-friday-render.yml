@@ -22,6 +22,13 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            scripts/black_friday_motion.py
+            tests/test_black_friday_motion.py
 
       - name: Install video dependencies
         run: |
